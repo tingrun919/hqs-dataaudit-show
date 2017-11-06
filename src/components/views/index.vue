@@ -1,28 +1,6 @@
 <template>
 	<div class="headerWrapper">
-		<header class="header" data-section-name="header">
-			<div class="logo">
-				<img src="../assets/logo.png" class="nav-logo">
-				<span style="padding-left:5px;">
-					<span style="padding-right:8px;">|</span>数据稽核应用平台</span>
-			</div>
-			<ul class="nav">
-				<li class="nav-item"><a href="#/zh-CN/guide" class="">国庆节</a></li>
-				<li class="nav-item">|</li>
-				<li class="nav-item"><a href="#/zh-CN/component" class="">10月1日 星期二</a></li>
-				<li class="nav-item">|</li>
-				<li class="nav-item"><a href="#/zh-CN/resource" class="">12:00</a></li>
-				<li class="nav-item">|</li>
-				<li class="nav-item"><a href="#/zh-CN/resource" class="nav-link"></a>admin</a>
-					<span class="arrow"></span>
-					<ul class="nav-dropdown">
-						<li><a href="https://vuejs.org/v2/guide/installation.html" class="nav-link" target="_blank">退出</a></li>
-						<li><a href="https://br.vuejs.org/v2/guide/installation.html" class="nav-link" target="_blank">个人中心</a></li>
-						<li><a href="https://fr.vuejs.org/v2/guide/installation.html" class="nav-link" target="_blank">二维码</a></li>
-					</ul>
-				</li>
-			</ul>
-		</header>
+		<header-View></header-View>
 		<ul class="nav-menu">
 			<li data-href="#third">周稽核报告</li>
 			<li>日稽核报告</li>
@@ -30,11 +8,10 @@
 			<li>互联网详单</li>
 			<li>接口文件稽核</li>
 		</ul>
-		<section class="panel home" data-section-name="home" style="height: 150px;">
-
+		<section class="panel" data-section-name="home">
 			<el-row :gutter="5">
 				<el-col :span="17">
-					<el-card class="weekly-report">
+					<el-card>
 						<div slot="header" class="clearfix">
 							<span style="line-height: 36px;">本期（9.29-10.1）报告指标概括</span>
 						</div>
@@ -57,11 +34,15 @@
 					</el-card>
 				</el-col>
 				<el-col :span="7">
-					<el-card class="evaluation-map">
-						<div slot="header" class="clearfix">
-								<map-Chart></map-Chart>
+					<el-card>
+						<div slot="header" class="clearfix clearspan">
+							<map-Chart></map-Chart>
+							<span>本期评价</span>
 						</div>
-						
+
+						<div style="padding:15px;">
+							数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。
+						</div>
 					</el-card>
 				</el-col>
 			</el-row>
@@ -98,14 +79,22 @@
 				</li>
 			</ul>
 		</section>
-		<section class="panel panel1" data-section-name="second" style="height: 150px;">
-				<!-- <map-Chart></map-Chart> -->
+		<section class="panel" data-section-name="second" style="height: 150px;padding:20px;">
+			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
+
+						<el-tab-pane label="用户管理" name="first">
+										<internet-Chart></internet-Chart>
+						</el-tab-pane>
+						<el-tab-pane label="配置管理" name="second">
+										<internet-Chart></internet-Chart>
+						</el-tab-pane>
+					  </el-tabs>
+
+			</el-tabs>
 		</section>
 		<section class="panel panel2" data-section-name="third" style="height: 150px;">
-
 		</section>
 		<section class="panel panel3" data-section-name="fourth" style="height: 150px;">
-
 		</section>
 		<div class="footer" data-section-name="footer">
 			<div class="inner">
@@ -122,11 +111,13 @@
 	import invalidNumberChart from '@/components/Charts/invalidNumberChart'
 	import mapChart from '@/components/Charts/mapChart'
 
+	import headerView from '@/components/header/header'
+
 	export default {
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView },
 		data() {
 			return {
-
+				activeName2: 'first'
 			}
 		},
 		beforeMount() {
@@ -155,25 +146,15 @@
 			});
 		},
 		methods: {
-			handleSelect(key, keyPath) {
-				console.log(key, keyPath);
+			handleClick(tab, event) {
+				console.log(tab, event);
 			}
 		}
 	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-	.home {
-		background: #6dcb94;
-		background: hsl(158, 58%, 52%);
-	}
-
-	.panel1 {
-		background: #ec8200;
-		background: hsl(28, 100%, 52%);
-	}
-
+<style>
 	.panel2 {
 		background: #64a0d4;
 		background: hsl(200, 60%, 55%);
@@ -272,12 +253,19 @@
 		clear: both
 	}
 
-	.weekly-report {
-		/* width: 60%; */
+	.clearspan {
+		border-bottom: 1px solid #3a3a3a;
+		padding: 10px 0;
 	}
 
-	.evaluation-map {
-		/* width: 30%; */
+	.clearspan span {
+		position: relative;
+		right: 30%;
+	}
+
+	.components-container {
+		margin: 30px 50px;
+		position: relative;
 	}
 
 	.chart-container {

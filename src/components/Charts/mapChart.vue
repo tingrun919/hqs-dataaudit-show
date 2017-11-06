@@ -5,7 +5,7 @@
 <script>
 	import echarts from 'echarts'
 	import 'echarts/map/js/china.js';
-	require('echarts/theme/mint') // echarts 主题
+	require('echarts/theme/roma') // echarts 主题
 
 	const animationDuration = 3000
 	export default {
@@ -40,7 +40,7 @@
 		},
 		methods: {
 			initChart() {
-				this.chart = echarts.init(this.$el, 'mint')
+				this.chart = echarts.init(this.$el, 'roma')
 
 				this.chart.setOption({
 					tooltip: {
@@ -55,12 +55,12 @@
 					},
 					toolbox: {
 						show: true,
-						orient : 'horizontal',
+						orient: 'horizontal',
 						x: 'center',
 						y: 'top',
-						feature : {
-							restore : {show: true},
-							saveAsImage : {show: true}
+						feature: {
+							restore: { show: true },
+							saveAsImage: { show: true }
 						}
 					},
 					series: [
@@ -74,6 +74,12 @@
 								emphasis: { label: { show: false } }
 							},
 							data: [
+								{
+									name: "南海诸岛", value: 0,
+									itemStyle: {
+										normal: { opacity: 0, label: { show: false } }
+									}
+								},
 								{ name: '北京', value: Math.round(Math.random() * 1000) },
 								{ name: '天津', value: Math.round(Math.random() * 1000) },
 								{ name: '上海', value: Math.round(Math.random() * 1000) },

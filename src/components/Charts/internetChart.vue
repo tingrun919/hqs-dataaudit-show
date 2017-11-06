@@ -161,7 +161,8 @@
 						label: {
 							normal: {
 								show: true,
-								position: 'top'
+								position: 'top',
+								fontSize: '10'
 							}
 						},
 						data: [2.1, 2.2, 2.3, 5.8, 2.4, 5.0]
@@ -172,7 +173,8 @@
 						label: {
 							normal: {
 								show: true,
-								position: 'top'
+								position: 'top',
+								fontSize: '10'
 							}
 						},
 						data: [2.6, 1.2, 4.3, 3.7, 6.4, 1.5]
