@@ -1,5 +1,5 @@
 <template>
-	<div :class="className" :style="{height:height,width:width}"></div>
+	<div :class="className" ref="pie" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
@@ -40,7 +40,6 @@
 		methods: {
 			initChart() {
 				this.chart = echarts.init(this.$el, 'default')
-
 				this.chart.setOption({
 					title: {
 						text: '互联网数据量化环比同比',
@@ -73,12 +72,12 @@
 						containLabel: true,
 						bottom: '18%'
 					},
-					legend: {
-						textStyle:{
-							fontSize: '10'
-						},
-						data: ['量化同比', '量化环比', '上月同期文件大小', '上月文件大小', '同期文件大小']
-					},
+					// legend: {
+					// 	textStyle:{
+					// 		fontSize: '10'
+					// 	},
+					// 	data: ['量化同比', '量化环比', '上月同期文件大小', '上月文件大小', '同期文件大小']
+					// },
 					xAxis: [{
 						type: 'category',
 						axisTick: {

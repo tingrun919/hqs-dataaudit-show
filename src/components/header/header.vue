@@ -12,7 +12,7 @@
 			<li class="nav-item">|</li>
 			<li class="nav-item"><a href="#/zh-CN/resource" class="">12:00</a></li>
 			<li class="nav-item">|</li>
-			<li class="nav-item"><a href="#/zh-CN/resource" class="nav-link"></a>admin</a>
+			<li class="nav-item"><a href="#/zh-CN/resource" class="nav-link"></a>admin（2）</a>
 				<span class="arrow"></span>
 				<ul class="nav-dropdown">
 					<li><a href="https://vuejs.org/v2/guide/installation.html" class="nav-link" target="_blank">退出</a></li>

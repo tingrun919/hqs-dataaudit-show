@@ -7,12 +7,13 @@ import App from './App'
 import router from './router'
 import $ from 'jquery'
 var scrollify = require('jquery-scrollify');
-
+var ECharts = require('vue-echarts')
 //import css
 import '../src/css/homepage.css'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.component('chart', ECharts)
 
 /* eslint-disable no-new */
 new Vue({

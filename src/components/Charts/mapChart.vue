@@ -50,17 +50,46 @@
 						min: 0,
 						show: false,
 						max: 2500,
-						// 文本，默认为数值文本
 						calculable: true
 					},
 					toolbox: {
 						show: true,
 						orient: 'horizontal',
-						x: 'center',
+						// x: 'center',
+						left:"15%",
 						y: 'top',
+						showTitle: false,
 						feature: {
-							restore: { show: true },
-							saveAsImage: { show: true }
+							myReport: {
+								icon: 'image://../../dist/static/img/report.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myRecording: {
+								icon: 'image://../../dist/static/img/recording.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myFootprint: {
+								icon: 'image://../../dist/static/img/footprint.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							restore: {
+								show: true,
+								icon: 'image://../../dist/static/img/refesh.png'
+							},
+							saveAsImage: {
+								show: true,
+								icon: 'image://../../dist/static/img/save.png'
+							},
+
 						}
 					},
 					series: [

@@ -45,7 +45,6 @@
 					title: {
 						text: '本期稽核扣分榜',
 						x: 'center',
-						// y: 'bottom',
 						bottom:'10%',
 						textStyle: {
 							fontWeight: 'normal',
@@ -63,12 +62,11 @@
 						containLabel: true
 					},
 					xAxis: {
-						// type: 'value'
 						show: false
 					},
 					yAxis: {
 						type: 'category',
-						data: ['北京', '上海', '广州', '山东', '河南', '河北', '安徽']
+						data: ['安徽', '河北', '河南', '山东', '广州', '上海', '北京']
 					},
 					series: [
 						{
@@ -81,7 +79,7 @@
 									position: 'insideRight'
 								}
 							},
-							data: [320, 302, 301, 334, 390, 330, 320]
+							data: [301, 317, 330, 344, 361, 376, 390]
 						}
 					]
 				})
