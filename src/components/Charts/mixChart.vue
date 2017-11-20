@@ -1,267 +1,770 @@
 <template>
-  <div :class="className" :id="id" :style="{height:height,width:width}"></div>
+	<div :class="className" :id="id" :style="{height:height,width:width}" :data-test="options"></div>
 </template>
 
 <script>
-import echarts from 'echarts'
+	import echarts from 'echarts'
 
-export default {
-  props: {
-    className: {
-      type: String,
-      default: 'chart'
-    },
-    id: {
-      type: String,
-      default: 'chart'
-    },
-    width: {
-      type: String,
-      default: '200px'
-    },
-    height: {
-      type: String,
-      default: '200px'
-    }
-  },
-  data() {
-    return {
-      chart: null
-    }
-  },
-  mounted() {
-    this.initChart()
-    this.chart = null
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return
-    }
-    this.chart.dispose()
-    this.chart = null
-  },
-  methods: {
-    initChart() {
-      this.chart = echarts.init(document.getElementById(this.id))
-      const xData = (function() {
-        const data = []
-        for (let i = 1; i < 13; i++) {
-          data.push(i + '月份')
-        }
-        return data
-      }())
-      this.chart.setOption({
-        backgroundColor: '#344b58',
-        title: {
-          text: '统计',
-          x: '4%',
-          textStyle: {
-            color: '#fff',
-            fontSize: '22'
-          },
-          subtextStyle: {
-            color: '#90979c',
-            fontSize: '16'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            textStyle: {
-              color: '#fff'
-            }
-          }
-        },
-        grid: {
-          borderWidth: 0,
-          top: 110,
-          bottom: 95,
-          textStyle: {
-            color: '#fff'
-          }
-        },
-        legend: {
-          x: '15%',
-          top: '10%',
-          textStyle: {
-            color: '#90979c'
-          },
-          data: ['女', '男', '平均']
-        },
-        calculable: true,
-        xAxis: [{
-          type: 'category',
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          splitArea: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0
+	export default {
+		props: {
+			className: {
+				type: String,
+				default: 'chart'
+			},
+			id: {
+				type: String,
+				default: 'chart'
+			},
+			width: {
+				type: String,
+				default: '200px'
+			},
+			height: {
+				type: String,
+				default: '200px'
+			},
+			options: {
+				type: String,
+			}
+		},
+		data() {
+			return {
+				chart: null,
+				option1: {
+					tooltip: {
+						trigger: 'axis',
+						formatter: function (params, ticket, callback) {
 
-          },
-          data: xData
-        }],
-        yAxis: [{
-          type: 'value',
-          splitLine: {
-            show: false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0
-          },
-          splitArea: {
-            show: false
-          }
-        }],
-        dataZoom: [{
-          show: true,
-          height: 30,
-          xAxisIndex: [
-            0
-          ],
-          bottom: 30,
-          start: 10,
-          end: 80,
-          handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '110%',
-          handleStyle: {
-            color: '#d3dee5'
+							var res = params[0].name;
 
-          },
-          textStyle: {
-            color: '#fff' },
-          borderColor: '#90979c'
+							for (var i = 0, l = params.length; i < l; i++) {
+								if (params[i].seriesType === 'line') {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + 'h';
+								} else {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + '个';
+								}
+							}
+							return res;
 
-        }, {
-          type: 'inside',
-          show: true,
-          height: 15,
-          start: 1,
-          end: 35
-        }],
-        series: [{
-          name: '女',
-          type: 'bar',
-          stack: '总量',
-          barMaxWidth: 35,
-          barGap: '10%',
-          itemStyle: {
-            normal: {
-              color: 'rgba(255,144,128,1)',
-              label: {
-                show: true,
-                textStyle: {
-                  color: '#fff'
-                },
-                position: 'insideTop',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            709,
-            1917,
-            2455,
-            2610,
-            1719,
-            1433,
-            1544,
-            3285,
-            5208,
-            3372,
-            2484,
-            4078
-          ]
-        },
+						}
+					},
+					grid: {
+						containLabel: true
+					},
+					legend: {
+						right: '10%',
+						top: '-1%',
+						data: ['IMSI', 'IMEI', '无效手机号']
+					},
+					tooltip: {
+						trigger: 'axis'
+					},
+					toolbox: {
+						show: true,
+						showTitle: false,
+						orient: "vertical",
+						right: '30px',
+						top: '25%',
+						feature: {
+							myReport: {
+								icon: 'image://../../dist/static/img/report.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myMail: {
+								icon: 'image://../../dist/static/img/mail.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myRecording: {
+								icon: 'image://../../dist/static/img/recording.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myFootprint: {
+								icon: 'image://../../dist/static/img/footprint.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							magicType: {
+								type: ['line', 'bar'],
+								icon: {
+									line: "image://../../dist/static/img/line.png",
+									bar: "image://../../dist/static/img/pie.png"
+								},
+							},
+							restore: {
+								show: true,
+								icon: 'image://../../dist/static/img/refesh.png'
+							},
+							saveAsImage: {
+								show: true,
+								icon: 'image://../../dist/static/img/save.png'
+							},
 
-        {
-          name: '男',
-          type: 'bar',
-          stack: '总量',
-          itemStyle: {
-            normal: {
-              color: 'rgba(0,191,183,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            327,
-            1776,
-            507,
-            1200,
-            800,
-            482,
-            204,
-            1390,
-            1001,
-            951,
-            381,
-            220
-          ]
-        }, {
-          name: '平均',
-          type: 'line',
-          stack: '总量',
-          symbolSize: 10,
-          symbol: 'circle',
-          itemStyle: {
-            normal: {
-              color: 'rgba(252,230,48,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298
-          ]
-        }
-        ]
-      })
-    }
-  }
-}
+						}
+					},
+					xAxis: [{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLabel: {
+							interval: 0
+						},
+						data: ['北京', '上海', '天津', '山东', '陕西',
+							'四川', '辽宁', '河北', '吉林', '黑龙江',
+							'山西', '广东', '湖南', '湖北', '江西',
+							'福建', '江苏', '浙江', '安徽', '内蒙古',
+							'广西', '西藏', '宁夏', '新疆', '海南'],
+					}],
+					dataZoom: [{
+						type: 'slider',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 25
+					}, {
+						type: 'inside',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 100
+					}],
+					yAxis: [{
+						type: 'value',
+						// name: '百分比',
+						min: 0,
+						position: 'left',
+						axisLabel: {
+							formatter: '{value} %'
+						}
+					}],
+					series: [{
+						name: 'IMSI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}, {
+						name: 'IMEI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					},
+					{
+						name: '无效手机号',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}]
+				},
+				option2: {
+					tooltip: {
+						trigger: 'axis',
+						formatter: function (params, ticket, callback) {
+
+							var res = params[0].name;
+
+							for (var i = 0, l = params.length; i < l; i++) {
+								if (params[i].seriesType === 'line') {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + 'h';
+								} else {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + '个';
+								}
+							}
+							return res;
+
+						}
+					},
+					grid: {
+						containLabel: true
+					},
+					legend: {
+						right: '10%',
+						top: '-1%',
+						data: ['IMSI', 'IMEI', '无效手机号']
+					},
+					tooltip: {
+						trigger: 'axis'
+					},
+					toolbox: {
+						show: true,
+						showTitle: false,
+						orient: "vertical",
+						right: '30px',
+						top: '25%',
+						feature: {
+							myReport: {
+								icon: 'image://../../dist/static/img/report.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myMail: {
+								icon: 'image://../../dist/static/img/mail.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myRecording: {
+								icon: 'image://../../dist/static/img/recording.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myFootprint: {
+								icon: 'image://../../dist/static/img/footprint.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							magicType: {
+								type: ['line', 'bar'],
+								icon: {
+									line: "image://../../dist/static/img/line.png",
+									bar: "image://../../dist/static/img/pie.png"
+								},
+							},
+							restore: {
+								show: true,
+								icon: 'image://../../dist/static/img/refesh.png'
+							},
+							saveAsImage: {
+								show: true,
+								icon: 'image://../../dist/static/img/save.png'
+							},
+
+						}
+					},
+					xAxis: [{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLabel: {
+							interval: 0
+						},
+						data: ['北京', '上海', '天津', '山东', '陕西',
+							'四川', '辽宁', '河北', '吉林', '黑龙江',
+							'山西', '广东', '湖南', '湖北', '江西',
+							'福建', '江苏', '浙江', '安徽', '内蒙古',
+							'广西', '西藏', '宁夏', '新疆', '海南'],
+					}],
+					dataZoom: [{
+						type: 'slider',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 25
+					}, {
+						type: 'inside',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 100
+					}],
+					yAxis: [{
+						type: 'value',
+						// name: '百分比',
+						min: 0,
+						position: 'left',
+						axisLabel: {
+							formatter: '{value} %'
+						}
+					}],
+					series: [{
+						name: 'IMSI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}, {
+						name: 'IMEI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					},
+					{
+						name: '无效手机号',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}]
+				},
+				option3: {
+					tooltip: {
+						trigger: 'axis',
+						formatter: function (params, ticket, callback) {
+
+							var res = params[0].name;
+
+							for (var i = 0, l = params.length; i < l; i++) {
+								if (params[i].seriesType === 'line') {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + 'h';
+								} else {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + '个';
+								}
+							}
+							return res;
+
+						}
+					},
+					grid: {
+						containLabel: true
+					},
+					legend: {
+						right: '10%',
+						top: '-1%',
+						data: ['IMSI', 'IMEI', '无效手机号']
+					},
+					tooltip: {
+						trigger: 'axis'
+					},
+					toolbox: {
+						show: true,
+						showTitle: false,
+						orient: "vertical",
+						right: '30px',
+						top: '25%',
+						feature: {
+							myReport: {
+								icon: 'image://../../dist/static/img/report.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myMail: {
+								icon: 'image://../../dist/static/img/mail.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myRecording: {
+								icon: 'image://../../dist/static/img/recording.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myFootprint: {
+								icon: 'image://../../dist/static/img/footprint.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							magicType: {
+								type: ['line', 'bar'],
+								icon: {
+									line: "image://../../dist/static/img/line.png",
+									bar: "image://../../dist/static/img/pie.png"
+								},
+							},
+							restore: {
+								show: true,
+								icon: 'image://../../dist/static/img/refesh.png'
+							},
+							saveAsImage: {
+								show: true,
+								icon: 'image://../../dist/static/img/save.png'
+							},
+
+						}
+					},
+					xAxis: [{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLabel: {
+							interval: 0
+						},
+						data: ['北京', '上海', '天津', '山东', '陕西',
+							'四川', '辽宁', '河北', '吉林', '黑龙江',
+							'山西', '广东', '湖南', '湖北', '江西',
+							'福建', '江苏', '浙江', '安徽', '内蒙古',
+							'广西', '西藏', '宁夏', '新疆', '海南'],
+					}],
+					dataZoom: [{
+						type: 'slider',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 25
+					}, {
+						type: 'inside',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 100
+					}],
+					yAxis: [{
+						type: 'value',
+						// name: '百分比',
+						min: 0,
+						position: 'left',
+						axisLabel: {
+							formatter: '{value} %'
+						}
+					}],
+					series: [{
+						name: 'IMSI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}, {
+						name: 'IMEI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					},
+					{
+						name: '无效手机号',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}]
+				},
+				option4: {
+					tooltip: {
+						trigger: 'axis',
+						formatter: function (params, ticket, callback) {
+
+							var res = params[0].name;
+
+							for (var i = 0, l = params.length; i < l; i++) {
+								if (params[i].seriesType === 'line') {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + 'h';
+								} else {
+									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + '个';
+								}
+							}
+							return res;
+
+						}
+					},
+					grid: {
+						containLabel: true
+					},
+					legend: {
+						right: '10%',
+						top: '-1%',
+						data: ['IMSI', 'IMEI', '无效手机号']
+					},
+					tooltip: {
+						trigger: 'axis'
+					},
+					toolbox: {
+						show: true,
+						showTitle: false,
+						orient: "vertical",
+						right: '30px',
+						top: '25%',
+						feature: {
+							myReport: {
+								icon: 'image://../../dist/static/img/report.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myMail: {
+								icon: 'image://../../dist/static/img/mail.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myRecording: {
+								icon: 'image://../../dist/static/img/recording.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							myFootprint: {
+								icon: 'image://../../dist/static/img/footprint.png',
+								onclick: function (params) {
+									console.log(params);
+									alert('1');
+								}
+							},
+							magicType: {
+								type: ['line', 'bar'],
+								icon: {
+									line: "image://../../dist/static/img/line.png",
+									bar: "image://../../dist/static/img/pie.png"
+								},
+							},
+							restore: {
+								show: true,
+								icon: 'image://../../dist/static/img/refesh.png'
+							},
+							saveAsImage: {
+								show: true,
+								icon: 'image://../../dist/static/img/save.png'
+							},
+
+						}
+					},
+					xAxis: [{
+						type: 'category',
+						axisTick: {
+							alignWithLabel: true
+						},
+						axisLabel: {
+							interval: 0
+						},
+						data: ['北京', '上海', '天津', '山东', '陕西',
+							'四川', '辽宁', '河北', '吉林', '黑龙江',
+							'山西', '广东', '湖南', '湖北', '江西',
+							'福建', '江苏', '浙江', '安徽', '内蒙古',
+							'广西', '西藏', '宁夏', '新疆', '海南'],
+					}],
+					dataZoom: [{
+						type: 'slider',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 25
+					}, {
+						type: 'inside',
+						xAxisIndex: 0,
+						filterMode: 'empty',
+						start: 0,
+						end: 100
+					}],
+					yAxis: [{
+						type: 'value',
+						// name: '百分比',
+						min: 0,
+						position: 'left',
+						axisLabel: {
+							formatter: '{value} %'
+						}
+					}],
+					series: [{
+						name: 'IMSI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}, {
+						name: 'IMEI',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					},
+					{
+						name: '无效手机号',
+						type: 'bar',
+						label: {
+							normal: {
+								show: true,
+								position: 'top'
+							}
+						},
+						data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100),
+						Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)
+							, Math.round(Math.random() * 100)],
+					}]
+				}
+			}
+		},
+		watch: {
+			options: function () {
+				this.chart = echarts.init(document.getElementById(this.id))
+				if (this.options == 'one') {
+					this.chart.setOption(this.option1, true)
+				} else if (this.options == 'two') {
+					this.chart.setOption(this.option2, true)
+				}
+				else if (this.options == 'three') {
+					this.chart.setOption(this.option3, true)
+				}
+				else if (this.options == 'four') {
+					this.chart.setOption(this.option4, true)
+				}
+			}
+		},
+		mounted() {
+			this.initChart()
+			this.chart = null
+		},
+		beforeDestroy() {
+			if (!this.chart) {
+				return
+			}
+			this.chart.dispose()
+			this.chart = null
+		},
+		methods: {
+			initChart() {
+				this.chart = echarts.init(document.getElementById(this.id))
+				this.chart.setOption(this.option1)
+
+			}
+		}
+	}
 </script>

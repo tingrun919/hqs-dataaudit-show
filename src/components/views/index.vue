@@ -29,11 +29,11 @@
 								周稽核报告
 								</a>
 							</li>
-							<li>
+							<!-- <li>
 								<a href="#day" class="btn_snav" data-href="#day">
 								日稽核报告
 								</a>
-							</li>
+							</li> -->
 							<li>
 								<a href="#signaling" class="btn_snav" data-href="#signaling">
 								信令详单
@@ -87,16 +87,23 @@
 				</el-col>
 				<el-col :span="7">
 					<el-card>
-						<div slot="header" class="clearfix clearspan">
 							<map-Chart></map-Chart>
-							<span>本期评价</span>
-						</div>
-
-						<div style="padding:15px;">
-							数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。
+					</el-card>
+					<el-card class="card-style">
+						<span slot="header">本期评价</span>
+						<div>
+							<p>
+								数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采 集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于 计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量 系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自
+								动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定
+								义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采 集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于
+								计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量 系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自 动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合
+								基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定
+								义的测量系统。
+							</p>
 						</div>
 					</el-card>
 				</el-col>
+
 			</el-row>
 			<ul class="pagination">
 				<li>
@@ -343,11 +350,29 @@
 				</el-tab-pane>
 			</el-tabs>
 		</section> -->
-		<section class="panel" style="height: 150px;padding:20px;">
-			<el-tabs style='margin-top:15px;' v-model="activeName" type="border-card">
-				<el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key='item.key' :name="item.key">
+		<section class="panel" data-section-name="signaling" style="padding:20px;">
+			<el-tabs v-model="signalingActive" type="border-card">
+				<el-tab-pane v-for="item in signalingOptions" :label="item.label" :key='item.key' :name="item.key">
 					<keep-alive>
-						<tab-pane v-if='activeName==item.key' :type='item.key'></tab-pane>
+						<tab-pane v-if='signalingActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
+					</keep-alive>
+				</el-tab-pane>
+			</el-tabs>
+		</section>
+		<section class="panel" data-section-name="internet" style="padding:20px;">
+			<el-tabs v-model="internetActive" type="border-card">
+				<el-tab-pane v-for="item in internetOptions" :label="item.label" :key='item.key' :name="item.key">
+					<keep-alive>
+						<tab-pane v-if='internetActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
+					</keep-alive>
+				</el-tab-pane>
+			</el-tabs>
+		</section>
+		<section class="panel" data-section-name="interface" style="padding:20px;">
+			<el-tabs v-model="interfaceActive" type="border-card">
+				<el-tab-pane v-for="item in interfaceOptions" :label="item.label" :key='item.key' :name="item.key">
+					<keep-alive>
+						<tab-pane v-if='interfaceActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
 					</keep-alive>
 				</el-tab-pane>
 			</el-tabs>
@@ -377,39 +402,29 @@
 		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane },
 		data() {
 			return {
-				activeName2: 'first',
-				options: [{
-					value: '选项1',
-					label: '时间'
-				}, {
-					value: '选项2',
-					label: '地域'
-				}, {
-					value: '选项3',
-					label: '数据域'
-				}],
-				options2: [{
-					value: 'one',
-					label: '2017-10-03'
-				}, {
-					value: 'two',
-					label: '2017-10-10'
-				}, {
-					value: 'three',
-					label: '2017-10-17'
-				}, {
-					value: 'four',
-					label: '2017-10-24'
-				}],
-				value: '',
-				value2: '',
-				tabMapOptions: [
-					{ label: '中国', key: 'CN' },
-					{ label: '美国', key: 'US' },
-					{ label: '日本', key: 'JP' },
-					{ label: '欧元区', key: 'EU' }
+				signalingActive: '1',
+				internetActive: '11',
+				interfaceActive: '111',
+				signalingOptions: [
+					{ label: '信令自身稽核', key: '1' },
+					{ label: '规范性稽核', key: '2' },
+					{ label: '用户漂移率', key: '3' },
+					{ label: '小区匹配率', key: '4' },
+					{ label: '小区工参', key: '5' },
+					{ label: 'BO侧差异率', key: '6' }
 				],
-				activeName: 'CN',
+				internetOptions: [
+					{ label: '自身稽核', key: '11' },
+				],
+				interfaceOptions: [
+					{ label: '信令延时性', key: '111' },
+					{ label: '互联网延时性', key: '222' },
+					{ label: '详单空包率', key: '333' },
+					{ label: '详单碎文件率', key: '444' },
+					{ label: '接口文件数据量环同比', key: '555' },
+					{ label: '综采话单数据量环同比', key: '666' }
+				],
+
 			}
 		},
 		watch: {
@@ -465,11 +480,7 @@
 		methods: {
 			handleClick(tab, event) {
 				this.$nextTick(() => {
-					setTimeout(function () {
-						console.log(tab.$children[2].$refs)
-						console.log(tab, '22222222222')
-						tab.$children[2].$refs.pie.chart.resize();
-					}, 1000);
+					tab.$children[2].$refs.pie.resize();
 				})
 			}
 		}
@@ -568,30 +579,9 @@
 		clear: both
 	}
 
-	.clearspan {
-		border-bottom: 1px solid #3a3a3a;
-		padding: 10px 0;
-	}
-
-	.clearspan span {
-		position: relative;
-		right: 30%;
-	}
-
-	.components-container {
-		margin: 30px 50px;
-		position: relative;
-	}
-
-	.chart-container {
-		/* position: relative; */
-		width: 100%;
-		height: 100%;
-	}
-
 	.select-one {
 		top: 23px;
-		right: 20%;
+		right: 16%;
 		z-index: 9999;
 		position: relative;
 		padding-right: 5px;
@@ -683,7 +673,7 @@
 	}
 
 	.icon {
-		background-image: url("../../../static/charts/black.png");
+		background-image: url("../../assets/black.png");
 		display: inline-block;
 		position: relative;
 		background-repeat: no-repeat;
@@ -707,6 +697,32 @@
 	}
 
 	.icon-show {
-		background-image: url("../../../static/charts/white.png");
+		background-image: url("../../assets/white.png");
+	}
+
+	.el-tabs--border-card>.el-tabs__content {
+		padding-bottom: 80px;
+	}
+
+	.card-style {
+		margin-top: 5px;
+		padding: 10px;
+		/* height: 300px; */
+	}
+
+	.card-style span {
+		position: relative;
+		right: 30%;
+		top: 10%;
+	}
+
+	.card-style div p{
+		padding: 0 11px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 13;
+		-webkit-box-orient: vertical;
+		font-size: 15px;
 	}
 </style>
