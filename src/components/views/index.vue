@@ -378,9 +378,10 @@
 			</el-tabs>
 		</section>
 		<div class="footer" data-section-name="footer">
-			<div class="inner">
+			<!-- <div class="inner">
 				<p>Footer</p>
-			</div>
+			</div> -->
+			<!-- <footer-View></footer-View> -->
 		</div>
 	</div>
 </template>
@@ -397,9 +398,10 @@
 
 
 	import headerView from '@/components/header/header'
+	import footerView from '@/components/footer/footer'
 
 	export default {
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView },
 		data() {
 			return {
 				signalingActive: '1',
@@ -425,11 +427,6 @@
 					{ label: '综采话单数据量环同比', key: '666' }
 				],
 
-			}
-		},
-		watch: {
-			value2: function () {
-				// console.log(this.value2)
 			}
 		},
 		beforeMount() {
@@ -478,11 +475,11 @@
 			});
 		},
 		methods: {
-			handleClick(tab, event) {
-				this.$nextTick(() => {
-					tab.$children[2].$refs.pie.resize();
-				})
-			}
+			// handleClick(tab, event) {
+			// 	this.$nextTick(() => {
+			// 		tab.$children[2].$refs.pie.resize();
+			// 	})
+			// }
 		}
 	}
 </script>
@@ -544,9 +541,11 @@
 		bottom: 0;
 	}
 
-	.header,
-	.footer {
+	.header {
 		background: #eef1f6;
+	}
+	.footer{
+		background: #999999;
 	}
 
 	.inner {
@@ -564,9 +563,9 @@
 	.text {
 		font-size: 14px;
 	}
-
-	.item {
-		padding: 18px 0;
+	
+	.el-badge__content.is-fixed {
+		right: 24px;
 	}
 
 	.clearfix:before,
@@ -582,7 +581,7 @@
 	.select-one {
 		top: 23px;
 		right: 16%;
-		z-index: 9999;
+		z-index: 99;
 		position: relative;
 		padding-right: 5px;
 	}
