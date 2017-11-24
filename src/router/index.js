@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/components/views/index'
 import Chart from '@/components/Charts/testChart'
 import Test from '@/components/testComp'
+import dynamicData from '@/components/Charts/dynamicDataChart'
 
 Vue.use(Router)
 
@@ -18,8 +19,8 @@ export default new Router({
 		},
 		{
 			path:'/test',
-			name: 'test',
-			component: Test
+			name: 'dynamicData',
+			component: dynamicData
 		}
 	]
 })

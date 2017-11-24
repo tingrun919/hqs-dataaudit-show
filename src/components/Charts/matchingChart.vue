@@ -19,7 +19,7 @@
 			},
 			height: {
 				type: String,
-				default: '300px'
+				default: '330px'
 			}
 		},
 		data() {
@@ -47,7 +47,7 @@
 						// x: 'center',
 						// y: 'bottom',
 						bottom:'25',
-						left:'50%',
+						left:'43%',
 						textStyle: {
 							fontWeight: 'normal',
 							fontSize: 13
@@ -71,9 +71,9 @@
 					// },
 					grid: {
 						containLabel: true,
-						left: '11.5%',
-						right: '4%',
-						// bottom: '15%',
+						left: '1%',
+						right: '1%',
+						bottom: '15%',
 						top: '5%'
 					},
 					xAxis: [

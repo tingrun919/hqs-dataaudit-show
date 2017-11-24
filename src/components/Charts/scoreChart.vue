@@ -19,7 +19,7 @@
 			},
 			height: {
 				type: String,
-				default: '300px'
+				default: '330px'
 			}
 		},
 		data() {
@@ -58,7 +58,9 @@
 						}
 					},
 					grid: {
-						right: '1%',
+						bottom: '15%',
+						right:'2%',
+						left:'2%',
 						containLabel: true
 					},
 					xAxis: {

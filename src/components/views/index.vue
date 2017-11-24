@@ -87,7 +87,7 @@
 				</el-col>
 				<el-col :span="7">
 					<el-card>
-							<map-Chart></map-Chart>
+						<map-Chart></map-Chart>
 					</el-card>
 					<el-card class="card-style">
 						<span slot="header">本期评价</span>
@@ -116,11 +116,11 @@
 						<span class="hover-text"></span>
 					</a>
 				</li>
-				<!-- <li>
+				<li>
 					<a class="" href="#day">
 						<span class="hover-text"></span>
 					</a>
-				</li> -->
+				</li>
 				<li>
 					<a class="" href="#signaling">
 						<span class="hover-text"></span>
@@ -143,45 +143,24 @@
 				</li>
 			</ul>
 		</section>
-		<!-- <section class="panel" data-section-name="day">
+		<section class="panel" data-section-name="day">
 			<el-row :gutter="5">
-				<el-col :span="17">
-					<el-card>
-						<div slot="header" class="clearfix">
-							<span style="line-height: 36px;">本期（9.29-10.1）报告指标概括</span>
-						</div>
-						<el-row :gutter="20">
-							<el-col :span="15">
-								<internet-Chart></internet-Chart>
-							</el-col>
-							<el-col :span="9">
-								<score-Chart></score-Chart>
-							</el-col>
-						</el-row>
-						<el-row :gutter="20">
-							<el-col :span="15">
-								<matching-Chart></matching-Chart>
-							</el-col>
-							<el-col :span="9" style="margin-top: -25px;">
-								<invalidNumber-Chart></invalidNumber-Chart>
-							</el-col>
-						</el-row>
-					</el-card>
+				<el-col :span="12">
+					<internet-Chart></internet-Chart>
 				</el-col>
-				<el-col :span="7">
-					<el-card>
-						<div slot="header" class="clearfix clearspan">
-							<map-Chart></map-Chart>
-							<span>本期评价</span>
-						</div>
-
-						<div style="padding:15px;">
-							数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量系统。
-						</div>
-					</el-card>
+				<el-col :span="12">
+					<score-Chart></score-Chart>
 				</el-col>
 			</el-row>
-		</section> -->
+			<el-row :gutter="5">
+				<el-col :span="12">
+					<matching-Chart></matching-Chart>
+				</el-col>
+				<el-col :span="12">
+					<dynamicData-Chart></dynamicData-Chart>
+				</el-col>
+			</el-row>
+		</section>
 		<!-- <section class="panel" data-section-name="signaling" style="height: 150px;padding:20px;">
 			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
 				<el-tab-pane label="信令自身稽核" name="first">
@@ -258,98 +237,6 @@
 				</el-tab-pane>
 			</el-tabs>
 		</section> -->
-		<!-- <section class="panel" data-section-name="internet" style="height: 150px;padding:20px;">
-			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
-				<el-tab-pane label="自身稽核" name="first">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<testChart2 :parmars="value2"></testChart2>
-				</el-tab-pane>
-			</el-tabs>
-		</section> -->
-		<!-- <section class="panel" data-section-name="interface" style="height: 150px;padding:20px;">
-			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
-				<el-tab-pane label="信令延时性" name="first">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="互联网延时性" name="second">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="详单空包率" name="third">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="详单碎文件率" name="four">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="接口文件数据量环同比" name="five">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="综采话单数据量环同比" name="six">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-			</el-tabs>
-		</section> -->
 		<section class="panel" data-section-name="signaling" style="padding:20px;">
 			<el-tabs v-model="signalingActive" type="border-card">
 				<el-tab-pane v-for="item in signalingOptions" :label="item.label" :key='item.key' :name="item.key">
@@ -395,13 +282,13 @@
 	import testChart from '@/components/Charts/testChart'
 	import testChart2 from '@/components/Charts/testChart2'
 	import tabPane from '@/components/Charts/tabPane'
-
+	import dynamicDataChart from '@/components/Charts/dynamicDataChart'
 
 	import headerView from '@/components/header/header'
 	import footerView from '@/components/footer/footer'
 
 	export default {
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView, dynamicDataChart },
 		data() {
 			return {
 				signalingActive: '1',
@@ -544,7 +431,8 @@
 	.header {
 		background: #eef1f6;
 	}
-	.footer{
+
+	.footer {
 		background: #999999;
 	}
 
@@ -563,7 +451,7 @@
 	.text {
 		font-size: 14px;
 	}
-	
+
 	.el-badge__content.is-fixed {
 		right: 24px;
 	}
@@ -715,12 +603,12 @@
 		top: 10%;
 	}
 
-	.card-style div p{
+	.card-style div p {
 		padding: 0 11px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp: 13;
+		-webkit-line-clamp: 18;
 		-webkit-box-orient: vertical;
 		font-size: 15px;
 	}

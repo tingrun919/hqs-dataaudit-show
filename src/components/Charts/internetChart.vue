@@ -19,7 +19,7 @@
 			},
 			height: {
 				type: String,
-				default: '300px'
+				default: '330px'
 			}
 		},
 		data() {
@@ -43,7 +43,7 @@
 				this.chart.setOption({
 					title: {
 						text: '互联网数据量化环比同比',
-						x: 'center',
+						left:'31%',
 						bottom:'25',
 						// y: 'bottom',
 						textStyle: {
@@ -70,7 +70,9 @@
 					},
 					grid: {
 						containLabel: true,
-						bottom: '18%'
+						bottom: '15%',
+						right:'13%',
+						left:'1%'
 					},
 					// legend: {
 					// 	textStyle:{
