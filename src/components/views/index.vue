@@ -146,15 +146,78 @@
 		<section class="panel" data-section-name="day">
 			<el-row :gutter="5">
 				<el-col :span="12">
-					<internet-Chart></internet-Chart>
+					<el-row class="day-row">
+						<el-col :span="8" class="day-col">
+							<span style="line-height:28px;">稽核范围</span>
+						</el-col>
+						<el-col :span="8" class="day-col">
+							<el-select v-model="value" size="mini" placeholder="请选择">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8">
+							<el-select v-model="value2" size="mini" placeholder="请选择">
+								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="24">
+							<internetChart-Day></internetChart-Day>
+						</el-col>
+					</el-row>
 				</el-col>
 				<el-col :span="12">
-					<score-Chart></score-Chart>
+					<el-row class="day-row">
+						<el-col :span="8" class="day-col">
+							<span style="line-height:28px;">稽核范围</span>
+						</el-col>
+						<el-col :span="8" class="day-col">
+							<el-select v-model="value" size="mini" placeholder="请选择">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8">
+							<el-select v-model="value2" size="mini" placeholder="请选择">
+								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="24">
+							<internetChart-Day></internetChart-Day>
+						</el-col>
+					</el-row>
 				</el-col>
 			</el-row>
 			<el-row :gutter="5">
 				<el-col :span="12">
-					<matching-Chart></matching-Chart>
+					<el-row class="day-row">
+						<el-col :span="8" class="day-col">
+							<span style="line-height:28px;">稽核范围</span>
+						</el-col>
+						<el-col :span="8" class="day-col">
+							<el-select v-model="value" size="mini" placeholder="请选择">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8">
+							<el-select v-model="value2" size="mini" placeholder="请选择">
+								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+								</el-option>
+							</el-select>
+						</el-col>
+					</el-row>
+					<el-row>
+						<el-col :span="24">
+							<matchingChart-Day></matchingChart-Day>
+						</el-col>
+					</el-row>
 				</el-col>
 				<el-col :span="12">
 					<dynamicData-Chart></dynamicData-Chart>
@@ -283,12 +346,14 @@
 	import testChart2 from '@/components/Charts/testChart2'
 	import tabPane from '@/components/Charts/tabPane'
 	import dynamicDataChart from '@/components/Charts/dynamicDataChart'
+	import internetChartDay from '@/components/Charts/internetChartDay'
+	import matchingChartDay from '@/components/Charts/matchingChartDay'
 
 	import headerView from '@/components/header/header'
 	import footerView from '@/components/footer/footer'
 
 	export default {
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView, dynamicDataChart },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay },
 		data() {
 			return {
 				signalingActive: '1',
@@ -313,7 +378,37 @@
 					{ label: '接口文件数据量环同比', key: '555' },
 					{ label: '综采话单数据量环同比', key: '666' }
 				],
-
+				options: [{
+					value: '选项1',
+					label: '地域'
+				}, {
+					value: '选项2',
+					label: '时间'
+				}],
+				value: '',
+				options2: [{
+					value: '选项1',
+					label: '2010-10-01'
+				}, {
+					value: '选项2',
+					label: '2010-10-07'
+				}, {
+					value: '选项3',
+					label: '2010-10-14'
+				}, {
+					value: '选项4',
+					label: '2010-10-21'
+				}, {
+					value: '选项5',
+					label: '2010-10-28'
+				}, {
+					value: '选项6',
+					label: '2010-11-05'
+				}, {
+					value: '选项7',
+					label: '2010-11-12'
+				}],
+				value2: '',
 			}
 		},
 		beforeMount() {
@@ -611,5 +706,16 @@
 		-webkit-line-clamp: 18;
 		-webkit-box-orient: vertical;
 		font-size: 15px;
+	}
+
+	.day-row {
+		padding-top: 20px;
+		padding-right: 15%;
+	}
+
+	.day-col {
+		text-align: right;
+		padding-right: 10px;
+		line-height: 27px;
 	}
 </style>

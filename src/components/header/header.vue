@@ -50,16 +50,15 @@
 							</el-form-item>
 						</el-form> -->
 						<el-steps :active="6" align-center>
-							<el-step title="2017-02-22" description="从A到B：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
+							<el-step :title="res" description="从A到B：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 							<el-step title="2017-02-24" description="从B到C：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 							<el-step title="2017-02-25" description="从C到D：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 							<el-step title="2017-02-26" description="从D到E：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 							<el-step title="2017-02-27" description="从E到F：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 							<el-step title="2017-02-28" description="从F到G：这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
 						</el-steps>
-						<el-button type="success" style="margin-left:40%;margin-top:25px;" v-if="props.row.isprocess === '是' ? false : true">流转</el-button>
-						<el-button type="danger" style="margin-top:25px;" v-if="props.row.isprocess === '是' ? false : true">驳回</el-button>
-
+						<el-button type="success" style="margin-left:40%;margin-top:25px;" @click="innerVisible = true" v-if="props.row.isprocess === '是' ? false : true">流转</el-button>
+						<el-button type="danger" style="margin-top:25px;" @click="innerVisible = true" v-if="props.row.isprocess === '是' ? false : true">驳回</el-button>
 					</template>
 				</el-table-column>
 				<el-table-column property="date" label="日期" width="120"></el-table-column>
@@ -80,16 +79,48 @@
 					</template>
 				</el-table-column> -->
 			</el-table>
-			<!-- <el-dialog width="80%" title="详情流转" :visible.sync="innerVisible" append-to-body>
-				<el-steps :active="6" align-center>
-					<el-step title="指标名1" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
-					<el-step title="指标名2" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
-					<el-step title="指标名3" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
-					<el-step title="指标名4" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
-					<el-step title="指标名5" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>
-					<el-step title="指标名6" description="这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字这是一段很长很长很长的描述性文字"></el-step>					
-				</el-steps>
-			</el-dialog> -->
+			<el-dialog width="80%" title="详情流转" :visible.sync="innerVisible" append-to-body>
+				<el-row>
+					<el-col :span="2" class="dialog-col" :offset="3">
+						<span style="line-height:28px;">发送</span>
+					</el-col>
+					<el-col :span="6">
+						<el-select v-model="value9" filterable remote reserve-keyword placeholder="请选择人员" :remote-method="remoteMethod" :loading="loading">
+							<el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;">
+					<el-col :span="2" class="dialog-col" :offset="3">
+						<span style="line-height:28px;">抄送</span>
+					</el-col>
+					<el-col :span="16">
+						<el-select style="width:100%;" v-model="value10" multiple filterable remote reserve-keyword placeholder="请选择人员" :remote-method="remoteMethod"
+						 :loading="loading">
+							<el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;">
+					<el-col :span="2" class="dialog-col" :offset="3">
+						<span style="line-height:28px;">内容</span>
+					</el-col>
+					<el-col :span="16">
+						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="textarea">
+						</el-input>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;">
+					<el-col :span="12" class="dialog-col">
+						<el-button type="success">确定</el-button>
+					</el-col>
+					<el-col :span="12">
+						<el-button type="danger" @click="innerVisible = false">取消</el-button>
+					</el-col>
+				</el-row>
+			</el-dialog>
 		</el-dialog>
 	</header>
 </template>
@@ -118,10 +149,39 @@
 					address: '用户漂移率预警已触发',
 					isprocess: '是'
 				}],
+				res:"ssssss"+'<br/>'+"aaaaa",
 				outerVisible: false,
 				innerVisible: false,
 				aaaa: false,
+				textarea: '',
+				options4: [],
+				value9: [],
+				value10: [],
+				list: [],
+				loading: false,
+				states: ["Alabama", "Alaska", "Arizona",
+					"Arkansas", "California", "Colorado",
+					"Connecticut", "Delaware", "Florida",
+					"Georgia", "Hawaii", "Idaho", "Illinois",
+					"Indiana", "Iowa", "Kansas", "Kentucky",
+					"Louisiana", "Maine", "Maryland",
+					"Massachusetts", "Michigan", "Minnesota",
+					"Mississippi", "Missouri", "Montana",
+					"Nebraska", "Nevada", "New Hampshire",
+					"New Jersey", "New Mexico", "New York",
+					"North Carolina", "North Dakota", "Ohio",
+					"Oklahoma", "Oregon", "Pennsylvania",
+					"Rhode Island", "South Carolina",
+					"South Dakota", "Tennessee", "Texas",
+					"Utah", "Vermont", "Virginia",
+					"Washington", "West Virginia", "Wisconsin",
+					"Wyoming"]
 			};
+		},
+		mounted() {
+			this.list = this.states.map(item => {
+				return { value: item, label: item };
+			});
 		},
 		methods: {
 			handleClose(done) {
@@ -133,10 +193,29 @@
 			},
 			handleClick(row) {
 				console.log(row);
+			},
+			remoteMethod(query) {
+				if (query !== '') {
+					this.loading = true;
+					setTimeout(() => {
+						this.loading = false;
+						this.options4 = this.list.filter(item => {
+							return item.label.toLowerCase()
+								.indexOf(query.toLowerCase()) > -1;
+						});
+					}, 200);
+				} else {
+					this.options4 = [];
+				}
 			}
 		}
 	};
 </script>
 
 <style scoped>
+	.dialog-col {
+		text-align: right;
+		padding-right: 10px;
+		line-height: 36px;
+	}
 </style>

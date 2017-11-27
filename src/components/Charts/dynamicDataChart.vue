@@ -30,7 +30,7 @@
 					title: {
 						text: '动态数据',
 						x: 'center',
-						bottom: '25',
+						bottom: '10%',
 						textStyle: {
 							fontWeight: 'normal',
 							fontSize: 13
@@ -69,7 +69,7 @@
 						data: (function () {
 							var now = new Date();
 							var res = [];
-							var len = 8;
+							var len = 5;
 							while (len--) {
 								res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
 								now = new Date(now - 3000);
@@ -96,7 +96,45 @@
 							},
 							data: (function () {
 								var res = [];
-								var len = 8;
+								var len = 5;
+								while (len--) {
+									res.unshift(Math.round(Math.random() * 100));
+								}
+								return res;
+							})()
+						},
+						{
+							name: '预购队列2',
+							type: 'bar',
+							yAxisIndex: 0,
+							label: {
+								normal: {
+									show: true,
+									position: 'insideRight'
+								}
+							},
+							data: (function () {
+								var res = [];
+								var len = 5;
+								while (len--) {
+									res.unshift(Math.round(Math.random() * 100));
+								}
+								return res;
+							})()
+						},
+						{
+							name: '预购队列3',
+							type: 'bar',
+							yAxisIndex: 0,
+							label: {
+								normal: {
+									show: true,
+									position: 'insideRight'
+								}
+							},
+							data: (function () {
+								var res = [];
+								var len = 5;
 								while (len--) {
 									res.unshift(Math.round(Math.random() * 100));
 								}
