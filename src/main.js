@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import $ from 'jquery'
+import * as Cookies from "js-cookie";
 var scrollify = require('jquery-scrollify');
 var ECharts = require('vue-echarts')
 //import css
@@ -16,7 +17,7 @@ Vue.use(ElementUI)
 Vue.component('chart', ECharts)
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   render: h => h(App),
   router,

@@ -1,489 +1,143 @@
 <template>
-	<chart :options="polar" ref="pie"></chart>
+	<div :class="className" :id="id" :style="{height:height,width:width}" :data-test="options"></div>
 </template>
 
-<style>
-	.echarts {
-		width: 100%;
-		height: 520px;
-	}
-</style>
-
 <script>
+	import echarts from 'echarts'
+
 	export default {
-		props: ['parmars'],
-		data: function () {
-			let A
-			let data = []
-			let asyncData = {
-				categories: ['北京', '上海', '天津', '山东', '陕西', '四川'],
-				data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data1: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data2: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
+		props: {
+			className: {
+				type: String,
+				default: 'chart'
+			},
+			id: {
+				type: String,
+				default: 'chart'
+			},
+			width: {
+				type: String,
+				default: '1000px'
+			},
+			height: {
+				type: String,
+				default: '500px'
+			},
+			options: {
+				type: String,
 			}
-			let asyncData2 = {
-				categories: ['北京', '上海', '天津', '山东', '陕西', '四川'],
-				data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data1: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data2: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-			}
-			let asyncData3 = {
-				categories: ['北京', '上海', '天津', '山东', '陕西', '四川'],
-				data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data1: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data2: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-			}
-			let asyncData4 = {
-				categories: ['北京', '上海', '天津', '山东', '陕西', '四川'],
-				data: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data1: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-				data2: [Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100), Math.round(Math.random() * 100)],
-			}
-
+		},
+		data() {
 			return {
-				polar: {
-					legend: {
-						right: '10%',
-						data: ['IMSI', 'IMEI', '无效手机号']
+				chart: null,
+				option: {
+					title: {
+						text: 'ECharts2 vs ECharts1',
+						subtext: 'Chrome下测试数据'
 					},
 					tooltip: {
 						trigger: 'axis'
 					},
-					toolbox: {
-						show: true,
-						showTitle: false,
-						orient: "vertical",
-						right: '30px',
-						top: '25%',
-						feature: {
-							myReport: {
-								icon: 'image://../../static/charts/report.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myMail: {
-								icon: 'image://../../static/charts/mail.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myRecording: {
-								icon: 'image://../../static/charts/recording.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myFootprint: {
-								icon: 'image://../../static/charts/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							magicType: {
-								type: ['line', 'bar'],
-								icon: {
-									line: "image://../../static/charts/line.png",
-									bar: "image://../../static/charts/pie.png"
-								},
-							},
-							restore: {
-								show: true,
-								icon: 'image://../../static/charts/refesh.png'
-							},
-							saveAsImage: {
-								show: true,
-								icon: 'image://../../static/charts/save.png'
-							},
-
-						}
-					},
-					xAxis: {
-						data: asyncData.categories
-					},
-					yAxis: {
-						axisLabel: {
-							show: true,
-							formatter: '{value} %'
-						}
-					},
-					series: [{
-						name: 'IMSI',
-						type: 'bar',
-						data: asyncData.data,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: 'IMEI',
-						type: 'bar',
-						data: asyncData.data1,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: '无效手机号',
-						type: 'bar',
-						data: asyncData.data2,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}],
-					animationDuration: 2000
-				},
-				polar2: {
 					legend: {
-						right: '10%',
-						data: ['IMSI', 'IMEI', '无效手机号']
-					},
-					tooltip: {
-						trigger: 'axis'
-					},
-					toolbox: {
-						show: true,
-						showTitle: false,
-						orient: "vertical",
-						right: '30px',
-						top: '25%',
-						feature: {
-							myReport: {
-								icon: 'image://../../static/charts/report.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myMail: {
-								icon: 'image://../../static/charts/mail.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myRecording: {
-								icon: 'image://../../static/charts/recording.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myFootprint: {
-								icon: 'image://../../static/charts/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							magicType: {
-								type: ['line', 'bar'],
-								icon: {
-									line: "image://../../static/charts/line.png",
-									bar: "image://../../static/charts/pie.png"
-								},
-							},
-							restore: {
-								show: true,
-								icon: 'image://../../static/charts/refesh.png'
-							},
-							saveAsImage: {
-								show: true,
-								icon: 'image://../../static/charts/save.png'
-							},
-
-						}
-					},
-					xAxis: {
-						data: asyncData2.categories
-					},
-					yAxis: {
-						axisLabel: {
-							show: true,
-							formatter: '{value} %'
-						}
-					},
-					series: [{
-						name: 'IMSI',
-						type: 'bar',
-						data: asyncData2.data,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: 'IMEI',
-						type: 'bar',
-						data: asyncData2.data1,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: '无效手机号',
-						type: 'bar',
-						data: asyncData2.data2,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}],
-					animationDuration: 2000
-				},
-				polar3: {
-					legend: {
-						right: '10%',
-						data: ['IMSI', 'IMEI', '无效手机号']
-					},
-					tooltip: {
-						trigger: 'axis'
+						data: [
+							'ECharts1 - 2k数据', 'ECharts1 - 2w数据', 'ECharts1 - 20w数据', '',
+							'ECharts2 - 2k数据', 'ECharts2 - 2w数据', 'ECharts2 - 20w数据'
+						]
 					},
 					toolbox: {
 						show: true,
-						showTitle: false,
-						orient: "vertical",
-						right: '30px',
-						top: '25%',
 						feature: {
-							myReport: {
-								icon: 'image://../../static/charts/report.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myMail: {
-								icon: 'image://../../static/charts/mail.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myRecording: {
-								icon: 'image://../../static/charts/recording.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myFootprint: {
-								icon: 'image://../../static/charts/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							magicType: {
-								type: ['line', 'bar'],
-								icon: {
-									line: "image://../../static/charts/line.png",
-									bar: "image://../../static/charts/pie.png"
-								},
-							},
-							restore: {
-								show: true,
-								icon: 'image://../../static/charts/refesh.png'
-							},
-							saveAsImage: {
-								show: true,
-								icon: 'image://../../static/charts/save.png'
-							},
-
+							mark: { show: true },
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
 						}
 					},
-					xAxis: {
-						data: asyncData3.categories
-					},
-					yAxis: {
-						axisLabel: {
-							show: true,
-							formatter: '{value} %'
+					calculable: true,
+					grid: { y: 70, y2: 30, x2: 20 },
+					xAxis: [
+						{
+							type: 'category',
+							data: ['Line', 'Bar', 'Scatter', 'K', 'Map']
+						},
+						{
+							type: 'category',
+							axisLine: { show: false },
+							axisTick: { show: false },
+							axisLabel: { show: false },
+							splitArea: { show: false },
+							splitLine: { show: false },
+							data: ['Line', 'Bar', 'Scatter', 'K', 'Map']
 						}
-					},
-					series: [{
-						name: 'IMSI',
-						type: 'bar',
-						data: asyncData3.data,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: 'IMEI',
-						type: 'bar',
-						data: asyncData3.data1,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: '无效手机号',
-						type: 'bar',
-						data: asyncData3.data2,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}],
-					animationDuration: 2000
-				},
-				polar4: {
-					legend: {
-						right: '10%',
-						data: ['IMSI', 'IMEI', '无效手机号']
-					},
-					tooltip: {
-						trigger: 'axis'
-					},
-					toolbox: {
-						show: true,
-						showTitle: false,
-						orient: "vertical",
-						right: '30px',
-						top: '25%',
-						feature: {
-							myReport: {
-								icon: 'image://../../static/charts/report.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myMail: {
-								icon: 'image://../../static/charts/mail.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myRecording: {
-								icon: 'image://../../static/charts/recording.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							myFootprint: {
-								icon: 'image://../../static/charts/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
-							magicType: {
-								type: ['line', 'bar'],
-								icon: {
-									line: "image://../../static/charts/line.png",
-									bar: "image://../../static/charts/pie.png"
-								},
-							},
-							restore: {
-								show: true,
-								icon: 'image://../../static/charts/refesh.png'
-							},
-							saveAsImage: {
-								show: true,
-								icon: 'image://../../static/charts/save.png'
-							},
-
+					],
+					yAxis: [
+						{
+							type: 'value',
+							axisLabel: { formatter: '{value} ms' }
 						}
-					},
-					xAxis: {
-						data: asyncData4.categories
-					},
-					yAxis: {
-						axisLabel: {
-							show: true,
-							formatter: '{value} %'
+					],
+					series: [
+						{
+							name: 'ECharts2 - 2k数据',
+							type: 'bar',
+							itemStyle: { normal: { color: 'rgba(193,35,43,1)', label: { show: true } } },
+							data: [40, 155, 95, 75, 181]
+						},
+						{
+							name: 'ECharts2 - 2w数据',
+							type: 'bar',
+							itemStyle: { normal: { color: 'rgba(181,195,52,1)', label: { show: true, textStyle: { color: '#27727B' } } } },
+							data: [100, 200, 105, 100, 156]
+						},
+						{
+							name: 'ECharts2 - 20w数据',
+							type: 'bar',
+							itemStyle: { normal: { color: 'rgba(252,206,16,1)', label: { show: true, textStyle: { color: '#E87C25' } } } },
+							data: [906, 911, 908, 778, 17]
+						},
+						{
+							name: 'ECharts1 - 2k数据',
+							type: 'bar',
+							xAxisIndex: 1,
+							itemStyle: { normal: { color: 'rgba(193,35,43,0.5)', label: { show: true, formatter: function (p) { return p.value > 0 ? (p.value + '\n') : ''; } } } },
+							data: [96, 224, 164, 124, 223]
+						},
+						{
+							name: 'ECharts1 - 2w数据',
+							type: 'bar',
+							xAxisIndex: 1,
+							itemStyle: { normal: { color: 'rgba(181,195,52,0.5)', label: { show: true } } },
+							data: [491, 235, 389, 955, 347]
+						},
+						{
+							name: 'ECharts1 - 20w数据',
+							type: 'bar',
+							xAxisIndex: 1,
+							itemStyle: { normal: { color: 'rgba(252,206,16,0.5)', label: { show: true, formatter: function (p) { return p.value > 0 ? (p.value + '+') : ''; } } } },
+							data: [300, 300, 217, 300, 180]
 						}
-					},
-					series: [{
-						name: 'IMSI',
-						type: 'bar',
-						data: asyncData4.data,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: 'IMEI',
-						type: 'bar',
-						data: asyncData4.data1,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}, {
-						name: '无效手机号',
-						type: 'bar',
-						data: asyncData4.data2,
-						label: {
-							normal: {
-								show: true,
-								position: 'top',
-								fontSize: '10'
-							}
-						},
-					}],
-					animationDuration: 2000
+					]
 				}
 			}
 		},
-		watch: {
-			parmars: function () {
-				if (this.parmars == 'one') {
-					this.$refs.pie.chart.setOption(this.polar)
-				} else if (this.parmars == 'two') {
-					this.$refs.pie.chart.setOption(this.polar2)
-				}
-				else if (this.parmars == 'three') {
-					this.$refs.pie.chart.setOption(this.polar3)
-				}
-				else if (this.parmars == 'four') {
-					this.$refs.pie.chart.setOption(this.polar4)
-				}
-
+		mounted() {
+			this.initChart()
+			this.chart = null
+		},
+		beforeDestroy() {
+			if (!this.chart) {
+				return
+			}
+			this.chart.dispose()
+			this.chart = null
+		},
+		methods: {
+			initChart() {
+				this.chart = echarts.init(document.getElementById(this.id))
+				this.chart.setOption(this.option)
 
 			}
-
 		}
 	}
 </script>

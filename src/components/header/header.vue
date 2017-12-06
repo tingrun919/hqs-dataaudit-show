@@ -29,7 +29,7 @@
 						<span class="nav-link">个人中心</span>
 					</li>
 					<li>
-						<span class="nav-link">退出</span>
+						<span class="nav-link" @click="logout">退出</span>
 					</li>
 				</ul>
 			</li>
@@ -125,6 +125,8 @@
 	</header>
 </template>
 <script>
+	import * as Cookies from "js-cookie";
+
 	export default {
 		data() {
 			return {
@@ -149,7 +151,7 @@
 					address: '用户漂移率预警已触发',
 					isprocess: '是'
 				}],
-				res:"ssssss"+'<br/>'+"aaaaa",
+				res: "ssssss" + '<br/>' + "aaaaa",
 				outerVisible: false,
 				innerVisible: false,
 				aaaa: false,
@@ -207,6 +209,11 @@
 				} else {
 					this.options4 = [];
 				}
+			},
+			logout() {
+				Cookies.set('disSort', '');
+				Cookies.set('orgId', '');
+				this.$router.push('/login')
 			}
 		}
 	};

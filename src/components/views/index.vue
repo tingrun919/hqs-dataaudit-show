@@ -143,7 +143,7 @@
 				</li>
 			</ul>
 		</section>
-		<section class="panel" data-section-name="day">
+		<!-- <section class="panel" data-section-name="day">
 			<el-row :gutter="5">
 				<el-col :span="12">
 					<el-row class="day-row">
@@ -223,7 +223,7 @@
 					<dynamicData-Chart></dynamicData-Chart>
 				</el-col>
 			</el-row>
-		</section>
+		</section> -->
 		<!-- <section class="panel" data-section-name="signaling" style="height: 150px;padding:20px;">
 			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
 				<el-tab-pane label="信令自身稽核" name="first">
@@ -302,9 +302,9 @@
 		</section> -->
 		<section class="panel" data-section-name="signaling" style="padding:20px;">
 			<el-tabs v-model="signalingActive" type="border-card">
-				<el-tab-pane v-for="item in signalingOptions" :label="item.label" :key='item.key' :name="item.key">
+				<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
 					<keep-alive>
-						<tab-pane v-if='signalingActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
+						<tab-pane v-if='signalingActive==item.tabName' :setId='item.tabName' :type='item.tabName' :range='signalingRange' :rangeDefault='signalingRangedefault'></tab-pane>
 					</keep-alive>
 				</el-tab-pane>
 			</el-tabs>
@@ -352,21 +352,33 @@
 	import headerView from '@/components/header/header'
 	import footerView from '@/components/footer/footer'
 
+	import * as Cookies from "js-cookie";
+	import indexService from '../../service/indexService'
+
+	import Vue from 'vue'
+
 	export default {
+		mixins: [indexService],
 		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay },
 		data() {
 			return {
-				signalingActive: '1',
+				watchClass: 'bbb',
+				act: 'active',
+				signalingActive: '',
+				signalingId: '',
+				signalingRange: [],
+				signalingRangedefault: '',
 				internetActive: '11',
 				interfaceActive: '111',
-				signalingOptions: [
-					{ label: '信令自身稽核', key: '1' },
-					{ label: '规范性稽核', key: '2' },
-					{ label: '用户漂移率', key: '3' },
-					{ label: '小区匹配率', key: '4' },
-					{ label: '小区工参', key: '5' },
-					{ label: 'BO侧差异率', key: '6' }
-				],
+				// signalingOptions: [
+				// 	{ label: '信令自身稽核', key: '1' },
+				// 	{ label: '规范性稽核', key: '2' },
+				// 	{ label: '用户漂移率', key: '3' },
+				// 	{ label: '小区匹配率', key: '4' },
+				// 	{ label: '小区工参', key: '5' },
+				// 	{ label: 'BO侧差异率', key: '6' }
+				// ],
+				signalingOptions: [],
 				internetOptions: [
 					{ label: '自身稽核', key: '11' },
 				],
@@ -424,6 +436,7 @@
 						$(".pagination .active").removeClass("active");
 
 						$(".pagination").find("a[href=\"#" + ref + "\"]").addClass("active");
+						vum.test(ref);
 						if (ref != 'header') {
 							$(".nav-header").addClass("show-nav");
 						} else {
@@ -455,6 +468,17 @@
 					}
 				});
 			});
+			// this.getProv();
+			// this.getHomeTab(Cookies.get('orgId'));
+		},
+		beforeRouteEnter(to, from, next) {
+			next(vm => {
+				if (Cookies.get('orgId') && Cookies.get('disSort')) {
+					vm.$router.push('/')
+				} else {
+					vm.$router.push('/login')
+				}
+			})
 		},
 		methods: {
 			// handleClick(tab, event) {
@@ -464,6 +488,19 @@
 			// }
 		}
 	}
+	var vum = new Vue({
+		el: "#app",
+		data: {
+			message: "",
+			datas: "",
+
+		},
+		methods: {
+			test(ref) {
+				console.log(ref, '11111111111')
+			}
+		}
+	})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
