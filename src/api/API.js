@@ -1,7 +1,8 @@
 import axios from 'axios'
 import main from '../main'
 
-axios.defaults.baseURL = 'http://192.168.1.103:8080/';
+// axios.defaults.baseURL = 'http://192.168.1.103:8080/';
+axios.defaults.baseURL = 'http://10.162.26.141:8080/';
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 class API {
 

@@ -64,9 +64,9 @@
 			<el-row :gutter="5">
 				<el-col :span="17">
 					<el-card>
-						<div slot="header" class="clearfix">
+						<!-- <div slot="header" class="clearfix">
 							<span style="line-height: 36px;">本期（9.29-10.1）报告指标概括</span>
-						</div>
+						</div> -->
 						<el-row :gutter="20">
 							<el-col :span="15">
 								<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
@@ -172,25 +172,32 @@
 				</el-col>
 				<el-col :span="12">
 					<el-row class="day-row">
-						<el-col :span="8" class="day-col">
+						<el-col :span="6" class="day-col">
 							<span style="line-height:28px;font-size:14px;">稽核范围</span>
 						</el-col>
-						<el-col :span="8" class="day-col">
+						<el-col :span="6" class="day-col">
 							<el-select v-model="signalingSelect" size="mini" placeholder="请选择">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 								</el-option>
 							</el-select>
 						</el-col>
-						<el-col :span="8" v-if="signalingSelect != 1">
+						<el-col :span="6" class="day-col" v-if="signalingSelect != 1">
 							<el-select v-model="signalingProv" size="mini" placeholder="请选择">
 								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
 								</el-option>
 							</el-select>
 						</el-col>
-						<el-col :span="8" v-else>
+						<el-col :span="6" class="day-col" v-else>
 							<el-select v-model="signalingAcct" size="mini" placeholder="请选择">
 								<el-option v-for="item in signalingAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
 								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="6">
+							<el-select v-model="signalingSatype" size="mini" placeholder="请选择">
+								<el-option label="cs" value="cs"></el-option>
+								<el-option label="lte" value="lte"></el-option>
+								<el-option label="ps" value="ps"></el-option>
 							</el-select>
 						</el-col>
 					</el-row>
@@ -271,12 +278,12 @@
 				</el-tab-pane>
 			</el-tabs>
 		</section>
-		<!-- <div class="footer" data-section-name="footer">
-		<div class="inner">
+		<div class="footer" data-section-name="footer">
+		<!-- <div class="inner">
 				<p>Footer</p>
-			</div>
+			</div> -->
 		<footer-View></footer-View>
-		</div> -->
+		</div>
 		<div style="display:none;">
 			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
 			<el-button @click="test" id="1">默认按钮</el-button>
@@ -362,6 +369,7 @@
 				signalingSelect: '1',
 				signalingProv: '',
 				signalingAcct: '',
+				signalingSatype:'cs',
 
 				internetTimelySelect: '1',
 				internetTimelyProv: '',
@@ -458,16 +466,19 @@
 		},
 		watch: {
 			internetProv: function () {
-				this.getInternetData(1, this.internetProv, '', '')
+				this.getInternetData(1, this.internetProv, '', '','')
 			},
 			internetAcct: function () {
-				this.getInternetData(1, '', this.internetAcct, '')
+				this.getInternetData(1, '', this.internetAcct, '','')
 			},
 			signalingProv: function () {
-				this.getInternetData(2, this.signalingProv, '', '')
+				this.getInternetData(2, this.signalingProv, '', '',this.signalingSatype)
 			},
 			signalingAcct: function () {
-				this.getInternetData(2, '', this.signalingAcct, '')
+				this.getInternetData(2, '', this.signalingAcct, '',this.signalingSatype)
+			},
+			signalingSatype: function(){
+				this.getInternetData(2, this.signalingProv, this.signalingAcct, '',this.signalingSatype)
 			},
 			internetTimelyProv: function () {
 				this.getInternetData(3, this.internetTimelyProv, '', this.isTime ? 1 : 0)

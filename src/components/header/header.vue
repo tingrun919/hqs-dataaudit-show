@@ -214,6 +214,7 @@
 				Cookies.set('disSort', '');
 				Cookies.set('orgId', '');
 				Cookies.set('city', '');
+				Cookies.set('userid', '');
 				this.$router.push('/login')
 			}
 		}

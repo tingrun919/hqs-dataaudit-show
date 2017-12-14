@@ -2,8 +2,6 @@
 	<div class="login-container">
 		<el-form class="card-box login-form" autoComplete="on" :model="loginForm" ref="loginForm" label-position="left">
 			<h3 class="title">系统登录</h3>
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
 			<el-form-item prop="usercount">
 				<el-input name="usercount" type="text" v-model="loginForm.usercount" placeholder="邮箱" />
 			</el-form-item>
@@ -49,6 +47,7 @@
 							//所属城市
 							let result = res.data.data[0].ORG_NAME.split("-")
 							Cookies.set('city', result[1]);
+							Cookies.set('userid',res.data.data[0].STAFF_ID);
 							this.loading = false
 							this.$router.push('/')
 							this.$router.go('/')

@@ -54,7 +54,7 @@
 							containLabel: true,
 							// bottom: '15%',
 							// top:'15%',
-							// right:'13%',
+							// right:'8%',
 							// left:'1%'
 						},
 						legend: {

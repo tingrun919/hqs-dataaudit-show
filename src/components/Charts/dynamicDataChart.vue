@@ -41,9 +41,9 @@
 				dataindex:0,
 				option: {
 					title: {
-						text: '动态数据',
+						text: '信令及时性',
 						x: 'center',
-						bottom: '10%',
+						top: '6%',
 						textStyle: {
 							fontWeight: 'normal',
 							fontSize: 13
@@ -68,10 +68,10 @@
 					},
 					grid: {
 						containLabel: true,
-						left: '2%',
-						right: '7%',
-						bottom: '11%',
-						top: '5%'
+						// left: '2%',
+						// right: '7%',
+						bottom: '8%',
+						// top: '5%'
 					},
 					// yAxis: [{
 					// 	type: 'category',

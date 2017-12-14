@@ -1,11 +1,17 @@
 <template>
-	<div :class="className" :id="id" :style="{height:height,width:width}"></div>
+	<div :class="className" :style="{height:height,width:width}">
+
+	</div>
+
 </template>
 
 <script>
 	import echarts from 'echarts'
+	import * as Cookies from "js-cookie";
+	// import mixChartService from '../../service/mixChartService'
 
 	export default {
+		// mixins: [mixChartService],
 		props: {
 			className: {
 				type: String,
@@ -34,10 +40,14 @@
 			},
 			yaxislist: {
 				type: Array,
+			},
+			tabid: {
+				type: Number
 			}
 		},
 		data() {
 			return {
+
 				chart: null,
 				yData: [],
 				option1: {
@@ -61,7 +71,7 @@
 					grid: {
 						containLabel: true,
 						left: '0',
-						right: '5'
+						right: '5%'
 					},
 					legend: {
 						right: '10%',
@@ -76,33 +86,33 @@
 						top: '25%',
 						feature: {
 							myReport: {
+								//样例数据
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
-									console.log(params);
-									alert('1');
+									$("#buttonDialog").trigger("click");
 								}
 							},
 							myMail: {
+								//周报
 								icon: 'image://../../dist/static/img/mail.png',
 								onclick: function (params) {
-									console.log(params);
-									alert('1');
+									$('#dialogs').trigger("click")
 								}
 							},
 							myRecording: {
+								//工作流
 								icon: 'image://../../dist/static/img/recording.png',
 								onclick: function (params) {
-									console.log(params);
-									alert('1');
+									$("#workflow").trigger("click");
 								}
 							},
-							myFootprint: {
-								icon: 'image://../../dist/static/img/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
+							// myFootprint: {
+							// 	icon: 'image://../../dist/static/img/footprint.png',
+							// 	onclick: function (params) {
+							// 		console.log(params);
+							// 		alert('1');
+							// 	}
+							// },
 							magicType: {
 								type: ['line', 'bar'],
 								icon: {
@@ -143,13 +153,13 @@
 		},
 		methods: {
 			initChart() {
-				this.chart = echarts.init(document.getElementById(this.id))
+				this.chart = echarts.init(this.$el, 'default')
 				this.chart.setOption(this.option1)
 				this.chart.setOption({
 					dataZoom: [{
 						type: 'slider',
 						xAxisIndex: 0,
-						bottom:'20',
+						bottom: '20',
 						filterMode: 'filter',
 						start: 0,
 						end: 25
@@ -205,7 +215,8 @@
 					this.yAxisData.push(item);
 				}
 				return this.yAxisData
-			}
+			},
+
 		}
 	}
 </script>

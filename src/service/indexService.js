@@ -128,8 +128,8 @@ export default {
 					console.log(err);
 				});
 		},
-		getInternetData(type, provid, acctdate, datetype) {
-			return api.get(`dataaudit_show/email/selectRibao?type=${type}&provid=${provid}&acctdate=${acctdate}&datetype=${datetype}`)
+		getInternetData(type, provid, acctdate, datetype, satype) {
+			return api.get(`dataaudit_show/email/selectRibao?type=${type}&provid=${provid}&acctdate=${acctdate}&datetype=${datetype}&satype=${satype}`)
 				.then(res => {
 					if (type == 1) {
 						this.internetDataYaxis = res.data.data.yaxis

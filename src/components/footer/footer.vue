@@ -14,24 +14,24 @@
 					<el-row :gutter="5">
 						<el-col :span="10" :offset="4">
 							<div class="grid-content">
-								<el-input v-model="input" placeholder="姓名"></el-input>
+								<el-input v-model="name" placeholder="姓名"></el-input>
 							</div>
 						</el-col>
 						<el-col :span="10">
 							<div class="grid-content">
-								<el-input v-model="input" placeholder="电话"></el-input>
+								<el-input v-model="phone" placeholder="电话"></el-input>
 							</div>
 						</el-col>
 					</el-row>
 					<el-row :gutter="5">
 						<el-col :span="10" :offset="4">
 							<div class="grid-content">
-								<el-input v-model="input" placeholder="邮箱"></el-input>
+								<el-input v-model="email" placeholder="邮箱"></el-input>
 							</div>
 						</el-col>
 						<el-col :span="10">
 							<div class="grid-content">
-								<el-input v-model="input" placeholder="主题"></el-input>
+								<el-input v-model="theme" placeholder="主题"></el-input>
 							</div>
 						</el-col>
 					</el-row>
@@ -39,7 +39,7 @@
 			</el-col>
 			<el-col :span="10">
 				<div class="grid-content">
-					<el-input type="textarea" :rows="4" placeholder="留言" v-model="textarea">
+					<el-input type="textarea" :rows="4" placeholder="留言" v-model="message">
 					</el-input>
 				</div>
 			</el-col>
@@ -91,7 +91,15 @@
 <script>
 
 	export default {
-
+		data() {
+			return {
+				name: '',
+				phone: '',
+				email: '',
+				theme: '',
+				message:'',
+			}
+		}
 	}
 </script>
 
