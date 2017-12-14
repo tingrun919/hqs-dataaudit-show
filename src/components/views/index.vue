@@ -69,41 +69,36 @@
 						</div>
 						<el-row :gutter="20">
 							<el-col :span="15">
-								<internet-Chart></internet-Chart>
+								<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
 							</el-col>
 							<el-col :span="9">
-								<score-Chart></score-Chart>
+								<score-Chart :quotalist='scoreQuotaList' :screenlist='scoreScreenList'></score-Chart>
 							</el-col>
 						</el-row>
 						<el-row :gutter="20">
 							<el-col :span="15">
-								<matching-Chart></matching-Chart>
+								<matching-Chart :xaxislist='matchXaxis' :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
 							</el-col>
 							<el-col :span="9" style="margin-top: -25px;">
-								<invalidNumber-Chart></invalidNumber-Chart>
+								<invalidNumber-Chart :xaxislist='numberXaxis' :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
+								 :screenlist='numberScreen'></invalidNumber-Chart>
 							</el-col>
 						</el-row>
 					</el-card>
 				</el-col>
 				<el-col :span="7">
 					<el-card>
-						<map-Chart></map-Chart>
+						<map-Chart :quotalist='scoreQuotaList'></map-Chart>
 					</el-card>
 					<el-card class="card-style">
 						<span slot="header">本期评价</span>
 						<div>
 							<p>
-								数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采 集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于 计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量 系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自
-								动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定
-								义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自动采 集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合基于
-								计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定义的测量 系统。 数据采集(DAQ)，是指从传感器和其它待测设备等模拟和数字被测单元中自 动采集非电量或者电量信号,送到上位机中进行分析，处理。数据采集系统是结合
-								基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定 义的测量系统。数据采集系统是结合 基于计算机或者其他专用测试平台的测量软硬件产品来实现灵活的、用户自定
-								义的测量系统。
+								{{screenContent}}
 							</p>
 						</div>
 					</el-card>
 				</el-col>
-
 			</el-row>
 			<ul class="pagination">
 				<li>
@@ -143,195 +138,148 @@
 				</li>
 			</ul>
 		</section>
-		<!-- <section class="panel" data-section-name="day">
+		<section class="panel" data-section-name="day">
 			<el-row :gutter="5">
 				<el-col :span="12">
 					<el-row class="day-row">
 						<el-col :span="8" class="day-col">
-							<span style="line-height:28px;">稽核范围</span>
+							<span style="line-height:28px;font-size:14px;">稽核范围</span>
 						</el-col>
 						<el-col :span="8" class="day-col">
-							<el-select v-model="value" size="mini" placeholder="请选择">
+							<el-select v-model="internetSelect" size="mini" placeholder="请选择">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 								</el-option>
 							</el-select>
 						</el-col>
-						<el-col :span="8">
-							<el-select v-model="value2" size="mini" placeholder="请选择">
-								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+						<el-col :span="8" v-if="internetSelect != 1">
+							<el-select v-model="internetProv" size="mini" placeholder="请选择">
+								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8" v-else>
+							<el-select v-model="internetAcct" size="mini" placeholder="请选择">
+								<el-option v-for="item in internetAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
 								</el-option>
 							</el-select>
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span="24">
-							<internetChart-Day></internetChart-Day>
+							<internetChart-Day :xaxislist='internetDataXaxis' :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
 						</el-col>
 					</el-row>
 				</el-col>
 				<el-col :span="12">
 					<el-row class="day-row">
 						<el-col :span="8" class="day-col">
-							<span style="line-height:28px;">稽核范围</span>
+							<span style="line-height:28px;font-size:14px;">稽核范围</span>
 						</el-col>
 						<el-col :span="8" class="day-col">
-							<el-select v-model="value" size="mini" placeholder="请选择">
+							<el-select v-model="signalingSelect" size="mini" placeholder="请选择">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 								</el-option>
 							</el-select>
 						</el-col>
-						<el-col :span="8">
-							<el-select v-model="value2" size="mini" placeholder="请选择">
-								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+						<el-col :span="8" v-if="signalingSelect != 1">
+							<el-select v-model="signalingProv" size="mini" placeholder="请选择">
+								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8" v-else>
+							<el-select v-model="signalingAcct" size="mini" placeholder="请选择">
+								<el-option v-for="item in signalingAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
 								</el-option>
 							</el-select>
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span="24">
-							<internetChart-Day></internetChart-Day>
+							<signalingChart-Day :xaxislist='signalingDataXaxis' :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
+							 :yaxislist='signalingDataYaxis'></signalingChart-Day>
 						</el-col>
 					</el-row>
 				</el-col>
 			</el-row>
 			<el-row :gutter="5">
 				<el-col :span="12">
-					<el-row class="day-row">
-						<el-col :span="8" class="day-col">
-							<span style="line-height:28px;">稽核范围</span>
+					<el-row>
+						<el-col :span="6" class="day-col">
+							<span style="line-height:28px;font-size:14px;">稽核范围</span>
 						</el-col>
-						<el-col :span="8" class="day-col">
-							<el-select v-model="value" size="mini" placeholder="请选择">
+						<el-col :span="5" class="day-col">
+							<el-select v-model="internetTimelySelect" size="mini" placeholder="请选择">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 								</el-option>
 							</el-select>
 						</el-col>
-						<el-col :span="8">
-							<el-select v-model="value2" size="mini" placeholder="请选择">
-								<el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+						<el-col :span="5" v-if="internetTimelySelect != 1">
+							<el-select v-model="internetTimelyProv" size="mini" placeholder="请选择">
+								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
 								</el-option>
 							</el-select>
+						</el-col>
+						<el-col :span="5" v-else>
+							<el-select v-model="internetTimelyAcct" size="mini" placeholder="请选择">
+								<el-option v-for="item in internetTimelyAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+								</el-option>
+							</el-select>
+						</el-col>
+						<el-col :span="8">
+							<el-switch style="display: block" v-model="isTime" active-color="#e6a23c" inactive-color="#13ce66" active-text="最大时间" inactive-text="平均时间">
+							</el-switch>
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span="24">
-							<matchingChart-Day></matchingChart-Day>
+							<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
+							 :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
 						</el-col>
 					</el-row>
 				</el-col>
 				<el-col :span="12">
-					<dynamicData-Chart></dynamicData-Chart>
+					<dynamicData-Chart :xaxislist='signalingTimelyDataXaxis' :legendlist='signalingTimelyDataLegend' :serieslist='signalingTimelyDataSeriesList'
+					:yaxislist='signalingTimelyDataYaxis'></dynamicData-Chart>
 				</el-col>
 			</el-row>
-		</section> -->
-		<!-- <section class="panel" data-section-name="signaling" style="height: 150px;padding:20px;">
-			<el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
-				<el-tab-pane label="信令自身稽核" name="first">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="规范性稽核" name="second">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="用户漂移率" name="third">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="小区匹配率" name="four">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="小区工参" name="five">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-				<el-tab-pane label="BO侧差异率" name="six">
-					<span class="select-one">稽核范围</span>
-					<el-select class="select-one" v-model="value" placeholder="请选择">
-						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-					<el-select class="select-one" v-model="value2" placeholder="请选择">
-						<el-option v-for="items in options2" :key="items.value" :label="items.label" :value="items.value">
-						</el-option>
-					</el-select>
-					<test-Chart :parmars="value2"></test-Chart>
-				</el-tab-pane>
-			</el-tabs>
-		</section> -->
+		</section>
 		<section class="panel" data-section-name="signaling" style="padding:20px;">
 			<el-tabs v-model="signalingActive" type="border-card">
 				<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
 					<keep-alive>
-						<tab-pane v-if='signalingActive==item.tabName' :setId='item.tabName' :type='item.tabName' :range='signalingRange' :rangeDefault='signalingRangedefault'></tab-pane>
+						<tab-pane v-if='signalingActive==item.tabName' :tabId='item.tabId'></tab-pane>
 					</keep-alive>
 				</el-tab-pane>
 			</el-tabs>
 		</section>
 		<section class="panel" data-section-name="internet" style="padding:20px;">
-			<el-tabs v-model="internetActive" type="border-card">
-				<el-tab-pane v-for="item in internetOptions" :label="item.label" :key='item.key' :name="item.key">
+			<el-tabs v-model="internetActive" type="border-card" @tab-click="handleClick">
+				<el-tab-pane v-for="item in internetOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
 					<keep-alive>
-						<tab-pane v-if='internetActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
+						<tab-pane v-if='internetActive==item.tabName' :tabId='item.tabId'></tab-pane>
 					</keep-alive>
 				</el-tab-pane>
 			</el-tabs>
 		</section>
 		<section class="panel" data-section-name="interface" style="padding:20px;">
 			<el-tabs v-model="interfaceActive" type="border-card">
-				<el-tab-pane v-for="item in interfaceOptions" :label="item.label" :key='item.key' :name="item.key">
+				<el-tab-pane v-for="item in interfaceOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
 					<keep-alive>
-						<tab-pane v-if='interfaceActive==item.key' :setId='item.key' :type='item.key'></tab-pane>
+						<tab-pane v-if='interfaceActive==item.tabName' :tabId='item.tabId'></tab-pane>
 					</keep-alive>
 				</el-tab-pane>
 			</el-tabs>
 		</section>
-		<div class="footer" data-section-name="footer">
-			<!-- <div class="inner">
+		<!-- <div class="footer" data-section-name="footer">
+		<div class="inner">
 				<p>Footer</p>
-			</div> -->
-			<!-- <footer-View></footer-View> -->
+			</div>
+		<footer-View></footer-View>
+		</div> -->
+		<div style="display:none;">
+			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
+			<el-button @click="test" id="1">默认按钮</el-button>
 		</div>
 	</div>
 </template>
@@ -342,12 +290,14 @@
 	import matchingChart from '@/components/Charts/matchingChart'
 	import invalidNumberChart from '@/components/Charts/invalidNumberChart'
 	import mapChart from '@/components/Charts/mapChart'
-	import testChart from '@/components/Charts/testChart'
 	import testChart2 from '@/components/Charts/testChart2'
 	import tabPane from '@/components/Charts/tabPane'
 	import dynamicDataChart from '@/components/Charts/dynamicDataChart'
 	import internetChartDay from '@/components/Charts/internetChartDay'
 	import matchingChartDay from '@/components/Charts/matchingChartDay'
+	import signalingChartDay from '@/components/Charts/signalingChartDay'
+	import internetTimelyChartDay from '@/components/Charts/internetTimelyChartDay'
+
 
 	import headerView from '@/components/header/header'
 	import footerView from '@/components/footer/footer'
@@ -359,68 +309,92 @@
 
 	export default {
 		mixins: [indexService],
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, testChart, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
 		data() {
 			return {
-				watchClass: 'bbb',
-				act: 'active',
+				signalingOptions: [],
 				signalingActive: '',
 				signalingId: '',
-				signalingRange: [],
-				signalingRangedefault: '',
-				internetActive: '11',
-				interfaceActive: '111',
-				// signalingOptions: [
-				// 	{ label: '信令自身稽核', key: '1' },
-				// 	{ label: '规范性稽核', key: '2' },
-				// 	{ label: '用户漂移率', key: '3' },
-				// 	{ label: '小区匹配率', key: '4' },
-				// 	{ label: '小区工参', key: '5' },
-				// 	{ label: 'BO侧差异率', key: '6' }
-				// ],
-				signalingOptions: [],
-				internetOptions: [
-					{ label: '自身稽核', key: '11' },
-				],
-				interfaceOptions: [
-					{ label: '信令延时性', key: '111' },
-					{ label: '互联网延时性', key: '222' },
-					{ label: '详单空包率', key: '333' },
-					{ label: '详单碎文件率', key: '444' },
-					{ label: '接口文件数据量环同比', key: '555' },
-					{ label: '综采话单数据量环同比', key: '666' }
-				],
+
+				internetOptions: [],
+				internetActive: '',
+				internetId: '',
+
+				interfaceOptions: [],
+				interfaceActive: '',
+				interfaceId: '',
+
+				scoreQuotaList: [],
+				scoreScreenList: [],
+
+				dataYaxis: [],
+				dataSeriesList: [],
+				dataXaxis: [],
+				dataLegend: [],
+				dataScreen: [],
+
+				matchYaxis: [],
+				matchSeriesList: [],
+				matchXaxis: [],
+				matchLegend: [],
+				matchScreen: [],
+
+				numberYaxis: [],
+				numberSeriesList: [],
+				numberXaxis: [],
+				numberLegend: [],
+				numberScreen: [],
+
+				screenContent: '',
+
 				options: [{
-					value: '选项1',
+					value: '1',
+					label: '日期'
+				}, {
+					value: '2',
 					label: '地域'
-				}, {
-					value: '选项2',
-					label: '时间'
 				}],
-				value: '',
-				options2: [{
-					value: '选项1',
-					label: '2010-10-01'
-				}, {
-					value: '选项2',
-					label: '2010-10-07'
-				}, {
-					value: '选项3',
-					label: '2010-10-14'
-				}, {
-					value: '选项4',
-					label: '2010-10-21'
-				}, {
-					value: '选项5',
-					label: '2010-10-28'
-				}, {
-					value: '选项6',
-					label: '2010-11-05'
-				}, {
-					value: '选项7',
-					label: '2010-11-12'
-				}],
-				value2: '',
+
+				internetSelect: '1',
+				internetProv: '',
+				internetAcct: '',
+
+				signalingSelect: '1',
+				signalingProv: '',
+				signalingAcct: '',
+
+				internetTimelySelect: '1',
+				internetTimelyProv: '',
+				internetTimelyAcct: '',
+
+
+				internetProvList: [],
+				internetAcctList: [],
+				signalingAcctList: [],
+				internetTimelyAcctList: [],
+
+				internetDataYaxis: [],
+				internetDataSeriesList: [],
+				internetDataXaxis: [],
+				internetDataLegend: [],
+
+				signalingDataYaxis: [],
+				signalingDataSeriesList: [],
+				signalingDataXaxis: [],
+				signalingDataLegend: [],
+
+				internetTimelyDataYaxis: [],
+				internetTimelyDataSeriesList: [],
+				internetTimelyDataXaxis: [],
+				internetTimelyDataLegend: [],
+
+				signalingTimelyDataYaxis: [],
+				signalingTimelyDataSeriesList: [],
+				signalingTimelyDataXaxis: [],
+				signalingTimelyDataLegend: [],
+
+				isTime:true,
+				
 			}
 		},
 		beforeMount() {
@@ -436,7 +410,10 @@
 						$(".pagination .active").removeClass("active");
 
 						$(".pagination").find("a[href=\"#" + ref + "\"]").addClass("active");
-						vum.test(ref);
+
+						$("#kkk").attr("data-greeting", ref);//设置值为Hello World
+						$("#1").trigger("click");
+
 						if (ref != 'header') {
 							$(".nav-header").addClass("show-nav");
 						} else {
@@ -468,8 +445,7 @@
 					}
 				});
 			});
-			// this.getProv();
-			// this.getHomeTab(Cookies.get('orgId'));
+			this.getWeekScore()
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vm => {
@@ -480,27 +456,63 @@
 				}
 			})
 		},
-		methods: {
-			// handleClick(tab, event) {
-			// 	this.$nextTick(() => {
-			// 		tab.$children[2].$refs.pie.resize();
-			// 	})
-			// }
-		}
-	}
-	var vum = new Vue({
-		el: "#app",
-		data: {
-			message: "",
-			datas: "",
-
+		watch: {
+			internetProv: function () {
+				this.getInternetData(1, this.internetProv, '', '')
+			},
+			internetAcct: function () {
+				this.getInternetData(1, '', this.internetAcct, '')
+			},
+			signalingProv: function () {
+				this.getInternetData(2, this.signalingProv, '', '')
+			},
+			signalingAcct: function () {
+				this.getInternetData(2, '', this.signalingAcct, '')
+			},
+			internetTimelyProv: function () {
+				this.getInternetData(3, this.internetTimelyProv, '', this.isTime ? 1 : 0)
+			},
+			internetTimelyAcct: function () {
+				this.getInternetData(3, '', this.internetTimelyAcct, this.isTime ? 1 : 0)
+			},
+			isTime:function(){
+				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0)
+			}
 		},
 		methods: {
-			test(ref) {
-				console.log(ref, '11111111111')
+			test() {
+				var ref = $("#kkk").attr("data-greeting");
+				if (ref == "internet") {
+					this.internetOptions = [],
+						this.internetActive = '',
+						this.internetId = '',
+						this.getInternetTab(Cookies.get('orgId'), "1");
+				} else if (ref == "signaling") {
+					this.signalingOptions = [],
+						this.signalingActive = '',
+						this.signalingId = '',
+						this.getInternetTab(Cookies.get('orgId'), "2");
+				} else if (ref == "interface") {
+					this.interfaceOptions = [],
+						this.interfaceActive = '',
+						this.interfaceId = '',
+						this.getInternetTab(Cookies.get('orgId'), "3");
+				} else if (ref == 'week') {
+					this.getWeekScore()
+				} else if (ref == 'day') {
+					this.getDayAcctDate(1)
+					this.getDayAcctDate(2)
+					this.getDayAcctDate(3)
+					this.getDayProv()
+					this.getSignalingTimely()
+				}
+			},
+			handleClick(tab, event) {
+				// console.log()
+				// this.getRange(Cookies.get('orgId'), this.interfaceId)
 			}
 		}
-	})
+	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -599,8 +611,8 @@
 	}
 
 	.select-one {
-		top: 23px;
-		right: 16%;
+		font-size: 14px;
+		right: 21%;
 		z-index: 99;
 		position: relative;
 		padding-right: 5px;
@@ -616,9 +628,9 @@
 
 	.nav-li {
 		float: right;
-		width: 156px;
+		width: 140px;
 		position: relative;
-		height: 84px;
+		height: 45px;
 	}
 
 	.btn-nav {
@@ -719,9 +731,9 @@
 		background-image: url("../../assets/white.png");
 	}
 
-	.el-tabs--border-card>.el-tabs__content {
+	/* .el-tabs--border-card>.el-tabs__content {
 		padding-bottom: 80px;
-	}
+	} */
 
 	.card-style {
 		margin-top: 5px;
@@ -735,6 +747,10 @@
 		top: 10%;
 	}
 
+	.card-style div {
+		padding-top: 5px;
+	}
+
 	.card-style div p {
 		padding: 0 11px;
 		overflow: hidden;
@@ -746,7 +762,6 @@
 	}
 
 	.day-row {
-		padding-top: 20px;
 		padding-right: 15%;
 	}
 

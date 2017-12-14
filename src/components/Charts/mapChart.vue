@@ -21,42 +21,29 @@
 			height: {
 				type: String,
 				default: '300px'
-			}
+			},
+			quotalist: {
+				type: Array,
+			},
 		},
 		data() {
 			return {
-				chart: null
-			}
-		},
-		mounted() {
-			this.initChart()
-		},
-		beforeDestroy() {
-			if (!this.chart) {
-				return
-			}
-			this.chart.dispose()
-			this.chart = null
-		},
-		methods: {
-			initChart() {
-				this.chart = echarts.init(this.$el, 'roma')
-
-				this.chart.setOption({
+				chart: null,
+				option: {
 					tooltip: {
 						trigger: 'item'
 					},
 					dataRange: {
 						min: 0,
 						show: false,
-						max: 2500,
+						max: 100,
 						calculable: true
 					},
 					toolbox: {
 						show: true,
 						orient: 'horizontal',
 						// x: 'center',
-						left:"15%",
+						left: "15%",
 						y: 'top',
 						showTitle: false,
 						feature: {
@@ -94,59 +81,66 @@
 					},
 					series: [
 						{
-							name: 'iphone3',
+							name: '稽核情况',
 							type: 'map',
 							mapType: 'china',
 							roam: false,
+							zoom: 1.2,
 							itemStyle: {
 								normal: { label: { show: false } },
 								emphasis: { label: { show: false } }
 							},
-							data: [
-								{
-									name: "南海诸岛", value: 0,
-									itemStyle: {
-										normal: { opacity: 0, label: { show: false } }
-									}
-								},
-								{ name: '北京', value: Math.round(Math.random() * 1000) },
-								{ name: '天津', value: Math.round(Math.random() * 1000) },
-								{ name: '上海', value: Math.round(Math.random() * 1000) },
-								{ name: '重庆', value: Math.round(Math.random() * 1000) },
-								{ name: '河北', value: Math.round(Math.random() * 1000) },
-								{ name: '河南', value: Math.round(Math.random() * 1000) },
-								{ name: '云南', value: Math.round(Math.random() * 1000) },
-								{ name: '辽宁', value: Math.round(Math.random() * 1000) },
-								{ name: '黑龙江', value: Math.round(Math.random() * 1000) },
-								{ name: '湖南', value: Math.round(Math.random() * 1000) },
-								{ name: '安徽', value: Math.round(Math.random() * 1000) },
-								{ name: '山东', value: Math.round(Math.random() * 1000) },
-								{ name: '新疆', value: Math.round(Math.random() * 1000) },
-								{ name: '江苏', value: Math.round(Math.random() * 1000) },
-								{ name: '浙江', value: Math.round(Math.random() * 1000) },
-								{ name: '江西', value: Math.round(Math.random() * 1000) },
-								{ name: '湖北', value: Math.round(Math.random() * 1000) },
-								{ name: '广西', value: Math.round(Math.random() * 1000) },
-								{ name: '甘肃', value: Math.round(Math.random() * 1000) },
-								{ name: '山西', value: Math.round(Math.random() * 1000) },
-								{ name: '内蒙古', value: Math.round(Math.random() * 1000) },
-								{ name: '陕西', value: Math.round(Math.random() * 1000) },
-								{ name: '吉林', value: Math.round(Math.random() * 1000) },
-								{ name: '福建', value: Math.round(Math.random() * 1000) },
-								{ name: '贵州', value: Math.round(Math.random() * 1000) },
-								{ name: '广东', value: Math.round(Math.random() * 1000) },
-								{ name: '青海', value: Math.round(Math.random() * 1000) },
-								{ name: '西藏', value: Math.round(Math.random() * 1000) },
-								{ name: '四川', value: Math.round(Math.random() * 1000) },
-								{ name: '宁夏', value: Math.round(Math.random() * 1000) },
-								{ name: '海南', value: Math.round(Math.random() * 1000) },
-								{ name: '台湾', value: Math.round(Math.random() * 1000) },
-								{ name: '香港', value: Math.round(Math.random() * 1000) },
-								{ name: '澳门', value: Math.round(Math.random() * 1000) }
-							]
+							data: []
 						}
 					]
+				}
+			}
+		},
+		watch: {
+			quotalist: function () {
+				this.initChart()
+			},
+		},
+		mounted() {
+			// this.initChart()
+			this.chart = null
+		},
+		beforeDestroy() {
+			if (!this.chart) {
+				return
+			}
+			this.chart.dispose()
+			this.chart = null
+		},
+		methods: {
+			initChart() {
+				this.chart = echarts.init(this.$el, 'roma')
+
+				this.chart.setOption(this.option)
+
+				this.chart.setOption({
+					series: [{
+						data: this.getSeriesList(),
+					}]
 				})
+			},
+			getSeriesList() {
+				this.result = [
+					{
+						name: "南海诸岛", value: 0,
+						itemStyle: {
+							normal: { opacity: 0, label: { show: false } }
+						}
+					},
+				]
+				for (var i = 0; i < this.quotalist.length; i++) {
+					var item={
+						name:this.quotalist[i].prov_name.replace('省','').replace('市','').replace('自治区','').replace('维吾尔','').replace('壮族','').replace('回族',''),
+						value:this.quotalist[i].score
+					}
+				this.result.push(item)	
+				}
+				return this.result
 			}
 		}
 	}

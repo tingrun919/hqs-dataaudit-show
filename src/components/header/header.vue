@@ -213,6 +213,7 @@
 			logout() {
 				Cookies.set('disSort', '');
 				Cookies.set('orgId', '');
+				Cookies.set('city', '');
 				this.$router.push('/login')
 			}
 		}

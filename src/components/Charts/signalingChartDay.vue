@@ -32,23 +32,19 @@
 				},
 				yaxislist: {
 					type: Array,
-				},
-				screenlist: {
-					type: Array,
 				}
 			},
 			data() {
 				return {
 					chart: null,
-					option: {
+					option:{
 						title: {
-							text: '',
-							left: '31%',
-							bottom: '1',
-							// y: 'bottom',
+							text: '信令数据量化环比同比',
+							x:'center',
+							top:'6%',
 							textStyle: {
 								fontWeight: 'normal',
-								fontSize: 13
+								fontSize: 11
 							}
 						},
 						tooltip: {
@@ -56,13 +52,13 @@
 						},
 						grid: {
 							containLabel: true,
-							bottom: '8%',
-							top:'25%',
-							right: '10%',
-							left: '0'
+							// bottom: '15%',
+							// top:'15%',
+							// right:'13%',
+							// left:'1%'
 						},
 						legend: {
-							textStyle: {
+							textStyle:{
 								fontSize: '10'
 							},
 							data: []
@@ -88,14 +84,26 @@
 			},
 			methods: {
 				initChart() {
-					// this.yAxisMethod()
-					// this.yDataList()
 					this.chart = echarts.init(this.$el, 'default')
 					this.chart.setOption(this.option)
 					this.chart.setOption({
-						title: {
-							text: this.screenlist[0].screenName,
-						},
+						dataZoom: [{
+							type: 'slider',
+							xAxisIndex: 0,
+							// bottom:'20',
+							filterMode: 'filter',
+							// zoomLock:true,
+							start: 0,
+							end: 20,
+							height: 8
+						}, {
+							// zoomLock:true,
+							type: 'inside',
+							xAxisIndex: 0,
+							filterMode: 'filter',
+							start: 0,
+							end: 20
+						}],
 						xAxis: {
 							type: 'category',
 							axisTick: {

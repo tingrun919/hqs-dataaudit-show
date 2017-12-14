@@ -46,8 +46,12 @@
 							Cookies.set('orgId', res.data.data[0].ORG_ID);
 							//所属组织分类
 							Cookies.set('disSort', res.data.data[0].DIS_SORT);
+							//所属城市
+							let result = res.data.data[0].ORG_NAME.split("-")
+							Cookies.set('city', result[1]);
 							this.loading = false
 							this.$router.push('/')
+							this.$router.go('/')
 						}
 					})
 					.catch(err => {
