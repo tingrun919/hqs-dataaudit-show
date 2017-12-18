@@ -287,7 +287,6 @@
 				this.getStaff()
 			},
 			sendTask(row) {
-				console.log(this.isShow,'kkkkkkkkk')
 				if(this.isShow == 'send'){
 					this.sendTasktoPerson(this.taskIds,this.sendPerson,this.tasktextarea,this.cuttime,this.copyPerson)
 				}else if(this.isShow == 'success'){

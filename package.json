@@ -13,9 +13,11 @@
     "axios": "^0.17.1",
     "echarts": "^3.8.5",
     "element-ui": "^2.0.5",
+    "es6-promise": "^4.1.1",
     "jquery": "^2.2.3",
     "jquery-scrollify": "^1.0.17",
     "js-cookie": "^2.2.0",
+    "polyfill": "^0.1.0",
     "vue": "^2.5.7",
     "vue-echarts": "^2.5.1",
     "vue-router": "^3.0.1"

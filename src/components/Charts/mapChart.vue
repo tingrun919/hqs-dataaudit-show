@@ -50,24 +50,22 @@
 							myReport: {
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
-									console.log(params);
-									alert('1');
+									$("#buttonDialog").trigger("click");
 								}
 							},
 							myRecording: {
 								icon: 'image://../../dist/static/img/recording.png',
 								onclick: function (params) {
-									console.log(params);
-									alert('1');
+									$("#workflow").trigger("click");
 								}
 							},
-							myFootprint: {
-								icon: 'image://../../dist/static/img/footprint.png',
-								onclick: function (params) {
-									console.log(params);
-									alert('1');
-								}
-							},
+							// myFootprint: {
+							// 	icon: 'image://../../dist/static/img/footprint.png',
+							// 	onclick: function (params) {
+							// 		console.log(params);
+							// 		alert('1');
+							// 	}
+							// },
 							restore: {
 								show: true,
 								icon: 'image://../../dist/static/img/refesh.png'

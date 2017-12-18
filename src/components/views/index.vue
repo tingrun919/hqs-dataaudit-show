@@ -91,8 +91,8 @@
 						<map-Chart :quotalist='scoreQuotaList'></map-Chart>
 					</el-card>
 					<el-card class="card-style">
-						<span slot="header">本期评价</span>
-						<div>
+						<div style="height:300px;">
+								<span>本期评价</span>
 							<p>
 								{{screenContent}}
 							</p>

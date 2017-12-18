@@ -12,11 +12,15 @@ export default {
 						if (item.rangeId != 3) {
 							this.tabRange.push(item)
 							this.isData = false;
-						}else{
+						} else {
 							this.isData = true;
 						}
 					});
-					this.tabRangeDefault = res.data.data[1].rangeId;
+					if (Cookies.get('disSort') == 3) {
+						this.tabRangeDefault = res.data.data[1].rangeId;
+					}else{
+						this.tabRangeDefault = res.data.data[0].rangeId;
+					}
 				})
 				.catch(err => {
 					console.log(err);
@@ -49,10 +53,10 @@ export default {
 		getData(orgid, tabid, provid, acctdate) {
 			return api.get(`dataaudit_show/usertab/selectData?tabid=${tabid}&orgid=${orgid}&provid=${provid}&acctdate=${acctdate}`)
 				.then(res => {
-						this.xaxis = res.data.data.xaxis
-						this.legend = res.data.data.legend
-						this.serieslist = res.data.data.serieslist
-						this.yaxis = res.data.data.yaxis
+					this.xaxis = res.data.data.xaxis
+					this.legend = res.data.data.legend
+					this.serieslist = res.data.data.serieslist
+					this.yaxis = res.data.data.yaxis
 				})
 				.catch(err => {
 					console.log(err);

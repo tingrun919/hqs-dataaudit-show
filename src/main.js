@@ -9,9 +9,10 @@ import $ from 'jquery'
 import * as Cookies from "js-cookie";
 var scrollify = require('jquery-scrollify');
 var ECharts = require('vue-echarts')
+var Promise = require('es6-promise').Promise;
 //import css
 import '../src/css/homepage.css'
-
+// import '../src/api/es6-promise.auto.min.js'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.component('chart', ECharts)
@@ -21,6 +22,7 @@ const app = new Vue({
   el: '#app',
   render: h => h(App),
   router,
+  Promise,
   template: '<App/>',
   components: { App }
 })
