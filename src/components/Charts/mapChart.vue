@@ -50,7 +50,7 @@
 							myReport: {
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
-									$("#buttonDialog").trigger("click");
+									$("#dialogs").trigger("click");
 								}
 							},
 							myRecording: {
@@ -113,7 +113,7 @@
 		methods: {
 			initChart() {
 				this.chart = echarts.init(this.$el, 'roma')
-
+				
 				this.chart.setOption(this.option)
 
 				this.chart.setOption({

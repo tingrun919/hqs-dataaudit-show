@@ -29,11 +29,11 @@
 								周稽核报告
 								</a>
 							</li>
-							<!-- <li>
+							<li>
 								<a href="#day" class="btn_snav" data-href="#day">
 								日稽核报告
 								</a>
-							</li> -->
+							</li>
 							<li>
 								<a href="#signaling" class="btn_snav" data-href="#signaling">
 								信令详单
@@ -51,8 +51,8 @@
 							</li>
 							<li>
 								<div class="line"></div>
-								<p style="padding-top:30px;font-size:18px;">
-									admin(2)
+								<p style="padding-top:30px;font-size:12spx;">
+									{{name}}
 								</p>
 							</li>
 						</ul>
@@ -64,9 +64,9 @@
 			<el-row :gutter="5">
 				<el-col :span="17">
 					<el-card>
-						<!-- <div slot="header" class="clearfix">
-							<span style="line-height: 36px;">本期（9.29-10.1）报告指标概括</span>
-						</div> -->
+						<div slot="header" class="clearfix">
+							<span style="line-height: 36px;">本期（{{dataFormat}}）稽核报告</span>
+						</div>
 						<el-row :gutter="20">
 							<el-col :span="15">
 								<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
@@ -92,7 +92,7 @@
 					</el-card>
 					<el-card class="card-style">
 						<div style="height:300px;">
-								<span>本期评价</span>
+							<span>本期评价</span>
 							<p>
 								{{screenContent}}
 							</p>
@@ -246,48 +246,211 @@
 					</el-row>
 				</el-col>
 				<el-col :span="12">
-					<dynamicData-Chart :xaxislist='signalingTimelyDataXaxis' :legendlist='signalingTimelyDataLegend' :serieslist='signalingTimelyDataSeriesList'
-					:yaxislist='signalingTimelyDataYaxis'></dynamicData-Chart>
+					<!-- <dynamicData-Chart :xaxislist='signalingTimelyDataXaxis' :legendlist='signalingTimelyDataLegend' :serieslist='signalingTimelyDataSeriesList'
+					 :yaxislist='signalingTimelyDataYaxis'></dynamicData-Chart> -->
 				</el-col>
 			</el-row>
 		</section>
-		<section class="panel" data-section-name="signaling" style="padding:20px;">
-			<el-tabs v-model="signalingActive" type="border-card">
-				<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
-					<keep-alive>
-						<tab-pane v-if='signalingActive==item.tabName' :tabId='item.tabId'></tab-pane>
-					</keep-alive>
-				</el-tab-pane>
-			</el-tabs>
+		<section class="panel" data-section-name="signaling">
+			<div class="inner">
+				<div class="title-panel">
+					<p class="panel-title">
+						<span>1</span>信令详单
+					</p>
+				</div>
+				<el-tabs v-model="signalingActive" type="border-card">
+					<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+						<keep-alive>
+							<tab-pane v-if='signalingActive==item.tabName' :tabId='item.tabId'></tab-pane>
+						</keep-alive>
+					</el-tab-pane>
+				</el-tabs>
+			</div>
 		</section>
-		<section class="panel" data-section-name="internet" style="padding:20px;">
-			<el-tabs v-model="internetActive" type="border-card" @tab-click="handleClick">
-				<el-tab-pane v-for="item in internetOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
-					<keep-alive>
-						<tab-pane v-if='internetActive==item.tabName' :tabId='item.tabId'></tab-pane>
-					</keep-alive>
-				</el-tab-pane>
-			</el-tabs>
+		<section class="panel" data-section-name="internet">
+			<div class="inner">
+				<div class="title-panel">
+					<p class="panel-title">
+						<span>1</span>互联网详单
+					</p>
+				</div>
+				<el-tabs v-model="internetActive" type="border-card">
+					<el-tab-pane v-for="item in internetOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+						<keep-alive>
+							<tab-pane v-if='internetActive==item.tabName' :tabId='item.tabId'></tab-pane>
+						</keep-alive>
+					</el-tab-pane>
+				</el-tabs>
+			</div>
 		</section>
-		<section class="panel" data-section-name="interface" style="padding:20px;">
-			<el-tabs v-model="interfaceActive" type="border-card">
-				<el-tab-pane v-for="item in interfaceOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
-					<keep-alive>
-						<tab-pane v-if='interfaceActive==item.tabName' :tabId='item.tabId'></tab-pane>
-					</keep-alive>
-				</el-tab-pane>
-			</el-tabs>
+		<section class="panel" data-section-name="interface">
+			<div class="inner">
+				<div class="title-panel">
+					<p class="panel-title">
+						<span>1</span>借口文件稽核
+					</p>
+				</div>
+				<el-tabs v-model="interfaceActive" type="border-card">
+					<el-tab-pane v-for="item in interfaceOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+						<keep-alive>
+							<tab-pane v-if='interfaceActive==item.tabName' :tabId='item.tabId'></tab-pane>
+						</keep-alive>
+					</el-tab-pane>
+				</el-tabs>
+			</div>
 		</section>
 		<div class="footer" data-section-name="footer">
-		<!-- <div class="inner">
+			<!-- <div class="inner">
 				<p>Footer</p>
 			</div> -->
-		<footer-View></footer-View>
+			<footer-View></footer-View>
 		</div>
 		<div style="display:none;">
 			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
 			<el-button @click="test" id="1">默认按钮</el-button>
 		</div>
+		<el-button @click="handleData" v-show="false" id="buttonDialog"></el-button>
+		<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
+		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
+		<el-dialog title="样例数据" fullscreen :visible.sync="dialogTableVisible">
+			<span>时间</span>
+			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
+				<el-option v-for="item in sampletimeList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+				</el-option>
+			</el-select>
+			<span>地域</span>
+			<el-select size="small" v-model="sampleprov" placeholder="请选择地域">
+				<el-option v-for="item in sampleprovList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+				</el-option>
+			</el-select>
+			<span>数据域</span>
+			<el-select size="small" v-model="sampledata" placeholder="请选择数据域">
+				<el-option label="cs" value="cs"></el-option>
+				<el-option label="lte" value="lte"></el-option>
+				<el-option label="ps" value="ps"></el-option>
+			</el-select>
+			<el-button @click="handleDataYl" size="small" type="primary">查询</el-button>
+			<el-table v-for="tables in datalist" stripe border :key="tables.acct_date" style="width: 100%;margin-top:20px;" max-height="500"
+			 :data="tables">
+				<el-table-column show-overflow-tooltip align="center" v-for="item in columnsName" :key="item.COLUMN_NAME" :property="item.COLUMN_NAME"
+				 :label="item.COLUMN_COMMENT"></el-table-column>
+			</el-table>
+		</el-dialog>
+		<el-dialog title="报告列表" fullscreen :visible.sync="outerVisible">
+			<el-table :data="weekly" stripe border style="width: 100%;margin-top:20px;">
+				<el-table-column align="center" prop="mailId" label="报告编号">
+				</el-table-column>
+				<el-table-column align="center" prop="mailName" label="报告名称">
+				</el-table-column>
+				<el-table-column align="center" prop="mailCycle" label="报告周期">
+					<template scope="scope">
+						{{ scope.row.mailCycle == 1 ? '周' : '日' }}
+					</template>
+				</el-table-column>
+				<el-table-column align="center" prop="mailAcctdate" label="账期">
+				</el-table-column>
+				<el-table-column align="center" prop="mailTime" label="发送时间">
+				</el-table-column>
+				<el-table-column align="center" prop="date" label="操作">
+					<template slot-scope="scope">
+						<el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-dialog fullscreen title="报告预览" :visible.sync="innerVisible" append-to-body>
+				<div v-html="mailcontent"></div>
+			</el-dialog>
+		</el-dialog>
+		<el-dialog title="我的工作流" fullscreen :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
+			<el-table :data="workflow" stripe border @expand-change="handleTask">
+				<el-table-column fixed="left" type="expand" accordion>
+					<template slot-scope="props">
+						<el-steps :active="tasklength" align-center>
+							<el-step v-for="(item,index) in taskflow" :key='item.muQuotaid' :title="index === 0 ? item.flow_time+'从'+item.STAFF_NAME+item.flow_state : item.flow_time+item.flow_state+'给'+item.STAFF_NAME"
+							 :description="item.flow_event">
+							</el-step>
+						</el-steps>
+					</template>
+				</el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="quotaName" label="稽核指标名称"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="muMetricname" label="度量名称"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="warnLevel" label="预警级别"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskAcctdata" label="帐期"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskSatype" label="数据域"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="nowperson" label="现流转人"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskBegintime" label="开始时间"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskEndtime" label="结束时间"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskCuttime" label="截止时间"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskState" label="任务状态">
+					<template scope="scope">
+						{{ scope.row.taskState == 0 ? '无效任务' : scope.row.taskState == 1 ? '开始' : scope.row.taskState == 2 ? '进行中' : '结束' }}
+					</template>
+				</el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskContent" label="任务内容"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="预警值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="预警上限"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="预警下限"></el-table-column>
+				<el-table-column align="center" property="taskNowperson" label="操作" width="240">
+					<template slot-scope="scope">
+						<el-button size="mini" type="primary" @click="taskStaff(scope.row,'send')" v-if="scope.row.taskNowperson == userId">指派</el-button>
+						<el-button size="mini" type="primary" @click="taskStaff(scope.row,'back')" v-if="scope.row.taskNowperson == userId">退回</el-button>
+						<el-button size="mini" type="primary" @click="taskStaff(scope.row,'success')" v-if="scope.row.taskNowperson == userId">完成</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-dialog width="80%" title="详情流转" :visible.sync="innerVisible2" append-to-body>
+				<el-row v-if="isShow != 'back'">
+					<el-col :span="2" class="dialog-col col-right" :offset="3">
+						<span style="line-height:28px;">发送</span>
+					</el-col>
+					<el-col :span="6">
+						<el-select v-model="sendPerson" filterable placeholder="请选择人员">
+							<el-option v-for="item in taskStaffs" :key="item.staffId" :label="item.staffName+'-'+item.orgName" :value="item.staffId">
+							</el-option>
+						</el-select>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;" v-if="isShow != 'back'">
+					<el-col :span="2" class="dialog-col col-right" :offset="3">
+						<span style="line-height:28px;">抄送</span>
+					</el-col>
+					<el-col :span="16">
+						<el-select style="width:100%;" v-model="copyPerson" multiple filterable reserve-keyword placeholder="请选择人员">
+							<el-option v-for="item in taskStaffs" :key="item.staffId" :label="item.staffName+'-'+item.orgName" :value="item.staffId">
+							</el-option>
+						</el-select>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;" v-if="isShow == 'send'">
+					<el-col :span="2" class="dialog-col col-right" :offset="3">
+						<span style="line-height:28px;">截止时间</span>
+					</el-col>
+					<el-col :span="16">
+						<el-date-picker v-model="cuttime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+						</el-date-picker>
+					</el-col>
+				</el-row>
+
+				<el-row style="margin-top:20px;">
+					<el-col :span="2" class="dialog-col col-right" :offset="3">
+						<span style="line-height:28px;">内容</span>
+					</el-col>
+					<el-col :span="16">
+						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" placeholder="请输入内容" v-model="tasktextarea">
+						</el-input>
+					</el-col>
+				</el-row>
+				<el-row style="margin-top:20px;">
+					<el-col :span="12" class="col-right">
+						<el-button type="success" @click="sendTask">确定</el-button>
+					</el-col>
+					<el-col :span="12">
+						<el-button type="danger" @click="innerVisible2 = false">取消</el-button>
+					</el-col>
+				</el-row>
+			</el-dialog>
+		</el-dialog>
 	</div>
 </template>
 
@@ -311,6 +474,7 @@
 
 	import * as Cookies from "js-cookie";
 	import indexService from '../../service/indexService'
+	import mixChartService from '../../service/mixChartService'
 
 	import Vue from 'vue'
 
@@ -369,7 +533,7 @@
 				signalingSelect: '1',
 				signalingProv: '',
 				signalingAcct: '',
-				signalingSatype:'cs',
+				signalingSatype: 'cs',
 
 				internetTimelySelect: '1',
 				internetTimelyProv: '',
@@ -401,8 +565,35 @@
 				signalingTimelyDataXaxis: [],
 				signalingTimelyDataLegend: [],
 
-				isTime:true,
-				
+				isTime: true,
+
+				dialogTableVisible: false,
+				outerVisible: false,
+				innerVisible: false,
+				outerVisible2: false,
+				innerVisible2: false,
+				sampletime: '',
+				sampletimeList: [],
+				sampleprov: '',
+				sampleprovList: '',
+				sampledata: 'cs',
+				datalist: '',
+				weekly: [],
+				workflow: [],
+				tasktextarea: '',
+				isShow: '',
+				taskStaffs: [],
+				sendPerson: '',
+				copyPerson: '',
+				appendBody: false,
+				mailcontent: '',
+				cuttime: '',
+				userId: Cookies.get('userid'),
+				tasklength: 0,
+				taskflow: [],
+				name: Cookies.get('username') + '-' + Cookies.get('orgname'),
+				dataFormat: '',
+
 			}
 		},
 		beforeMount() {
@@ -455,30 +646,30 @@
 			});
 			this.getWeekScore()
 		},
-		beforeRouteEnter(to, from, next) {
-			next(vm => {
-				if (Cookies.get('orgId') && Cookies.get('disSort')) {
-					vm.$router.push('/')
-				} else {
-					vm.$router.push('/login')
-				}
-			})
-		},
+		// beforeRouteEnter(to, from, next) {
+		// 	next(vm => {
+		// 		if (Cookies.get('orgId') && Cookies.get('disSort')) {
+		// 			vm.$router.push('/')
+		// 		} else {
+		// 			vm.$router.push('/login')
+		// 		}
+		// 	})
+		// },
 		watch: {
 			internetProv: function () {
-				this.getInternetData(1, this.internetProv, '', '','')
+				this.getInternetData(1, this.internetProv, '', '', '')
 			},
 			internetAcct: function () {
-				this.getInternetData(1, '', this.internetAcct, '','')
+				this.getInternetData(1, '', this.internetAcct, '', '')
 			},
 			signalingProv: function () {
-				this.getInternetData(2, this.signalingProv, '', '',this.signalingSatype)
+				this.getInternetData(2, this.signalingProv, '', '', this.signalingSatype)
 			},
 			signalingAcct: function () {
-				this.getInternetData(2, '', this.signalingAcct, '',this.signalingSatype)
+				this.getInternetData(2, '', this.signalingAcct, '', this.signalingSatype)
 			},
-			signalingSatype: function(){
-				this.getInternetData(2, this.signalingProv, this.signalingAcct, '',this.signalingSatype)
+			signalingSatype: function () {
+				this.getInternetData(2, this.signalingProv, this.signalingAcct, '', this.signalingSatype)
 			},
 			internetTimelyProv: function () {
 				this.getInternetData(3, this.internetTimelyProv, '', this.isTime ? 1 : 0)
@@ -486,7 +677,7 @@
 			internetTimelyAcct: function () {
 				this.getInternetData(3, '', this.internetTimelyAcct, this.isTime ? 1 : 0)
 			},
-			isTime:function(){
+			isTime: function () {
 				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0)
 			}
 		},
@@ -518,10 +709,36 @@
 					this.getSignalingTimely()
 				}
 			},
-			handleClick(tab, event) {
-				// console.log()
-				// this.getRange(Cookies.get('orgId'), this.interfaceId)
-			}
+			handleWorkflow() {
+				this.getWorkFlow(Cookies.get('userid'))
+			},
+			handleWeelData() {
+				this.getWeeksData(Cookies.get('userid'))
+			},
+			handleData() {
+				this.getSampleTime(Cookies.get('orgId'), this.tabId)
+			},
+			sendTask(row) {
+				if (this.isShow == 'send') {
+					this.sendTasktoPerson(this.taskIds, this.sendPerson, this.tasktextarea, this.cuttime, this.copyPerson)
+				} else if (this.isShow == 'success') {
+					this.successTask(this.taskIds, this.sendPerson, this.tasktextarea, this.copyPerson)
+				} else {
+					this.backTask(this.taskIds, this.tasktextarea)
+				}
+
+			},
+			handleDataYl() {
+				this.getSampleData(Cookies.get('orgId'), this.tabId, this.sampletime, this.sampleprov, this.sampledata)
+			},
+			handleTask(row) {
+				this.getTaskFlow(row.taskId)
+			},
+			taskStaff(row, type) {
+				this.taskIds = row.taskId;
+				this.isShow = type
+				this.getStaff()
+			},
 		}
 	}
 </script>
@@ -552,20 +769,6 @@
 	.pagination a.active:after {
 		box-shadow: inset 0 0 0 5px;
 	}
-
-	/* .pagination a .hover-text {
-		position: absolute;
-		right: 15px;
-		top: 7px;
-		opacity: 0;
-		-webkit-transition: opacity 0.5s ease;
-		transition: opacity 0.5s ease;
-		padding-right: 15px;
-	}
-
-	.pagination a:hover .hover-text {
-		opacity: 1;
-	} */
 
 	.pagination a:after {
 		-webkit-transition: box-shadow 0.5s ease;
@@ -742,14 +945,18 @@
 		background-image: url("../../assets/white.png");
 	}
 
-	/* .el-tabs--border-card>.el-tabs__content {
-		padding-bottom: 80px;
-	} */
+	.el-tabs--border-card {
+		text-align: center;
+		position: absolute;
+		top: 47%;
+		transform: translateY(-47%);
+		width: 100%;
+	}
 
 	.card-style {
 		margin-top: 5px;
 		padding: 10px;
-		/* height: 300px; */
+		height: 371px;
 	}
 
 	.card-style span {
@@ -780,5 +987,34 @@
 		text-align: right;
 		padding-right: 10px;
 		line-height: 27px;
+	}
+
+	.col-right {
+		text-align: right;
+		padding-right: 5px;
+		line-height: 40px;
+	}
+
+	.panel-title {
+		font-size: 18px;
+		color: #5e6d82;
+		position: relative;
+		margin: auto;
+		right: 47%;
+	}
+
+	.panel-title>span {
+		background: #DA140C;
+		color: #DA140C;
+		padding: 0;
+		margin: 0 5px;
+	}
+
+	.title-panel {
+		text-align: center;
+		position: absolute;
+		top: 3%;
+		transform: translateY(-3%);
+		width: 100%;
 	}
 </style>

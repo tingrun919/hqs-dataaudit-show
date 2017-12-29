@@ -1,5 +1,5 @@
 <template>
-	<div class="components-container" style='height:570px;'>
+	<div class="components-container">
 		<div class='chart-container'>
 			<span class="select-one">稽核范围</span>
 			<el-select class="select-one" size="mini" v-model="tabRangeDefault" placeholder="请选择">
@@ -15,7 +15,7 @@
 				</el-option>
 			</el-select>
 			<!-- <field-chart height='100%' width='100%' :cs='cs' :ps='ps' :lte='lte' :ss='ss' :quota='quotaList' v-if="isData"></field-chart> -->
-			<mix-chart height='100%' width='100%' :tabid="tabId" :xaxislist='xaxis' :legendlist='legend' :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
+			<mix-chart height='600px' width='100%' :tabrange="tabRangeDefault" :tabid="tabId" :xaxislist='xaxis' :legendlist='legend' :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
 			<el-button @click="handleData" v-show="false" id="buttonDialog"></el-button>
 			<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
 			<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
@@ -269,7 +269,7 @@
 				this.getSampleData(Cookies.get('orgId'), this.tabId, this.sampletime, this.sampleprov, this.sampledata)
 			},
 			handleWeelData() {
-				this.getWeekData(Cookies.get('userid'))
+				this.getWeeksData(Cookies.get('userid'))
 			},
 			handleEdit(index, row) {
 				this.mailcontent = row.mailContent

@@ -38,7 +38,7 @@ export default {
 					console.log(err);
 				});
 		},
-		getWeekData(userid) {
+		getWeeksData(userid) {
 			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}`)
 				.then(res => {
 					this.outerVisible = true

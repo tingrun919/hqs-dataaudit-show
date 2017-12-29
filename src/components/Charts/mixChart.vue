@@ -8,10 +8,8 @@
 <script>
 	import echarts from 'echarts'
 	import * as Cookies from "js-cookie";
-	// import mixChartService from '../../service/mixChartService'
 
 	export default {
-		// mixins: [mixChartService],
 		props: {
 			className: {
 				type: String,
@@ -43,6 +41,9 @@
 			},
 			tabid: {
 				type: Number
+			},
+			tabrange: {
+				type: String
 			}
 		},
 		data() {
@@ -51,23 +52,6 @@
 				chart: null,
 				yData: [],
 				option1: {
-					tooltip: {
-						trigger: 'axis',
-						formatter: function (params, ticket, callback) {
-
-							var res = params[0].name;
-
-							for (var i = 0, l = params.length; i < l; i++) {
-								if (params[i].seriesType === 'line') {
-									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + 'h';
-								} else {
-									res += '<br/>' + params[i].seriesName + ' : ' + (params[i].value ? params[i].value : '-') + '个';
-								}
-							}
-							return res;
-
-						}
-					},
 					grid: {
 						containLabel: true,
 						left: '0',
@@ -80,13 +64,14 @@
 					},
 					toolbox: {
 						show: true,
-						showTitle: false,
+						showTitle: true,
 						orient: "vertical",
 						right: '30px',
 						top: '25%',
 						feature: {
 							myReport: {
 								//样例数据
+								title: '样例数据',
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
 									$("#buttonDialog").trigger("click");
@@ -94,6 +79,7 @@
 							},
 							myMail: {
 								//周报
+								title: '周报',
 								icon: 'image://../../dist/static/img/mail.png',
 								onclick: function (params) {
 									$('#dialogs').trigger("click")
@@ -101,6 +87,7 @@
 							},
 							myRecording: {
 								//工作流
+								title: '工作流',
 								icon: 'image://../../dist/static/img/recording.png',
 								onclick: function (params) {
 									$("#workflow").trigger("click");
@@ -141,7 +128,6 @@
 			},
 		},
 		mounted() {
-			// this.initChart()
 			this.chart = null
 		},
 		beforeDestroy() {
@@ -156,19 +142,33 @@
 				this.chart = echarts.init(this.$el, 'default')
 				this.chart.setOption(this.option1)
 				this.chart.setOption({
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross'
+						},
+						// formatter: this.handleTooptip(),
+						formatter: function (params, ticket, callback) {
+							var res = params[0].name;
+							for (var i = 0, l = params.length; i < l; i++) {
+									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') +  params[i].seriesName.split("-")[1];
+							}
+							return res;
+						}
+					},
 					dataZoom: [{
 						type: 'slider',
 						xAxisIndex: 0,
 						bottom: '20',
 						filterMode: 'filter',
 						start: 0,
-						end: 25
+						end: this.tabrange == 2 ? 100 : 25
 					}, {
 						type: 'inside',
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: 25
+						end: this.tabrange == 2 ? 100 : 25
 					}],
 					xAxis: {
 						type: 'category',
@@ -182,11 +182,13 @@
 					},
 					yAxis: this.yAxisMethod(),
 					legend: {
-						data: this.legendlist
+						data: this.legendlist,
+						formatter:function (name) {
+							return name.split("-")[0];
+						}
 					},
 					series: this.yDataList()
 				})
-
 
 			},
 			yDataList() {
@@ -216,7 +218,6 @@
 				}
 				return this.yAxisData
 			},
-
 		}
 	}
 </script>

@@ -31,6 +31,34 @@
 				loading: false,
 			}
 		},
+		beforeMount() {
+			console.log(this.$route.params.usercount, 'this pardfam')
+			if (this.$route.params.usercount) {
+				this.handlecloudlogin(this.$route.params.usercount)
+			} else {
+				if (Cookies.get('orgId') && Cookies.get('disSort')) {
+					this.$router.push('/index')
+				} else {
+					this.$router.push('/login')
+				}
+			}
+		},
+		// beforeRouteEnter(to, from, next) {
+		// next(vm => {
+		// console.log(to.params.usercount,'this pardfam')
+
+
+
+
+
+
+		// if (Cookies.get('orgId') && Cookies.get('disSort')) {
+		// 	vm.$router.push('/')
+		// } else {
+		// vm.$router.push('/index')
+		// }
+		// })
+		// },
 		methods: {
 			handleLogin() {
 				this.loading = true
@@ -47,12 +75,12 @@
 							//所属城市
 							let result = res.data.data[0].ORG_NAME.split("-")
 							Cookies.set('city', result[1]);
-							Cookies.set('userid',res.data.data[0].STAFF_ID);
-							Cookies.set('username',res.data.data[0].STAFF_NAME);
-							Cookies.set('orgname',res.data.data[0].ORG_NAME);
+							Cookies.set('userid', res.data.data[0].STAFF_ID);
+							Cookies.set('username', res.data.data[0].STAFF_NAME);
+							Cookies.set('orgname', res.data.data[0].ORG_NAME);
 							this.loading = false
-							this.$router.push('/')
-							this.$router.go('/')
+							this.$router.push('/index')
+							this.$router.go('/index')
 						}
 					})
 					.catch(err => {
@@ -60,6 +88,39 @@
 						console.log(err);
 					});
 			},
+			handlecloudlogin(usercount) {
+				api.get(`dataaudit_show/user/yunLogin?usercount=${usercount}`)
+					.then(res => {
+						const loading = this.$loading({
+							lock: true,
+							text: 'Loading',
+							spinner: 'el-icon-loading',
+							background: 'rgba(0, 0, 0, 0.7)'
+						});
+						if (res.data.code == '100003') {
+							loading.close();
+							this.$message.error(res.data.message);
+						} else {
+							loading.close();
+							//部门ID
+							Cookies.set('orgId', res.data.data[0].ORG_ID);
+							//所属组织分类
+							Cookies.set('disSort', res.data.data[0].DIS_SORT);
+							//所属城市
+							let result = res.data.data[0].ORG_NAME.split("-")
+							Cookies.set('city', result[1]);
+							Cookies.set('userid', res.data.data[0].STAFF_ID);
+							Cookies.set('username', res.data.data[0].STAFF_NAME);
+							Cookies.set('orgname', res.data.data[0].ORG_NAME);
+							this.$router.push('/index')
+							// this.$router.go('/index')
+						}
+					})
+					.catch(err => {
+						loading.close();
+						console.log(err);
+					});
+			}
 		},
 	}
 </script>

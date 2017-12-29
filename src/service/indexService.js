@@ -43,6 +43,7 @@ export default {
 				.then(res => {
 					this.scoreQuotaList = res.data.data.quota
 					this.scoreScreenList = res.data.data.screen
+					this.dataFormat = res.data.data.acctdate
 					this.getWeekData()
 				})
 				.catch(err => {
@@ -164,7 +165,106 @@ export default {
 			.catch(err => {
 				console.log(err);
 			});
-		}
+		},
+		getWorkFlow(userid) {
+			return api.get(`dataaudit_show/task/selectTask?userid=${userid}`)
+				.then(res => {
+					this.outerVisible2 = true
+					this.workflow = res.data.data
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getTaskFlow(taskid) {
+			return api.get(`dataaudit_show/task/selectTaskFlow?taskid=${taskid}`)
+				.then(res => {
+					this.taskflow = res.data.data
+					this.tasklength = this.taskflow.length
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getStaff() {
+			return api.get('dataaudit_show/task/selectStaffs')
+				.then(res => {
+					this.innerVisible2 = true
+					this.taskStaffs = res.data.data
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		sendTasktoPerson(taskid, userid, event, cuttime, taskcopy) {
+			return api.get(`dataaudit_show/task/taskAssign?taskid=${taskid}&userid=${userid}&event=${event}&cuttime=${cuttime}&taskcopy=${taskcopy}`)
+				.then(res => {
+					if (res.data.code == '100003') {
+						this.loading = false
+						this.$message.error(res.data.message);
+					} else {
+						this.$message({
+							message: '发送成功！',
+							type: 'success'
+						});
+						this.innerVisible2 = false
+						this.outerVisible2 = false
+
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		backTask(taskid, event){
+			return api.get(`dataaudit_show/task/taskBack?taskid=${taskid}&event=${event}`)
+			.then(res => {
+				if (res.data.code == '100003') {
+					this.loading = false
+					this.$message.error(res.data.message);
+				} else {
+					this.$message({
+						message: '退回成功！',
+						type: 'success'
+					});
+					this.innerVisible2 = false
+					this.outerVisible2 = false
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
+		},
+		successTask(taskid, userid, event, taskcopy){
+			return api.get(`dataaudit_show/task/taskFinish?taskid=${taskid}&userid=${userid}&event=${event}&taskcopy=${taskcopy}`)
+			.then(res => {
+				if (res.data.code == '100003') {
+					this.loading = false
+					this.$message.error(res.data.message);
+				} else {
+					this.$message({
+						message: '发送成功！',
+						type: 'success'
+					});
+					this.innerVisible2 = false
+					this.outerVisible2 = false
+
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
+		},
+		getWeeksData(userid) {
+			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}`)
+				.then(res => {
+					this.outerVisible = true
+					this.weekly = res.data.data
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 	}
 }
 

@@ -18,6 +18,10 @@ export default new Router({
 		[
 			{
 				path: '/',
+				redirect: '/login',
+			},
+			{
+				path: '/index',
 				name: 'INDEX',
 				component: Index
 			},
@@ -29,6 +33,11 @@ export default new Router({
 			{
 				path: '/login',
 				name: 'LOGIN',
+				component: login
+			},
+			{
+				path: '/login/:usercount',
+				name: 'CLOUDLOGIN',
 				component: login
 			},
 			{

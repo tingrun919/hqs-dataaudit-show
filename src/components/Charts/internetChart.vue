@@ -4,7 +4,7 @@
 
 <script>
 	import echarts from 'echarts'
-	//require('echarts/theme/vintage') // echarts 主题
+	// require('echarts/theme/vintage') // echarts 主题
 
 	const animationDuration = 3000
 	export default {

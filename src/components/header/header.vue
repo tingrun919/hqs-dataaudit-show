@@ -43,7 +43,7 @@
 			};
 		},
 		beforeMount() {
-			this.timer()
+			// this.timer()
 			this.myday()
 		},
 		methods: {
