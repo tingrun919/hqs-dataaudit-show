@@ -799,6 +799,7 @@
 		height: 100%;
 		width: 80%;
 		margin: 0 auto;
+		min-height: 100%;
 	}
 
 	p {
@@ -994,13 +995,13 @@
 		padding-right: 5px;
 		line-height: 40px;
 	}
-
+	.panel{
+		background: #f4f4f4;
+		position: relative;
+	}
 	.panel-title {
 		font-size: 18px;
 		color: #5e6d82;
-		position: relative;
-		margin: auto;
-		right: 47%;
 	}
 
 	.panel-title>span {
@@ -1011,10 +1012,11 @@
 	}
 
 	.title-panel {
-		text-align: center;
-		position: absolute;
+		text-align: left;
+		position: relative;
+		height: 100%;
 		top: 3%;
-		transform: translateY(-3%);
 		width: 100%;
 	}
+
 </style>

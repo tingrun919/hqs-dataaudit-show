@@ -79,7 +79,7 @@
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
 							this.loading = false
-							this.$router.push('/index')
+							// this.$router.push('/index')
 							this.$router.go('/index')
 						}
 					})

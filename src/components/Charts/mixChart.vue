@@ -7,6 +7,7 @@
 
 <script>
 	import echarts from 'echarts'
+	// require('echarts/theme/macarons')
 	import * as Cookies from "js-cookie";
 
 	export default {
@@ -66,8 +67,10 @@
 						show: true,
 						showTitle: true,
 						orient: "vertical",
-						right: '30px',
+						right: '20px',
 						top: '25%',
+						itemGap:18,
+						itemSize:25,
 						feature: {
 							myReport: {
 								//样例数据
@@ -139,7 +142,7 @@
 		},
 		methods: {
 			initChart() {
-				this.chart = echarts.init(this.$el, 'default')
+				this.chart = echarts.init(this.$el, 'macarons')
 				this.chart.setOption(this.option1)
 				this.chart.setOption({
 					tooltip: {
@@ -162,13 +165,13 @@
 						bottom: '20',
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 25
+						end: this.tabrange == 2 ? 100 : 20
 					}, {
 						type: 'inside',
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 25
+						end: this.tabrange == 2 ? 100 : 20
 					}],
 					xAxis: {
 						type: 'category',
@@ -198,6 +201,15 @@
 						name: this.serieslist[i].name,
 						type: this.serieslist[i].type,
 						data: this.serieslist[i].data,
+						markPoint: {
+							data: [{
+								type: 'max',
+								name: '最大值'
+							}, {
+								type: 'min',
+								name: '最小值'
+							}]
+						},
 						yAxisIndex: this.serieslist[i].yAxisIndex,
 					}
 					this.yData.push(item);
@@ -210,6 +222,7 @@
 					var item = {
 						type: 'value',
 						position: i == 0 ? 'left' : 'right',
+						splitNumber:4,
 						axisLabel: {
 							formatter: '{value} ' + this.yaxislist[i]
 						}

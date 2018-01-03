@@ -27,8 +27,8 @@ export default {
 				});
 		},
 		getAcctDate(orgid, tabid) {
-			// this.acctDate = []
-			// this.acctDateDefault = ''
+			this.acctDate = []
+			this.acctDateDefault = ''
 			return api.get(`dataaudit_show/usertab/selectAcctdate?tabid=${tabid}&orgid=${orgid}`)
 				.then(res => {
 					this.acctDate = res.data.data
@@ -39,8 +39,8 @@ export default {
 				});
 		},
 		getProv(orgid) {
-			// this.prov = []
-			// this.provDefault = ''
+			this.prov = []
+			this.provDefault = ''
 			return api.get(`dataaudit_show/usertab/selectProv?orgid=${orgid}`)
 				.then(res => {
 					this.prov = res.data.data
