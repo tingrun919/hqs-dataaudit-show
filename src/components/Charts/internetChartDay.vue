@@ -4,7 +4,6 @@
 
 <script>
 	import echarts from 'echarts'
-	//require('echarts/theme/vintage') // echarts 主题
 
 	const animationDuration = 3000
 	export default {
@@ -15,11 +14,11 @@
 			},
 			width: {
 				type: String,
-				default: '115%'
+				default: '100%'
 			},
 			height: {
 				type: String,
-				default: '330px'
+				default: '350%'
 			},
 			xaxislist: {
 				type: Array,
@@ -41,27 +40,14 @@
 					title: {
 						text: '互联网数据量化环比同比',
 						x:'center',
-						top:'6%',
+						top:'8%',
 						textStyle: {
 							fontWeight: 'normal',
-							fontSize: 11
+							fontSize: 14
 						}
-					},
-					tooltip: {
-						trigger: 'axis',
 					},
 					grid: {
 						containLabel: true,
-						// bottom: '15%',
-						// top:'15%',
-						// right:'13%',
-						// left:'1%'
-					},
-					legend: {
-						textStyle:{
-							fontSize: '10'
-						},
-						data: []
 					},
 				}
 			}
@@ -72,7 +58,6 @@
 			},
 		},
 		mounted() {
-			// this.initChart()
 			this.chart = null
 		},
 		beforeDestroy() {
@@ -84,18 +69,30 @@
 		},
 		methods: {
 			initChart() {
-				this.chart = echarts.init(this.$el, 'default')
+				this.chart = echarts.init(this.$el, 'macarons')
 				this.chart.setOption(this.option)
 				this.chart.setOption({
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross'
+						},
+						formatter: function (params, ticket, callback) {
+							var res = params[0].name;
+							for (var i = 0, l = params.length; i < l; i++) {
+									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') +  params[i].seriesName.split("-")[1];
+							}
+							return res;
+						}
+					},
 					dataZoom: [{
 						type: 'slider',
 						xAxisIndex: 0,
-						// bottom:'20',
 						filterMode: 'filter',
 						zoomLock:true,
 						start: 0,
 						end: 20,
-						height: 8
+						height: 12
 					}, {
 						zoomLock:true,
 						type: 'inside',
@@ -116,7 +113,13 @@
 					},
 					yAxis: this.yAxisMethod(),
 					legend: {
-						data: this.legendlist
+						textStyle:{
+							fontSize: '10'
+						},
+						data: this.legendlist,
+						formatter:function (name) {
+							return name.split("-")[0];
+						}
 					},
 					series: this.yDataList()
 				})
@@ -128,6 +131,15 @@
 						name: this.serieslist[i].name,
 						type: this.serieslist[i].type,
 						data: this.serieslist[i].data,
+						markPoint: {
+							data: [{
+								type: 'max',
+								name: '最大值'
+							}, {
+								type: 'min',
+								name: '最小值'
+							}]
+						},
 						yAxisIndex: this.serieslist[i].yAxisIndex,
 					}
 					this.yData.push(item);
@@ -140,6 +152,7 @@
 					var item = {
 						type: 'value',
 						position: i == 0 ? 'left' : 'right',
+						splitNumber:4,
 						axisLabel: {
 							formatter: '{value} ' + this.yaxislist[i]
 						}

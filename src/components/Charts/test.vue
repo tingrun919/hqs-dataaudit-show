@@ -1,35 +1,80 @@
 <template>
-	<div>
-		<input type="text" name="" :data-greeting="result" ref="inputref" id="kkk">
-		<el-button @click="test" id="1">默认按钮</el-button>			
-	</div>
-</template>
+	<el-table :data="tableData3" style="width: 100%">
 
+		<el-table-column label="配送信息">
+			<el-table-column prop="name" label="姓名" width="120">
+			</el-table-column>
+			<el-table-column label="地址">
+				<el-table-column prop="province" label="省份" width="120">
+				</el-table-column>
+				<el-table-column prop="city" label="市区" width="120">
+				</el-table-column>
+				<el-table-column prop="address" label="地址" width="300">
+				</el-table-column>
+				<el-table-column prop="zip" label="邮编" width="120">
+				</el-table-column>
+			</el-table-column>
+		</el-table-column>
+		<el-table-column prop="date" label="日期" width="150">
+		</el-table-column>
+	</el-table>
+</template>
 
 <script>
 	export default {
-		watch: {
-			result: function () {
-				console.log(this.result, "11111")//观察result的变化
-			}
-		},
-		beforeMount() {
-			$(function () {
-					$("#kkk").attr("data-greeting", "Hello World");//设置值为Hello World
-					console.log($("#kkk").data("greeting"),'设置之后')//打印设置之后的值
-					$("#1").trigger("click");
-			});
-		},
 		data() {
 			return {
-				result:'aaa',//初始值
+				tableData3: [{
+					date: '2016-05-03',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-02',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-04',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-01',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-08',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-06',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}, {
+					date: '2016-05-07',
+					name: '王小虎',
+					province: '上海',
+					city: '普陀区',
+					address: '上海市普陀区金沙江路 1518 弄',
+					zip: 200333
+				}]
 			}
-		},
-		methods: {
-			test() {
-				console.log($("#kkk").data("greeting"),'按钮触发data属性')//打印设置之后的值
-				console.log(this.result,'按钮触发vue')//打印data的值
-			},
 		}
 	}
 </script>

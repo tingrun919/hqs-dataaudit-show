@@ -139,117 +139,185 @@
 			</ul>
 		</section>
 		<section class="panel" data-section-name="day">
-			<el-row :gutter="5">
-				<el-col :span="12">
-					<el-row class="day-row">
-						<el-col :span="8" class="day-col">
-							<span style="line-height:28px;font-size:14px;">稽核范围</span>
-						</el-col>
-						<el-col :span="8" class="day-col">
-							<el-select v-model="internetSelect" size="mini" placeholder="请选择">
-								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="8" v-if="internetSelect != 1">
-							<el-select v-model="internetProv" size="mini" placeholder="请选择">
-								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="8" v-else>
-							<el-select v-model="internetAcct" size="mini" placeholder="请选择">
-								<el-option v-for="item in internetAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
-								</el-option>
-							</el-select>
-						</el-col>
-					</el-row>
-					<el-row>
-						<el-col :span="24">
-							<internetChart-Day :xaxislist='internetDataXaxis' :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
-						</el-col>
-					</el-row>
-				</el-col>
-				<el-col :span="12">
-					<el-row class="day-row">
-						<el-col :span="6" class="day-col">
-							<span style="line-height:28px;font-size:14px;">稽核范围</span>
-						</el-col>
-						<el-col :span="6" class="day-col">
-							<el-select v-model="signalingSelect" size="mini" placeholder="请选择">
-								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="6" class="day-col" v-if="signalingSelect != 1">
-							<el-select v-model="signalingProv" size="mini" placeholder="请选择">
-								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="6" class="day-col" v-else>
-							<el-select v-model="signalingAcct" size="mini" placeholder="请选择">
-								<el-option v-for="item in signalingAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="6">
-							<el-select v-model="signalingSatype" size="mini" placeholder="请选择">
-								<el-option label="cs" value="cs"></el-option>
-								<el-option label="lte" value="lte"></el-option>
-								<el-option label="ps" value="ps"></el-option>
-							</el-select>
-						</el-col>
-					</el-row>
-					<el-row>
-						<el-col :span="24">
-							<signalingChart-Day :xaxislist='signalingDataXaxis' :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
-							 :yaxislist='signalingDataYaxis'></signalingChart-Day>
-						</el-col>
-					</el-row>
-				</el-col>
-			</el-row>
-			<el-row :gutter="5">
-				<el-col :span="12">
-					<el-row>
-						<el-col :span="6" class="day-col">
-							<span style="line-height:28px;font-size:14px;">稽核范围</span>
-						</el-col>
-						<el-col :span="5" class="day-col">
-							<el-select v-model="internetTimelySelect" size="mini" placeholder="请选择">
-								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="5" v-if="internetTimelySelect != 1">
-							<el-select v-model="internetTimelyProv" size="mini" placeholder="请选择">
-								<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="5" v-else>
-							<el-select v-model="internetTimelyAcct" size="mini" placeholder="请选择">
-								<el-option v-for="item in internetTimelyAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
-								</el-option>
-							</el-select>
-						</el-col>
-						<el-col :span="8">
-							<el-switch style="display: block" v-model="isTime" active-color="#e6a23c" inactive-color="#13ce66" active-text="最大时间" inactive-text="平均时间">
-							</el-switch>
-						</el-col>
-					</el-row>
-					<el-row>
-						<el-col :span="24">
-							<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
-							 :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
-						</el-col>
-					</el-row>
-				</el-col>
-				<el-col :span="12">
-					<!-- <dynamicData-Chart :xaxislist='signalingTimelyDataXaxis' :legendlist='signalingTimelyDataLegend' :serieslist='signalingTimelyDataSeriesList'
-					 :yaxislist='signalingTimelyDataYaxis'></dynamicData-Chart> -->
-				</el-col>
-			</el-row>
+			<div class="inner">
+				<el-row :gutter="10">
+					<el-col :span="12">
+						<el-card>
+							<el-row class="day-row">
+								<el-col :span="8" class="day-col">
+									<span style="line-height:28px;font-size:15px;">稽核范围:</span>
+								</el-col>
+								<el-col :span="8" class="day-col">
+									<el-select v-model="internetSelect" size="mini" placeholder="请选择">
+										<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="8" class="day-col" v-if="internetSelect != 1">
+									<el-select v-model="internetProv" size="mini" placeholder="请选择">
+										<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="8" class="day-col" v-else>
+									<el-select v-model="internetAcct" size="mini" placeholder="请选择">
+										<el-option v-for="item in internetAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+										</el-option>
+									</el-select>
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="24">
+									<internetChart-Day :xaxislist='internetDataXaxis' :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
+								</el-col>
+							</el-row>
+						</el-card>
+					</el-col>
+					<el-col :span="12">
+						<el-card>
+							<el-row class="day-row">
+								<el-col :span="6" class="day-col-satype">
+									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
+								</el-col>
+								<el-col :span="6" class="day-col-satype">
+									<el-select v-model="signalingSelect" size="mini" placeholder="请选择">
+										<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="6" class="day-col-satype" v-if="signalingSelect != 1">
+									<el-select v-model="signalingProv" size="mini" placeholder="请选择">
+										<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="6" class="day-col-satype" v-else>
+									<el-select v-model="signalingAcct" size="mini" placeholder="请选择">
+										<el-option v-for="item in signalingAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="6">
+									<el-select class="day-col-satype" v-model="signalingSatype" size="mini" placeholder="请选择">
+										<el-option label="cs" value="cs"></el-option>
+										<el-option label="lte" value="lte"></el-option>
+										<el-option label="ps" value="ps"></el-option>
+									</el-select>
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="24">
+									<signalingChart-Day :xaxislist='signalingDataXaxis' :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
+									 :yaxislist='signalingDataYaxis'></signalingChart-Day>
+								</el-col>
+							</el-row>
+						</el-card>
+					</el-col>
+				</el-row>
+				<el-row :gutter="10">
+					<el-col :span="12">
+						<el-card>
+							<el-row class="day-row">
+								<el-col :span="4" class="day-col-switch">
+									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
+								</el-col>
+								<el-col :span="5" class="day-col-switch">
+									<el-select v-model="internetTimelySelect" size="mini" placeholder="请选择">
+										<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="5" class="day-col-switch" v-if="internetTimelySelect != 1">
+									<el-select v-model="internetTimelyProv" size="mini" placeholder="请选择">
+										<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="5" class="day-col-switch" v-else>
+									<el-select v-model="internetTimelyAcct" size="mini" placeholder="请选择">
+										<el-option v-for="item in internetTimelyAcctList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="10" class="day-col-switch">
+									<el-switch style="display: block" v-model="isTime" active-color="#e6a23c" inactive-color="#13ce66" active-text="最大时间" inactive-text="平均时间">
+									</el-switch>
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="24">
+									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
+									 :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
+								</el-col>
+							</el-row>
+						</el-card>
+					</el-col>
+					<el-col :span="12">
+						<el-card>
+							<el-row class="day-row-time">
+								<el-col :span="8" class="day-col">
+									<span style="line-height:28px;font-size:15px;">账期:</span>
+								</el-col>
+								<el-col :span="8" class="day-col">
+									<el-select v-model="signalingTimeliness" size="mini" placeholder="请选择">
+										<el-option v-for="item in signalingTimelinessList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
+										</el-option>
+									</el-select>
+								</el-col>
+								<el-col :span="8" class="day-col">
+									<el-button-group>
+										<el-button type="primary" size="mini" @click="handleViewSingaling" icon="el-icon-zoom-in">查询</el-button>
+										<el-button type="primary" size="mini" icon="el-icon-download">下载</el-button>
+									</el-button-group>
+								</el-col>
+							</el-row>
+							<el-row>
+								<el-col :span="24">
+									<el-table :data="signalingTimelinessTable" stripe height="353" border style="width: 100%">
+										<el-table-column show-overflow-tooltip align="center" prop="acct_date" label="账期" width="100">
+										</el-table-column>
+										<el-table-column show-overflow-tooltip align="center" prop="prov_name" label="省份">
+										</el-table-column>
+										<el-table-column show-overflow-tooltip align="center" label="CS">
+											<el-table-column show-overflow-tooltip align="center" prop="CSnumber" label="中断次数">
+											</el-table-column>
+											<el-table-column show-overflow-tooltip align="center" prop="CStime" label="中断时长">
+											</el-table-column>
+										</el-table-column>
+										<el-table-column show-overflow-tooltip align="center" label="PS">
+											<el-table-column show-overflow-tooltip align="center" prop="PSnumber" label="中断次数">
+											</el-table-column>
+											<el-table-column show-overflow-tooltip align="center" prop="PStime" label="中断时长">
+											</el-table-column>
+										</el-table-column>
+										<el-table-column show-overflow-tooltip align="center" label="LTE">
+											<el-table-column show-overflow-tooltip align="center" prop="LTEnumber" label="中断次数">
+											</el-table-column>
+											<el-table-column show-overflow-tooltip align="center" prop="LTEtime" label="中断时长">
+											</el-table-column>
+										</el-table-column>
+										<el-table-column show-overflow-tooltip align="center" label="操作">
+											<template slot-scope="scope">
+												<el-button size="mini" @click="handleView(scope.row)" type="success">查看</el-button>
+											</template>
+										</el-table-column>
+									</el-table>
+								</el-col>
+							</el-row>
+							<el-dialog title="信令延时性" :visible.sync="testdialog">
+								<el-table :data="signalingTimelinessDetail" stripe border>
+									<el-table-column type="index" :index="indexMethod" label="序号" width="60"></el-table-column>
+									<el-table-column property="acct_date" label="账期"></el-table-column>
+									<el-table-column property="prov_name" label="省份"></el-table-column>
+									<el-table-column property="sa_type" label="数据域"></el-table-column>
+									<el-table-column property="longtime" label="中断时间"></el-table-column>
+									<el-table-column property="time" label="中断时长"></el-table-column>
+								</el-table>
+							</el-dialog>
+						</el-card>
+					</el-col>
+				</el-row>
+			</div>
 		</section>
 		<section class="panel" data-section-name="signaling">
 			<div class="inner">
@@ -287,7 +355,7 @@
 			<div class="inner">
 				<div class="title-panel">
 					<p class="panel-title">
-						<span>1</span>借口文件稽核
+						<span>1</span>接口文件稽核
 					</p>
 				</div>
 				<el-tabs v-model="interfaceActive" type="border-card">
@@ -309,10 +377,10 @@
 			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
 			<el-button @click="test" id="1">默认按钮</el-button>
 		</div>
-		<el-button @click="handleData" v-show="false" id="buttonDialog"></el-button>
+		<el-button @click="handleDatas" v-show="false" id="buttonDialog"></el-button>
 		<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
 		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
-		<el-dialog title="样例数据" fullscreen :visible.sync="dialogTableVisible">
+		<el-dialog title="样例数据" :modal="isModal" fullscreen :visible.sync="dialogTableVisible">
 			<span>时间</span>
 			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
 				<el-option v-for="item in sampletimeList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
@@ -323,20 +391,27 @@
 				<el-option v-for="item in sampleprovList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
 				</el-option>
 			</el-select>
-			<span>数据域</span>
-			<el-select size="small" v-model="sampledata" placeholder="请选择数据域">
+			<span v-if="isSatype">数据域</span>
+			<el-select size="small" v-if="isSatype" v-model="sampledata" placeholder="请选择数据域">
 				<el-option label="cs" value="cs"></el-option>
 				<el-option label="lte" value="lte"></el-option>
 				<el-option label="ps" value="ps"></el-option>
 			</el-select>
 			<el-button @click="handleDataYl" size="small" type="primary">查询</el-button>
-			<el-table v-for="tables in datalist" stripe border :key="tables.acct_date" style="width: 100%;margin-top:20px;" max-height="500"
-			 :data="tables">
-				<el-table-column show-overflow-tooltip align="center" v-for="item in columnsName" :key="item.COLUMN_NAME" :property="item.COLUMN_NAME"
-				 :label="item.COLUMN_COMMENT"></el-table-column>
-			</el-table>
+			<el-button @click="handleDataDownload" size="small" type="success">下载</el-button>
+			<a :href="downUrl" target='blank' style="display:none;">
+				<span id="download">下载</span>
+			</a>
+			<h1 style="margin-top:20px;" v-for="(name,index) in sdtnName">
+				<span style="font-weight:bold;font-size:16px;">{{index+1 +'、'+ name.TABLE_COMMENT}}</span>
+				<el-table v-if="index == indexs" v-for="(tables,indexs) in datalist" stripe border :key="tables.acct_date" style="width: 100%;margin-top:20px;"
+				 max-height="500" :data="tables">
+					<el-table-column show-overflow-tooltip align="center" v-for="item in columnsName[indexs]" :key="item.column_NAME" :property="item.column_NAME"
+					 :label="item.column_COMMENT"></el-table-column>
+				</el-table>
+			</h1>
 		</el-dialog>
-		<el-dialog title="报告列表" fullscreen :visible.sync="outerVisible">
+		<el-dialog title="报告列表" fullscreen :modal="isModal" :visible.sync="outerVisible">
 			<el-table :data="weekly" stripe border style="width: 100%;margin-top:20px;">
 				<el-table-column align="center" prop="mailId" label="报告编号">
 				</el-table-column>
@@ -361,8 +436,8 @@
 				<div v-html="mailcontent"></div>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="我的工作流" fullscreen :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
-			<el-table :data="workflow" stripe border @expand-change="handleTask">
+		<el-dialog title="我的工作流" lock-scroll fullscreen :modal="isModal" :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
+			<el-table :data="workflow" stripe border @expand-change="handleTask" :row-key="getRowKeys" :expand-row-keys="expands">
 				<el-table-column fixed="left" type="expand" accordion>
 					<template slot-scope="props">
 						<el-steps :active="tasklength" align-center>
@@ -479,7 +554,7 @@
 	import Vue from 'vue'
 
 	export default {
-		mixins: [indexService],
+		mixins: [indexService, mixChartService],
 		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
 		data() {
 			return {
@@ -538,12 +613,15 @@
 				internetTimelySelect: '1',
 				internetTimelyProv: '',
 				internetTimelyAcct: '',
-
+				signalingTimeliness: '',
 
 				internetProvList: [],
 				internetAcctList: [],
 				signalingAcctList: [],
 				internetTimelyAcctList: [],
+				signalingTimelinessList: [],
+				signalingTimelinessTable: [],
+				signalingTimelinessDetail: [],
 
 				internetDataYaxis: [],
 				internetDataSeriesList: [],
@@ -594,6 +672,37 @@
 				name: Cookies.get('username') + '-' + Cookies.get('orgname'),
 				dataFormat: '',
 
+				isModal: false,
+				isSatype: false,
+
+				columnsName: [],
+				datalist: [],
+				sdtnName: [],
+				downUrl: '',
+
+				getRowKeys(row) {
+					return row.taskId;
+				},
+				expands: [],
+
+				testdialog: false,
+				gridData: [{
+					date: '2016-05-02',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1518 弄'
+				}, {
+					date: '2016-05-04',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1517 弄'
+				}, {
+					date: '2016-05-01',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1519 弄'
+				}, {
+					date: '2016-05-03',
+					name: '王小虎',
+					address: '上海市普陀区金沙江路 1516 弄'
+				}]
 			}
 		},
 		beforeMount() {
@@ -705,8 +814,10 @@
 					this.getDayAcctDate(1)
 					this.getDayAcctDate(2)
 					this.getDayAcctDate(3)
+					this.getDayAcctDate(4)
 					this.getDayProv()
 					this.getSignalingTimely()
+					this.getSignalingTimeliness(this.signalingTimeliness)
 				}
 			},
 			handleWorkflow() {
@@ -715,8 +826,8 @@
 			handleWeelData() {
 				this.getWeeksData(Cookies.get('userid'))
 			},
-			handleData() {
-				this.getSampleTime(Cookies.get('orgId'), this.tabId)
+			handleDatas() {
+				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'))
 			},
 			sendTask(row) {
 				if (this.isShow == 'send') {
@@ -729,9 +840,22 @@
 
 			},
 			handleDataYl() {
-				this.getSampleData(Cookies.get('orgId'), this.tabId, this.sampletime, this.sampleprov, this.sampledata)
+				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+			},
+			handleDataDownload() {
+				const satype = this.isSatype ? this.sampledata : ''
+				this.downUrl = "http://192.168.1.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				setTimeout(() => {
+					$("#download").trigger("click")
+				}, 500);
 			},
 			handleTask(row) {
+				if (this.expands[0] == row.taskId) {
+					this.expands = [];
+				} else {
+					this.expands = [];
+					this.expands.push(row.taskId);
+				}
 				this.getTaskFlow(row.taskId)
 			},
 			taskStaff(row, type) {
@@ -739,6 +863,15 @@
 				this.isShow = type
 				this.getStaff()
 			},
+			indexMethod(index) {
+				return index + 1;
+			},
+			handleView(row) {
+				this.getSignalingTimeDetail(row.acct_date, row.prov_id);
+			},
+			handleViewSingaling(){
+				this.getSignalingTimeliness(this.signalingTimeliness)
+			}
 		}
 	}
 </script>
@@ -981,13 +1114,32 @@
 	}
 
 	.day-row {
-		padding-right: 15%;
+		display: inline-block;
+		position: relative;
+		padding-top: 20px;
 	}
 
 	.day-col {
+		letter-spacing: 6px;
 		text-align: right;
 		padding-right: 10px;
-		line-height: 27px;
+		width: 30%;
+	}
+
+	.day-col-satype {
+		letter-spacing: 6px;
+		text-align: right;
+		padding-right: 10px;
+	}
+
+	.day-col-switch {
+		letter-spacing: 2px;
+		text-align: center;
+		padding-right: 10px;
+	}
+
+	.el-switch {
+		line-height: 23px;
 	}
 
 	.col-right {
@@ -995,10 +1147,12 @@
 		padding-right: 5px;
 		line-height: 40px;
 	}
-	.panel{
+
+	.panel {
 		background: #f4f4f4;
 		position: relative;
 	}
+
 	.panel-title {
 		font-size: 18px;
 		color: #5e6d82;
@@ -1019,4 +1173,7 @@
 		width: 100%;
 	}
 
+	.el-row {
+		padding-top: 20px;
+	}
 </style>

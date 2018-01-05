@@ -22,11 +22,11 @@
 			},
 			width: {
 				type: String,
-				default: '200px'
+				default: '100%'
 			},
 			height: {
 				type: String,
-				default: '200px'
+				default: '500%'
 			},
 			xaxislist: {
 				type: Array,
@@ -39,9 +39,6 @@
 			},
 			yaxislist: {
 				type: Array,
-			},
-			tabid: {
-				type: Number
 			},
 			tabrange: {
 				type: String
@@ -150,7 +147,6 @@
 						axisPointer: {
 							type: 'cross'
 						},
-						// formatter: this.handleTooptip(),
 						formatter: function (params, ticket, callback) {
 							var res = params[0].name;
 							for (var i = 0, l = params.length; i < l; i++) {

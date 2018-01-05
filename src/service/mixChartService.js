@@ -1,15 +1,35 @@
 import API from '../api/API'
 const api = new API()
+import * as Cookies from "js-cookie";
 
 export default {
 
 	methods: {
+		getSampleRange(orgid, tabid) {
+			return api.get(`dataaudit_show/usertab/selectRange?orgid=${orgid}&tabid=${tabid}`)
+				.then(res => {
+					if(res.data.data.length > 2){
+						this.getSampleData(orgid, tabid, this.sampletime, this.sampleprov, this.sampledata)
+						this.isSatype = true;
+					}else{
+						this.getSampleData(orgid, tabid, this.sampletime, this.sampleprov, '')
+						this.isSatype = false;
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		getSampleTime(orgid, tabid) {
 			return api.get(`dataaudit_show/usertab/selectylAcctdate?orgid=${orgid}&tabid=${tabid}`)
 				.then(res => {
-					this.sampletimeList = res.data.data
-					this.sampletime = res.data.data[0].acctdate
-					this.getSampleProv(orgid)
+					if(res.data.code == "100003"){
+						this.$message.error(res.data.message);
+					}else{
+						this.sampletimeList = res.data.data
+						this.sampletime = res.data.data[0].acctdate
+						this.getSampleProv(orgid)
+					}
 				})
 				.catch(err => {
 					console.log(err);
@@ -20,7 +40,7 @@ export default {
 				.then(res => {
 					this.sampleprovList = res.data.data
 					this.sampleprov = res.data.data[0].prov_id
-					this.getSampleData(orgid, this.tabId, this.sampletime, this.sampleprov, this.sampledata)
+					this.getSampleRange(orgid,Cookies.get('tabid'))
 				})
 				.catch(err => {
 					console.log(err);
@@ -29,10 +49,11 @@ export default {
 		getSampleData(orgid, tabid, acctdate, provid, satype) {
 			return api.get(`dataaudit_show/usertab/selectylData?orgid=${orgid}&tabid=${tabid}&acctdate=${acctdate}&provid=${provid}&satype=${satype}`)
 				.then(res => {
-					this.dialogTableVisible = true
 					this.columnsName = res.data.data.columnsName
 					this.datalist = res.data.data.datalist
 					this.sdtnName = res.data.data.sdtnName
+					this.dialogTableVisible = true
+					
 				})
 				.catch(err => {
 					console.log(err);
@@ -136,6 +157,19 @@ export default {
 			.catch(err => {
 				console.log(err);
 			});
+		},
+		getSampleDataDownload(orgid, tabid, acctdate, provid, satype){
+			return api.get(`dataaudit_show/usertab/excel?orgid=${orgid}&tabid=${tabid}&acctdate=${acctdate}&provid=${provid}&satype=${satype}`)
+				.then(res => {
+					// this.columnsName = res.data.data.columnsName
+					// this.datalist = res.data.data.datalist
+					// this.sdtnName = res.data.data.sdtnName
+					// this.dialogTableVisible = true
+					
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		}
 
 	}
