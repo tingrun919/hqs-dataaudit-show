@@ -20,7 +20,6 @@
 			},
 			height: {
 				type: String,
-				default: '440%'
 			},
 			quotalist: {
 				type: Array,
@@ -49,12 +48,14 @@
 						itemSize:25,
 						feature: {
 							myReport: {
+								title: '样例数据',
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
 									$("#dialogs").trigger("click");
 								}
 							},
 							myRecording: {
+								title: '工作流',
 								icon: 'image://../../dist/static/img/recording.png',
 								onclick: function (params) {
 									$("#workflow").trigger("click");

@@ -18,7 +18,7 @@
 			},
 			height: {
 				type: String,
-				default: '350%'
+				// default: '350%'
 			},
 			xaxislist: {
 				type: Array,

@@ -19,7 +19,7 @@
 			},
 			height: {
 				type: String,
-				default: '330px'
+				// default: '330px'
 			}
 		},
 		data() {

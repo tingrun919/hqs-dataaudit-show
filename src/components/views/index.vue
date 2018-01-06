@@ -71,35 +71,36 @@
 				<el-row style="padding:0;" :gutter="10">
 					<el-col :span="12">
 						<el-card>
-							<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
+							<internet-Chart :xaxislist='dataXaxis' :height="viewHeight" :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis'
+							 :screenlist='dataScreen'></internet-Chart>
 						</el-card>
 					</el-col>
 					<el-col :span="6">
 						<el-card>
-							<score-Chart :quotalist='scoreQuotaList' :screenlist='scoreScreenList'></score-Chart>
+							<score-Chart :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></score-Chart>
 						</el-card>
 					</el-col>
 					<el-col :span="6">
 						<el-card>
-							<map-Chart :quotalist='scoreQuotaList'></map-Chart>
+							<map-Chart :quotalist='scoreQuotaList' :height="viewHeight"></map-Chart>
 						</el-card>
 					</el-col>
 				</el-row>
 				<el-row :gutter="10">
 					<el-col :span="12">
 						<el-card>
-							<matching-Chart :xaxislist='matchXaxis' :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
+							<matching-Chart :xaxislist='matchXaxis' :height="viewHeight" :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
 						</el-card>
 					</el-col>
 					<el-col :span="6">
 						<el-card>
-							<invalidNumber-Chart :xaxislist='numberXaxis' :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
+							<invalidNumber-Chart :xaxislist='numberXaxis' :height="viewHeight" :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
 							 :screenlist='numberScreen'></invalidNumber-Chart>
 						</el-card>
 					</el-col>
 					<el-col :span="6">
 						<el-card class="card-style">
-							<div style="height:300px;">
+							<div :style="{height:viewHeight}">
 								<span>【本期评价】</span>
 								<p>
 									{{screenContent}}
@@ -177,7 +178,7 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetChart-Day :xaxislist='internetDataXaxis' :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
+									<internetChart-Day :xaxislist='internetDataXaxis' :height="viewHeightDay" :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
@@ -216,7 +217,7 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<signalingChart-Day :xaxislist='signalingDataXaxis' :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
+									<signalingChart-Day :xaxislist='signalingDataXaxis' :height="viewHeightDay" :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
 									 :yaxislist='signalingDataYaxis'></signalingChart-Day>
 								</el-col>
 							</el-row>
@@ -255,16 +256,16 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
+									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :height="viewHeightDay" :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
 									 :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
 					</el-col>
 					<el-col :span="12">
-						<el-card>
-							<el-row class="day-row-time">
-								<el-col :span="8" class="day-col">
+						<el-card :style="{height:viewHeightDaySignaling}">
+							<el-row class="day-row-time ">
+								<el-col :span="6" class="day-col">
 									<span style="line-height:28px;font-size:15px;">账期:</span>
 								</el-col>
 								<el-col :span="8" class="day-col">
@@ -273,7 +274,7 @@
 										</el-option>
 									</el-select>
 								</el-col>
-								<el-col :span="8" class="day-col">
+								<el-col :span="10" class="day-col">
 									<el-button-group>
 										<el-button type="primary" size="mini" @click="handleViewSingaling" icon="el-icon-zoom-in">查询</el-button>
 										<el-button type="primary" size="mini" @click="handleDataDownloadSignling" icon="el-icon-download">下载</el-button>
@@ -751,6 +752,7 @@
 				});
 			});
 			//获取周报数据
+			// console.log((window.innerHeight - 60) / 2 + 'px', '2222222222')
 			this.getWeekScore()
 		},
 		// beforeRouteEnter(to, from, next) {
@@ -801,6 +803,17 @@
 			isTime: function () {
 				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0, '')
 			}
+		},
+		computed: {
+			viewHeight: function () {
+				return (window.innerHeight - 80) / 2 + 'px'
+			},
+			viewHeightDay: function () {
+				return (window.innerHeight - 140) / 2 + 'px'
+			},
+			viewHeightDaySignaling: function () {
+				return (window.innerHeight - 40) / 2 + 'px'
+			},
 		},
 		methods: {
 			//处理鼠标滑动到某个页面时候触发的方法
@@ -1136,7 +1149,7 @@
 	}
 
 	.card-style {
-		min-height: 440px;
+		overflow-y: auto;
 	}
 
 	.card-style span {
@@ -1148,31 +1161,26 @@
 		text-align: left;
 	}
 
-	.card-style div {
-		padding-top: 5px;
-	}
-
 	.card-style div p {
 		text-align: left;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 20;
-		-webkit-box-orient: vertical;
+		/* overflow: hidden; */
+		/* text-overflow: ellipsis; */
+		/* display: -webkit-box; */
+		/* -webkit-line-clamp: 20; */
+		/* -webkit-box-orient: vertical; */
 		font-size: 15px;
 	}
 
 	.day-row {
 		display: inline-block;
 		position: relative;
-		padding-top: 20px;
+		padding-top: 10px;
 	}
 
 	.day-col {
-		letter-spacing: 6px;
-		text-align: right;
+		text-align: center;
 		padding-right: 10px;
-		width: 30%;
+		/* width: 30%; */
 	}
 
 	.day-col-satype {
@@ -1182,7 +1190,6 @@
 	}
 
 	.day-col-switch {
-		letter-spacing: 2px;
 		text-align: center;
 		padding-right: 10px;
 	}
@@ -1223,7 +1230,7 @@
 	}
 
 	.el-row {
-		padding-top: 20px;
+		padding-top: 10px;
 	}
 
 	.current-report {

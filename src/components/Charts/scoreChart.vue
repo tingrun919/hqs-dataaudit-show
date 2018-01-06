@@ -18,7 +18,6 @@
 			},
 			height: {
 				type: String,
-				default: '440%'
 			},
 			quotalist: {
 				type: Array,
