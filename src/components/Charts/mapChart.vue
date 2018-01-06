@@ -20,7 +20,7 @@
 			},
 			height: {
 				type: String,
-				default: '300px'
+				default: '440%'
 			},
 			quotalist: {
 				type: Array,
@@ -42,10 +42,11 @@
 					toolbox: {
 						show: true,
 						orient: 'horizontal',
-						// x: 'center',
 						left: "15%",
 						y: 'top',
-						showTitle: false,
+						showTitle: true,
+						itemGap:18,
+						itemSize:25,
 						feature: {
 							myReport: {
 								icon: 'image://../../dist/static/img/report.png',

@@ -4,7 +4,6 @@
 
 <script>
 	import echarts from 'echarts'
-	//require('echarts/theme/macarons') // echarts 主题
 
 	const animationDuration = 3000
 	export default {
@@ -19,7 +18,7 @@
 			},
 			height: {
 				type: String,
-				default: '330px'
+				default: '440%'
 			},
 			quotalist: {
 				type: Array,
@@ -33,24 +32,28 @@
 				chart: null,
 				option: {
 					title: {
-						text: '本期稽核扣分榜',
+						text: '',
+						bottom: '25',
 						x: 'center',
-						bottom: '10%',
 						textStyle: {
 							fontWeight: 'normal',
-							fontSize: 13
+							fontSize: 16
 						}
 					},
 					tooltip: {
 						trigger: 'axis',
 						axisPointer: { // 坐标轴指示器，坐标轴触发有效
 							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+						},
+						formatter: function (params, ticket, callback) {
+							var res = params[0].name;
+							for (var i = 0, l = params.length; i < l; i++) {
+									res += '<br/> 本期稽核扣分数: ' + (params[i].value ? params[i].value : '-') + '分';
+							}
+							return res;
 						}
 					},
 					grid: {
-						bottom: '15%',
-						right: '2%',
-						left: '2%',
 						containLabel: true
 					},
 					xAxis: [
@@ -69,7 +72,6 @@
 			},
 		},
 		mounted() {
-			// this.initChart()
 			this.chart = null
 		},
 		beforeDestroy() {
@@ -89,7 +91,7 @@
 						yAxis: this.yDataLists(),
 						series: this.yAxisMethod(),
 						title:{
-							text: this.screenlist[0].screenContent
+							text: this.screenlist[0].screenName
 						}
 					})
 			},

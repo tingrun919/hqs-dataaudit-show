@@ -61,45 +61,54 @@
 			</ul>
 		</div>
 		<section class="panel" data-section-name="week">
-			<el-row :gutter="5">
-				<el-col :span="17">
-					<el-card>
-						<div slot="header" class="clearfix">
-							<span style="line-height: 36px;">本期（{{dataFormat}}）稽核报告</span>
-						</div>
-						<el-row :gutter="20">
-							<el-col :span="15">
-								<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
-							</el-col>
-							<el-col :span="9">
-								<score-Chart :quotalist='scoreQuotaList' :screenlist='scoreScreenList'></score-Chart>
-							</el-col>
-						</el-row>
-						<el-row :gutter="20">
-							<el-col :span="15">
-								<matching-Chart :xaxislist='matchXaxis' :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
-							</el-col>
-							<el-col :span="9" style="margin-top: -25px;">
-								<invalidNumber-Chart :xaxislist='numberXaxis' :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
-								 :screenlist='numberScreen'></invalidNumber-Chart>
-							</el-col>
-						</el-row>
-					</el-card>
-				</el-col>
-				<el-col :span="7">
-					<el-card>
-						<map-Chart :quotalist='scoreQuotaList'></map-Chart>
-					</el-card>
-					<el-card class="card-style">
-						<div style="height:300px;">
-							<span>本期评价</span>
-							<p>
-								{{screenContent}}
-							</p>
-						</div>
-					</el-card>
-				</el-col>
-			</el-row>
+			<div class="inner">
+				<el-row style="padding:0;">
+					<el-col :span="24">
+						<span class="current-report">本期（
+							<span> {{dataFormat}} </span>）稽核报告</span>
+					</el-col>
+				</el-row>
+				<el-row style="padding:0;" :gutter="10">
+					<el-col :span="12">
+						<el-card>
+							<internet-Chart :xaxislist='dataXaxis' :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis' :screenlist='dataScreen'></internet-Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="6">
+						<el-card>
+							<score-Chart :quotalist='scoreQuotaList' :screenlist='scoreScreenList'></score-Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="6">
+						<el-card>
+							<map-Chart :quotalist='scoreQuotaList'></map-Chart>
+						</el-card>
+					</el-col>
+				</el-row>
+				<el-row :gutter="10">
+					<el-col :span="12">
+						<el-card>
+							<matching-Chart :xaxislist='matchXaxis' :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="6">
+						<el-card>
+							<invalidNumber-Chart :xaxislist='numberXaxis' :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
+							 :screenlist='numberScreen'></invalidNumber-Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="6">
+						<el-card class="card-style">
+							<div style="height:300px;">
+								<span>【本期评价】</span>
+								<p>
+									{{screenContent}}
+								</p>
+							</div>
+						</el-card>
+					</el-col>
+				</el-row>
+			</div>
 			<ul class="pagination">
 				<li>
 					<a class="active" href="#header">
@@ -240,7 +249,7 @@
 									</el-select>
 								</el-col>
 								<el-col :span="10" class="day-col-switch">
-									<el-switch style="display: block" v-model="isTime" active-color="#e6a23c" inactive-color="#13ce66" active-text="最大时间" inactive-text="平均时间">
+									<el-switch style="display: block" v-model="isTime" active-color="#20A0FF" inactive-color="#13ce66" active-text="最大时间" inactive-text="平均时间">
 									</el-switch>
 								</el-col>
 							</el-row>
@@ -267,7 +276,10 @@
 								<el-col :span="8" class="day-col">
 									<el-button-group>
 										<el-button type="primary" size="mini" @click="handleViewSingaling" icon="el-icon-zoom-in">查询</el-button>
-										<el-button type="primary" size="mini" icon="el-icon-download">下载</el-button>
+										<el-button type="primary" size="mini" @click="handleDataDownloadSignling" icon="el-icon-download">下载</el-button>
+										<a :href="downUrl" target='blank' style="display:none;">
+											<span id="downloadSignling">下载</span>
+										</a>
 									</el-button-group>
 								</el-col>
 							</el-row>
@@ -304,7 +316,7 @@
 									</el-table>
 								</el-col>
 							</el-row>
-							<el-dialog title="信令延时性" :visible.sync="testdialog">
+							<el-dialog title="信令延时性" :visible.sync="signalingdialog">
 								<el-table :data="signalingTimelinessDetail" stripe border>
 									<el-table-column type="index" :index="indexMethod" label="序号" width="60"></el-table-column>
 									<el-table-column property="acct_date" label="账期"></el-table-column>
@@ -375,7 +387,7 @@
 		</div>
 		<div style="display:none;">
 			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
-			<el-button @click="test" id="1">默认按钮</el-button>
+			<el-button @click="triggerScroll" id="1">默认按钮</el-button>
 		</div>
 		<el-button @click="handleDatas" v-show="false" id="buttonDialog"></el-button>
 		<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
@@ -530,6 +542,7 @@
 </template>
 
 <script>
+	//导入组建
 	import internetChart from '@/components/Charts/internetChart'
 	import scoreChart from '@/components/Charts/scoreChart'
 	import matchingChart from '@/components/Charts/matchingChart'
@@ -543,10 +556,10 @@
 	import signalingChartDay from '@/components/Charts/signalingChartDay'
 	import internetTimelyChartDay from '@/components/Charts/internetTimelyChartDay'
 
-
+	//导入头部底部
 	import headerView from '@/components/header/header'
 	import footerView from '@/components/footer/footer'
-
+	//导入service
 	import * as Cookies from "js-cookie";
 	import indexService from '../../service/indexService'
 	import mixChartService from '../../service/mixChartService'
@@ -685,27 +698,11 @@
 				},
 				expands: [],
 
-				testdialog: false,
-				gridData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				signalingdialog: false,
 			}
 		},
 		beforeMount() {
+			//js控制鼠标滚动翻页事件
 			$(function () {
 				$.scrollify({
 					section: ".panel",
@@ -753,6 +750,7 @@
 					}
 				});
 			});
+			//获取周报数据
 			this.getWeekScore()
 		},
 		// beforeRouteEnter(to, from, next) {
@@ -764,7 +762,21 @@
 		// 		}
 		// 	})
 		// },
+		//观察者
+		//控制日报的数据处理
 		watch: {
+			internetSelect: function () {
+				this.internetAcct = ''
+				this.internetProv = ''
+			},
+			signalingSelect: function () {
+				this.signalingProv = ''
+				this.signalingAcct = ''
+			},
+			internetTimelySelect: function () {
+				this.internetTimelyProv = ''
+				this.internetTimelyAcct = ''
+			},
 			internetProv: function () {
 				this.getInternetData(1, this.internetProv, '', '', '')
 			},
@@ -781,35 +793,41 @@
 				this.getInternetData(2, this.signalingProv, this.signalingAcct, '', this.signalingSatype)
 			},
 			internetTimelyProv: function () {
-				this.getInternetData(3, this.internetTimelyProv, '', this.isTime ? 1 : 0)
+				this.getInternetData(3, this.internetTimelyProv, '', this.isTime ? 1 : 0, '')
 			},
 			internetTimelyAcct: function () {
-				this.getInternetData(3, '', this.internetTimelyAcct, this.isTime ? 1 : 0)
+				this.getInternetData(3, '', this.internetTimelyAcct, this.isTime ? 1 : 0, '')
 			},
 			isTime: function () {
-				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0)
+				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0, '')
 			}
 		},
 		methods: {
-			test() {
+			//处理鼠标滑动到某个页面时候触发的方法
+			triggerScroll() {
 				var ref = $("#kkk").attr("data-greeting");
+				//互联网
 				if (ref == "internet") {
 					this.internetOptions = [],
 						this.internetActive = '',
 						this.internetId = '',
 						this.getInternetTab(Cookies.get('orgId'), "1");
+					//信令
 				} else if (ref == "signaling") {
 					this.signalingOptions = [],
 						this.signalingActive = '',
 						this.signalingId = '',
 						this.getInternetTab(Cookies.get('orgId'), "2");
+					//接口
 				} else if (ref == "interface") {
 					this.interfaceOptions = [],
 						this.interfaceActive = '',
 						this.interfaceId = '',
 						this.getInternetTab(Cookies.get('orgId'), "3");
+					//周报
 				} else if (ref == 'week') {
 					this.getWeekScore()
+					//日报
 				} else if (ref == 'day') {
 					this.getDayAcctDate(1)
 					this.getDayAcctDate(2)
@@ -820,15 +838,19 @@
 					this.getSignalingTimeliness(this.signalingTimeliness)
 				}
 			},
+			//获取工作流数据
 			handleWorkflow() {
 				this.getWorkFlow(Cookies.get('userid'))
 			},
+			//获取周报数据
 			handleWeelData() {
 				this.getWeeksData(Cookies.get('userid'))
 			},
+			//获取样例数据
 			handleDatas() {
 				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'))
 			},
+			//发送任务
 			sendTask(row) {
 				if (this.isShow == 'send') {
 					this.sendTasktoPerson(this.taskIds, this.sendPerson, this.tasktextarea, this.cuttime, this.copyPerson)
@@ -839,16 +861,34 @@
 				}
 
 			},
+			//获取样例数据
 			handleDataYl() {
 				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
 			},
 			handleDataDownload() {
+				//控制satype
 				const satype = this.isSatype ? this.sampledata : ''
-				this.downUrl = "http://192.168.1.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				//测试下载路径
+				// this.downUrl = "http://192.168.1.121:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				//正式下载路径
+				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#download").trigger("click")
 				}, 500);
 			},
+			//信令及时性下载
+			handleDataDownloadSignling() {
+				//测试下载路径
+				// this.downUrl = "http://192.168.1.121:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness
+				//正式下载路径
+				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness
+				//处理a按钮操作下载，定时器500ms后触发
+				setTimeout(() => {
+					$("#downloadSignling").trigger("click")
+				}, 500);
+			},
+			//处理工作流点击只展开一行
 			handleTask(row) {
 				if (this.expands[0] == row.taskId) {
 					this.expands = [];
@@ -858,18 +898,26 @@
 				}
 				this.getTaskFlow(row.taskId)
 			},
+			//控制信令及时性显示序号
+			indexMethod(index) {
+				return index + 1;
+			},
+			// 工作流的操作
+			// 通过不同的type控制不同的操作
+			// back：退回
+			// success：成功
+			// send：指派
 			taskStaff(row, type) {
 				this.taskIds = row.taskId;
 				this.isShow = type
 				this.getStaff()
 			},
-			indexMethod(index) {
-				return index + 1;
-			},
+			//显示信令及时性详情
 			handleView(row) {
 				this.getSignalingTimeDetail(row.acct_date, row.prov_id);
 			},
-			handleViewSingaling(){
+			//显示信令及时性
+			handleViewSingaling() {
 				this.getSignalingTimeliness(this.signalingTimeliness)
 			}
 		}
@@ -1088,15 +1136,16 @@
 	}
 
 	.card-style {
-		margin-top: 5px;
-		padding: 10px;
-		height: 371px;
+		min-height: 440px;
 	}
 
 	.card-style span {
-		position: relative;
-		right: 30%;
-		top: 10%;
+		width: 100%;
+		padding: 10px;
+		font-size: 20px;
+		font-weight: 500;
+		display: inline-block;
+		text-align: left;
 	}
 
 	.card-style div {
@@ -1104,11 +1153,11 @@
 	}
 
 	.card-style div p {
-		padding: 0 11px;
+		text-align: left;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp: 18;
+		-webkit-line-clamp: 20;
 		-webkit-box-orient: vertical;
 		font-size: 15px;
 	}
@@ -1175,5 +1224,15 @@
 
 	.el-row {
 		padding-top: 20px;
+	}
+
+	.current-report {
+		line-height: 36px;
+		font-size: 22px;
+		font-weight: 500;
+	}
+
+	.current-report span {
+		color: #DA140C;
 	}
 </style>

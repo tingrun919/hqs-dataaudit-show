@@ -16,11 +16,11 @@
 				<span class="arrow"></span>
 				<ul class="nav-dropdown">
 					<li>
-						<el-badge :value="12" class="item">
+						<!-- <el-badge :value="12" class="item"> -->
 							<span class="nav-link" @click="tests">
 								工作流
 							</span>
-						</el-badge>
+						<!-- </el-badge> -->
 					</li>
 					<li>
 						<span class="nav-link" @click="logout">退出</span>

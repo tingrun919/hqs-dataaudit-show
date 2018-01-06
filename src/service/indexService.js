@@ -280,7 +280,7 @@ export default {
 			return api.get(`dataaudit_show/email/reAllRibao?acctdate=${acctdate}&provid=${provid}`)
 				.then(res => {
 					this.signalingTimelinessDetail = res.data.data
-					this.testdialog = true;
+					this.signalingdialog = true;
 				})
 				.catch(err => {
 					console.log(err);

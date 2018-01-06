@@ -1,10 +1,9 @@
 <template>
-	<div :class="className" ref="pie" :style="{height:height,width:width}"></div>
+	<div :class="className" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
 	import echarts from 'echarts'
-	// require('echarts/theme/vintage') // echarts 主题
 
 	const animationDuration = 3000
 	export default {
@@ -15,11 +14,11 @@
 			},
 			width: {
 				type: String,
-				default: '115%'
+				default: '100%'
 			},
 			height: {
 				type: String,
-				default: '330px'
+				default: '440%'
 			},
 			xaxislist: {
 				type: Array,
@@ -43,28 +42,15 @@
 				option: {
 					title: {
 						text: '',
-						left: '31%',
 						bottom: '25',
-						// y: 'bottom',
+						x: 'center',
 						textStyle: {
 							fontWeight: 'normal',
-							fontSize: 13
+							fontSize: 16
 						}
-					},
-					tooltip: {
-						trigger: 'axis',
 					},
 					grid: {
 						containLabel: true,
-						bottom: '15%',
-						right: '13%',
-						left: '1%'
-					},
-					legend: {
-						textStyle: {
-							fontSize: '10'
-						},
-						data: []
 					},
 				}
 			}
@@ -75,7 +61,6 @@
 			},
 		},
 		mounted() {
-			// this.initChart()
 			this.chart = null
 		},
 		beforeDestroy() {
@@ -87,13 +72,24 @@
 		},
 		methods: {
 			initChart() {
-				// this.yAxisMethod()
-				// this.yDataList()
-				this.chart = echarts.init(this.$el, 'default')
+				this.chart = echarts.init(this.$el, 'macarons')
 				this.chart.setOption(this.option)
 				this.chart.setOption({
 					title: {
 						text: this.screenlist[0].screenName,
+					},
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross'
+						},
+						formatter: function (params, ticket, callback) {
+							var res = params[0].name;
+							for (var i = 0, l = params.length; i < l; i++) {
+									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') +  params[i].seriesName.split("-")[1];
+							}
+							return res;
+						}
 					},
 					xAxis: {
 						type: 'category',
@@ -107,7 +103,10 @@
 					},
 					yAxis: this.yAxisMethod(),
 					legend: {
-						data: this.legendlist
+						data: this.legendlist,
+						formatter:function (name) {
+							return name.split("-")[0];
+						}
 					},
 					series: this.yDataList()
 				})
@@ -119,6 +118,15 @@
 						name: this.serieslist[i].name,
 						type: this.serieslist[i].type,
 						data: this.serieslist[i].data,
+						markPoint: {
+							data: [{
+								type: 'max',
+								name: '最大值'
+							}, {
+								type: 'min',
+								name: '最小值'
+							}]
+						},
 						yAxisIndex: this.serieslist[i].yAxisIndex,
 						// itemStyle: {
 						// 		normal: {
@@ -148,6 +156,7 @@
 					var item = {
 						type: 'value',
 						position: i == 0 ? 'left' : 'right',
+						splitNumber:4,
 						axisLabel: {
 							formatter: '{value} ' + this.yaxislist[i]
 						}
