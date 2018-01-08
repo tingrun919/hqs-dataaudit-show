@@ -1,35 +1,82 @@
 <template>
-	<div>
-			<div class="pic-404">
-				<img class="pic-404__parent" :src="img_404" alt="404">
-				<img class="pic-404__child left" :src="img_404_cloud" alt="404">
-				<img class="pic-404__child mid" :src="img_404_cloud" alt="404">
-				<img class="pic-404__child right" :src="img_404_cloud" alt="404">
-			</div>
-			<div class="bullshit">
-				<div class="bullshit__oops">OOPS!</div>
-				<div class="bullshit__info">版权所有 @ <a class='link-type' href='http://www.mojodata.cn/' target='_blank'>MOJO数据实验室</a></div>
-				<div class="bullshit__headline">{{ message }}</div>
-				<div class="bullshit__info">请检查您输入的网址是否正确，或请点击以下按钮返回主页</div>
-				<a href="/" class="bullshit__return-home">返回首页</a>
-			</div>
+	<div v-if="iscloud">
+		<div class="pic-404">
+			<img class="pic-404__parent" :src="img_404" alt="404">
+			<img class="pic-404__child left" :src="img_404_cloud" alt="404">
+			<img class="pic-404__child mid" :src="img_404_cloud" alt="404">
+			<img class="pic-404__child right" :src="img_404_cloud" alt="404">
+		</div>
+		<div class="bullshit">
+			<div class="bullshit__oops">OOPS!</div>
+			<div class="bullshit__info">版权所有 @ <a class='link-type' href='http://www.mojodata.cn/' target='_blank'>MOJO数据实验室</a></div>
+			<div class="bullshit__headline">{{ message }}</div>
+			<div class="bullshit__info">请检查您输入的网址是否正确，或请点击以下按钮返回主页</div>
+			<a href="/" class="bullshit__return-home">返回首页</a>
+		</div>
 	</div>
+	<div v-else></div>
 </template>
 
 <script>
 	import img_404 from '@/assets/404_images/404.png'
 	import img_404_cloud from '@/assets/404_images/404_cloud.png'
-
+	import API from '../../../api/API'
+	const api = new API()
+	import * as Cookies from "js-cookie";
 	export default {
 		data() {
 			return {
 				img_404,
-				img_404_cloud
+				img_404_cloud,
+				iscloud: true,
+			}
+		},
+		beforeMount() {
+			if (this.$route.path.split('/')[1] == 'cloudLogin') {
+				this.iscloud = false;
+				this.handlecloudlogin(this.$route.path.split('/')[2].replace('/', ''))
+			} else {
+				this.iscloud = true;
 			}
 		},
 		computed: {
 			message() {
 				return '页面地址出现了错误......'
+			}
+		},
+		methods: {
+			handlecloudlogin(usercount) {
+				const loading = this.$loading({
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				});
+				api.get(`dataaudit_show/user/yunLogin?usercount=${usercount}`)
+					.then(res => {
+						if (res.data.code == '100003') {
+							loading.close();
+							this.$message.error(res.data.message);
+						} else {
+							loading.close();
+							//部门ID
+							Cookies.set('orgId', res.data.data[0].ORG_ID);
+							//所属组织分类
+							Cookies.set('disSort', res.data.data[0].DIS_SORT);
+							//所属城市
+							let result = res.data.data[0].ORG_NAME.split("-")
+							Cookies.set('city', result[1]);
+							Cookies.set('userid', res.data.data[0].STAFF_ID);
+							Cookies.set('username', res.data.data[0].STAFF_NAME);
+							Cookies.set('orgname', res.data.data[0].ORG_NAME);
+							this.$router.push('/index')
+							// this.$router.go('/index')
+						}
+					})
+					.catch(err => {
+						loading.close();
+						console.log(err);
+					});
 			}
 		}
 	}
@@ -232,8 +279,10 @@
 			opacity: 1;
 		}
 	}
-	.link-type, .link-type:focus {
-    color: #337ab7;
-    cursor: pointer;
-}
+
+	.link-type,
+	.link-type:focus {
+		color: #337ab7;
+		cursor: pointer;
+	}
 </style>

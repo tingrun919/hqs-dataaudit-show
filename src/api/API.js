@@ -1,7 +1,7 @@
 import axios from 'axios'
 import main from '../main'
 
-// axios.defaults.baseURL = 'http://192.168.1.157:8080/';//507
+// axios.defaults.baseURL = 'http://192.168.1.129:8080/';//507
 //axios.defaults.baseURL = 'http://192.168.1.141:8080/';//大数据
 axios.defaults.baseURL = 'http://10.162.26.141:8080/';//正式
 // axios.defaults.baseURL = 'http://192.168.10.101:8080/';//公司
