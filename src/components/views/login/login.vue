@@ -1,7 +1,7 @@
 <template>
 	<div class="login-container">
 		<el-form class="card-box login-form" autoComplete="on" :model="loginForm" ref="loginForm" label-position="left">
-			<h3 class="title">系统登录</h3>
+			<h3 class="title">数据稽核应用平台</h3>
 			<el-form-item prop="usercount">
 				<el-input name="usercount" type="text" v-model="loginForm.usercount" placeholder="邮箱" />
 			</el-form-item>
@@ -34,6 +34,7 @@
 		beforeMount() {
 			if (Cookies.get('orgId') && Cookies.get('disSort')) {
 				this.$router.push('/index')
+				this.$router.go('/index')
 			} else {
 				this.$router.push('/login')
 			}
@@ -58,8 +59,7 @@
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
 							this.loading = false
-							this.$router.push('/index')
-							this.$router.go('/index')
+							this.myBrowser()
 						}
 					})
 					.catch(err => {
@@ -67,6 +67,14 @@
 						console.log(err);
 					});
 			},
+			myBrowser() {
+				if (!!window.ActiveXObject || "ActiveXObject" in window) {
+					this.$router.push('/index?borwerAgent=InternetExplorer')
+				} else {
+					this.$router.push('/index')
+					this.$router.go('/index')
+				}
+			}
 		},
 	}
 </script>

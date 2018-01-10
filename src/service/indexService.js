@@ -39,21 +39,20 @@ export default {
 				});
 		},
 		getWeekScore() {
-			this.loadingMap = true;
+			this.loadingWeek = true;
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=1`)
 				.then(res => {
 					this.scoreQuotaList = res.data.data.quota
 					this.scoreScreenList = res.data.data.screen
 					this.dataFormat = res.data.data.acctdate
-					this.loadingMap = false;
+					this.getWeekData()
 				})
 				.catch(err => {
-					this.loadingMap = false;
+					this.loadingWeek = false;
 					console.log(err);
 				});
 		},
 		getWeekData() {
-			this.loadingLeftUp = true;
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=2`)
 				.then(res => {
 					this.dataYaxis = res.data.data.yaxis
@@ -61,14 +60,14 @@ export default {
 					this.dataXaxis = res.data.data.xaxis
 					this.dataLegend = res.data.data.legend
 					this.dataScreen = res.data.data.screen
-					this.loadingLeftUp = false;
+					this.getWeekMatch()
 				})
 				.catch(err => {
+					this.loadingWeek = false;
 					console.log(err);
 				});
 		},
 		getWeekMatch() {
-			this.loadingLeftDown = true;
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=3`)
 				.then(res => {
 					this.matchYaxis = res.data.data.yaxis
@@ -76,15 +75,14 @@ export default {
 					this.matchXaxis = res.data.data.xaxis
 					this.matchLegend = res.data.data.legend
 					this.matchScreen = res.data.data.screen
-					this.loadingLeftDown = false;
+					this.getWeekNumber()
 				})
 				.catch(err => {
-					this.loadingLeftDown = false;
+					this.loadingWeek = false;
 					console.log(err);
 				});
 		},
 		getWeekNumber() {
-			this.loadingCenterDown = true;
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=4`)
 				.then(res => {
 					this.numberYaxis = res.data.data.yaxis
@@ -92,18 +90,18 @@ export default {
 					this.numberXaxis = res.data.data.xaxis
 					this.numberLegend = res.data.data.legend
 					this.numberScreen = res.data.data.screen
-					this.loadingCenterDown = false;
+					this.getWeekEvaluation()
 				})
 				.catch(err => {
+					this.loadingWeek = false;
 					console.log(err);
 				});
 		},
 		getWeekEvaluation() {
-			this.loadingRightDown = true;
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=5`)
 				.then(res => {
 					this.screenContent = res.data.data[0].screenContent
-					this.loadingRightDown = false;
+					this.loadingWeek = false;
 				})
 				.catch(err => {
 					console.log(err);
@@ -120,10 +118,7 @@ export default {
 		},
 		getDayAcctDate(type) {
 			//type:1->互联网 2->信令 3->左下角 4->日表格
-			this.loadingDayOne = true;
-			this.loadingDayTwo = true;
-			this.loadingDayThree = true;
-			this.loadingDayFour = true;
+			this.loadingDay = true;
 			return api.get(`dataaudit_show/usertab/selectRiAcctdate?type=${type}`)
 				.then(res => {
 					if (type == 1) {
@@ -140,6 +135,7 @@ export default {
 					}
 				})
 				.catch(err => {
+					this.loadingDay = false;
 					console.log(err);
 				});
 		},
@@ -151,21 +147,16 @@ export default {
 						this.internetDataSeriesList = res.data.data.serieslist
 						this.internetDataXaxis = res.data.data.xaxis
 						this.internetDataLegend = res.data.data.legend
-						this.loadingDayOne = false;
 					} else if (type == 2) {
-						this.loadingDayTwo = false;
 						this.signalingDataYaxis = res.data.data.yaxis
 						this.signalingDataSeriesList = res.data.data.serieslist
 						this.signalingDataXaxis = res.data.data.xaxis
 						this.signalingDataLegend = res.data.data.legend
-						this.loadingDayTwo = false;
 					} else if (type == 3) {
-						this.loadingDayThree = false;
 						this.internetTimelyDataYaxis = res.data.data.yaxis
 						this.internetTimelyDataSeriesList = res.data.data.serieslist
 						this.internetTimelyDataXaxis = res.data.data.xaxis
 						this.internetTimelyDataLegend = res.data.data.legend
-						this.loadingDayThree = false;
 					}
 				})
 				.catch(err => {
@@ -228,7 +219,6 @@ export default {
 						});
 						this.innerVisible2 = false
 						this.outerVisible2 = false
-
 					}
 				})
 				.catch(err => {
@@ -288,7 +278,7 @@ export default {
 			return api.get(`dataaudit_show/email/reselRibao?acctdate=${acctdate}`)
 				.then(res => {
 					this.signalingTimelinessTable = res.data.data
-					this.loadingDayFour = false;
+					this.loadingDay = false;
 				})
 				.catch(err => {
 					console.log(err);

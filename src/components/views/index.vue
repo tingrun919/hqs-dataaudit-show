@@ -15,16 +15,6 @@
 					<div class="more-nav">
 						<ul>
 							<li>
-								<!-- <p>国庆节</p>
-								<p>
-									10月1日
-								</p>
-								<p>
-									12:32
-								</p> -->
-								<div class="line"></div>
-							</li>
-							<li>
 								<a href="#week" class="btn_snav" data-href="#week">
 								周稽核报告
 								</a>
@@ -49,18 +39,18 @@
 								接口文件稽核
 							</a>
 							</li>
-							<li>
+							<!-- <li>
 								<div class="line"></div>
 								<p style="padding-top:30px;font-size:12spx;">
 									{{name}}
 								</p>
-							</li>
+							</li> -->
 						</ul>
 					</div>
 				</li>
 			</ul>
 		</div>
-		<section class="panel" data-section-name="week">
+		<section class="panel" data-section-name="week" element-loading-text="数据加载中" v-loading="loadingWeek">
 			<div class="inner">
 				<el-row style="padding:0;">
 					<el-col :span="24">
@@ -69,40 +59,40 @@
 					</el-col>
 				</el-row>
 				<el-row style="padding:0;" :gutter="10">
-					<el-col :span="12" element-loading-text="数据加载中" v-loading="loadingLeftUp">
+					<el-col :span="12">
 						<el-card>
 							<internet-Chart :xaxislist='dataXaxis' :height="viewHeight" :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis'
 							 :screenlist='dataScreen'></internet-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6" element-loading-text="扣分情况数据加载中" v-loading="loadingMap">
+					<el-col :span="6">
 						<el-card>
 							<score-Chart :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></score-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6" element-loading-text="地图数据加载中" v-loading="loadingMap">
+					<el-col :span="6">
 						<el-card>
 							<map-Chart :quotalist='scoreQuotaList' :height="viewHeight"></map-Chart>
 						</el-card>
 					</el-col>
 				</el-row>
 				<el-row :gutter="10">
-					<el-col :span="12" element-loading-text="数据加载中" v-loading="loadingLeftDown">
+					<el-col :span="12">
 						<el-card>
 							<matching-Chart :xaxislist='matchXaxis' :height="viewHeight" :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis'
 							 :screenlist='matchScreen'></matching-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6" element-loading-text="数据加载中" v-loading="loadingCenterDown">
+					<el-col :span="6">
 						<el-card>
 							<invalidNumber-Chart :xaxislist='numberXaxis' :height="viewHeight" :legendlist='numberLegend' :serieslist='numberSeriesList'
 							 :yaxislist='numberYaxis' :screenlist='numberScreen'></invalidNumber-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6" element-loading-text="本期评价数据加载中" v-loading="loadingRightDown">
+					<el-col :span="6">
 						<el-card class="card-style">
-							<div :style="{height:viewHeight}">
-								<span>【本期评价】</span>
+							<span>【本期评价】</span>
+							<div :style="{height:viewHeight}" style="overflow-y: auto;margin-bottom:-25px;margin-top:10px;">
 								<p v-html="screenContent">
 								</p>
 							</div>
@@ -148,11 +138,11 @@
 				</li>
 			</ul>
 		</section>
-		<section class="panel" data-section-name="day">
+		<section class="panel" data-section-name="day" element-loading-text="数据加载中" v-loading="loadingDay">
 			<div class="inner">
 				<el-row :gutter="10">
 					<el-col :span="12">
-						<el-card element-loading-text="数据加载中" v-loading="loadingDayOne">
+						<el-card>
 							<el-row class="day-row">
 								<el-col :span="8" class="day-col">
 									<span style="line-height:28px;font-size:15px;">稽核范围:</span>
@@ -178,14 +168,14 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetChart-Day :xaxislist='internetDataXaxis' :height="viewHeightDay" :legendlist='internetDataLegend' :serieslist='internetDataSeriesList'
-									 :yaxislist='internetDataYaxis'></internetChart-Day>
+									<internetChart-Day :xaxislist='internetDataXaxis' :height="viewHeightDay" :tabrange="internetSelect" :legendlist='internetDataLegend'
+									 :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
 					</el-col>
 					<el-col :span="12">
-						<el-card element-loading-text="数据加载中" v-loading="loadingDayTwo">
+						<el-card>
 							<el-row class="day-row">
 								<el-col :span="6" class="day-col-satype">
 									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
@@ -218,8 +208,8 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<signalingChart-Day :xaxislist='signalingDataXaxis' :height="viewHeightDay" :legendlist='signalingDataLegend' :serieslist='signalingDataSeriesList'
-									 :yaxislist='signalingDataYaxis'></signalingChart-Day>
+									<signalingChart-Day :xaxislist='signalingDataXaxis' :height="viewHeightDay" :tabrange="signalingSelect" :legendlist='signalingDataLegend'
+									 :serieslist='signalingDataSeriesList' :yaxislist='signalingDataYaxis'></signalingChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
@@ -227,7 +217,7 @@
 				</el-row>
 				<el-row :gutter="10">
 					<el-col :span="12">
-						<el-card element-loading-text="数据加载中" v-loading="loadingDayThree">
+						<el-card>
 							<el-row class="day-row">
 								<el-col :span="4" class="day-col-switch">
 									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
@@ -257,14 +247,14 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :height="viewHeightDay" :legendlist='internetTimelyDataLegend'
+									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :height="viewHeightDay" :tabrange="internetTimelySelect" :legendlist='internetTimelyDataLegend'
 									 :serieslist='internetTimelyDataSeriesList' :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
 					</el-col>
 					<el-col :span="12">
-						<el-card :style="{height:viewHeightDaySignaling}" element-loading-text="数据加载中" v-loading="loadingDayFour">
+						<el-card :style="{height:viewHeightDaySignaling}">
 							<el-row class="day-row-time ">
 								<el-col :span="6" class="day-col" style="text-align:right;">
 									<span style="line-height:28px;font-size:15px;">账期:</span>
@@ -288,7 +278,7 @@
 								</el-col>
 							</el-row>
 							<el-row>
-								<el-col :span="24">
+								<el-col :span="24" style="padding-right:20px;">
 									<el-table :data="signalingTimelinessTable" stripe :height="viewHeightDayTable" border style="width: 100%">
 										<el-table-column show-overflow-tooltip align="center" prop="acct_date" label="账期" width="90">
 										</el-table-column>
@@ -320,14 +310,21 @@
 									</el-table>
 								</el-col>
 							</el-row>
+							<el-row>
+								<el-col :span="24">
+									<span style="color:#0c8fcf;font-size:14px;">信令文件延时性</span>
+								</el-col>
+							</el-row>
 							<el-dialog title="信令延时性" :visible.sync="signalingdialog">
 								<el-table :data="signalingTimelinessDetail" stripe border>
 									<el-table-column type="index" :index="indexMethod" label="序号" width="60"></el-table-column>
-									<el-table-column property="acct_date" label="账期"></el-table-column>
-									<el-table-column property="prov_name" label="省份"></el-table-column>
-									<el-table-column property="sa_type" label="数据域"></el-table-column>
-									<el-table-column property="longtime" label="中断时间"></el-table-column>
-									<el-table-column property="time" label="中断时长"></el-table-column>
+									<el-table-column align="center" property="acct_date" label="账期"></el-table-column>
+									<el-table-column align="center" property="prov_name" label="省份"></el-table-column>
+									<el-table-column align="center" property="sa_type" label="数据域"></el-table-column>
+									<el-table-column align="center" property="ventor_desc" label="厂商"></el-table-column>
+									<el-table-column align="center" show-overflow-tooltip property="interface_desc" label="接口"></el-table-column>
+									<el-table-column align="center" property="longtime" label="中断时间"></el-table-column>
+									<el-table-column align="center" property="time" label="中断时长"></el-table-column>
 								</el-table>
 							</el-dialog>
 						</el-card>
@@ -390,7 +387,7 @@
 			<footer-View></footer-View>
 		</div>
 		<div style="display:none;">
-			<input type="text" name="" data-greeting="header" ref="inputref" id="kkk">
+			<input type="text" name="" data-greeting="header" ref="inputref" id="scrollData">
 			<el-button @click="triggerScroll" id="1">默认按钮</el-button>
 		</div>
 		<el-button @click="handleDatas" v-show="false" id="buttonDialog"></el-button>
@@ -721,22 +718,30 @@
 
 				signalingdialog: false,
 
-				loadingMap: false,
-				loadingLeftUp: false,
-				loadingLeftDown: false,
-				loadingCenterDown:false,
-				loadingRightDown:false,
+				loadingWeek: false,
 
-				loadingDayOne:false,
-				loadingDayTwo:false,
-				loadingDayThree:false,
-				loadingDayFour:false,
+				loadingDay: false,
+
+				isDayData: '',
+				isInterface: '',
+				isSignaling: '',
+				isInternet: '',
 
 			}
 		},
 		beforeMount() {
 			//js控制鼠标滚动翻页事件
 			$(function () {
+				//控制IE加载错误的问题
+				function reurl() {
+					var url = location.href; //把当前页面的地址赋给变量 url 
+					var times = url.split("?"); //分切变量 url 分隔符号为 "?" 
+					if (times[1] == 'borwerAgent=InternetExplorer') { //如果?后的值不等于borwerAgent=InternetExplorer表示没有刷新 
+						url += "?1"; //把变量 url 的值加入 ?borwerAgent=InternetExplorer 
+						self.location.replace(times[0]); //刷新页面 
+					}
+				}
+				reurl()
 				$.scrollify({
 					section: ".panel",
 					scrollbars: false,
@@ -749,7 +754,7 @@
 
 						$(".pagination").find("a[href=\"#" + ref + "\"]").addClass("active");
 
-						$("#kkk").attr("data-greeting", ref);//设置值为Hello World
+						$("#scrollData").attr("data-greeting", ref);//设置值为Hello World
 						$("#1").trigger("click");
 
 						if (ref != 'header') {
@@ -784,22 +789,17 @@
 				});
 			});
 			//获取周报数据
-			// console.log((window.innerHeight - 60) / 2 + 'px', '2222222222')
 			this.getWeekScore()
-			this.getWeekData()
-			this.getWeekMatch()
-			this.getWeekNumber()
-			this.getWeekEvaluation()
 		},
-		// beforeRouteEnter(to, from, next) {
-		// 	next(vm => {
-		// 		if (Cookies.get('orgId') && Cookies.get('disSort')) {
-		// 			vm.$router.push('/')
-		// 		} else {
-		// 			vm.$router.push('/login')
-		// 		}
-		// 	})
-		// },
+		beforeRouteEnter(to, from, next) {
+			next(vm => {
+				if (Cookies.get('orgId') && Cookies.get('disSort')) {
+					// vm.$router.push('/')
+				} else {
+					vm.$router.push('/login')
+				}
+			})
+		},
 		//观察者
 		//控制日报的数据处理
 		watch: {
@@ -842,58 +842,66 @@
 		},
 		computed: {
 			viewHeight: function () {
-				return (window.innerHeight - 80) / 2 + 'px'
+				return (window.innerHeight - 140) / 2 + 'px'
 			},
 			viewHeightDay: function () {
-				return (window.innerHeight - 140) / 2 + 'px'
+				return (window.innerHeight - 220) / 2 + 'px'
 			},
 			viewHeightDaySignaling: function () {
 				return (window.innerHeight - 40) / 2 + 'px'
 			},
 			viewHeightDayTable: function () {
-				return (window.innerHeight - 140) / 2
+				return (window.innerHeight - 280) / 2
 			},
 		},
 		methods: {
 			//处理鼠标滑动到某个页面时候触发的方法
 			triggerScroll() {
-				var ref = $("#kkk").attr("data-greeting");
+				var ref = $("#scrollData").attr("data-greeting");
 				//互联网
 				if (ref == "internet") {
-					this.internetOptions = [],
-						this.internetActive = '',
-						this.internetId = '',
-						this.getInternetTab(Cookies.get('orgId'), "1");
+					if (this.isInternet == '') {
+						this.internetOptions = [],
+							this.internetActive = '',
+							this.internetId = '',
+							this.getInternetTab(Cookies.get('orgId'), "1");
+						this.isInternet = 'already'
+					}
+
 					//信令
 				} else if (ref == "signaling") {
-					this.signalingOptions = [],
-						this.signalingActive = '',
-						this.signalingId = '',
-						this.getInternetTab(Cookies.get('orgId'), "2");
+					if (this.isSignaling == '') {
+						this.signalingOptions = [],
+							this.signalingActive = '',
+							this.signalingId = '',
+							this.getInternetTab(Cookies.get('orgId'), "2");
+						this.isSignaling = 'already'
+					}
+
 					//接口
 				} else if (ref == "interface") {
-					this.interfaceOptions = [],
-						this.interfaceActive = '',
-						this.interfaceId = '',
-						this.getInternetTab(Cookies.get('orgId'), "3");
+					if (this.isInterface == '') {
+						this.interfaceOptions = [],
+							this.interfaceActive = '',
+							this.interfaceId = '',
+							this.getInternetTab(Cookies.get('orgId'), "3");
+						this.isInterface = 'already'
+					}
 					//周报
 				} else if (ref == 'week') {
-					this.getWeekScore()
-					this.getWeekData()
-					this.getWeekMatch()
-					this.getWeekNumber()
-					this.getWeekEvaluation()
+					// this.getWeekScore()
 					//日报
 				} else if (ref == 'day') {
-					
-					this.getDayAcctDate(1)
-					this.getDayAcctDate(2)
-					this.getDayAcctDate(3)
-					this.getDayAcctDate(4)
-					this.getDayProv()
-					this.getSignalingTimely()
-					this.getSignalingTimeliness(this.signalingTimeliness)
-					
+					if (this.isDayData == '') {
+						this.getDayAcctDate(1)
+						this.getDayAcctDate(2)
+						this.getDayAcctDate(3)
+						this.getDayAcctDate(4)
+						this.getDayProv()
+						this.getSignalingTimely()
+						this.getSignalingTimeliness(this.signalingTimeliness)
+						this.isDayData = 'already'
+					}
 				}
 			},
 			//获取工作流数据
@@ -1145,7 +1153,7 @@
 		width: 156px;
 		height: 9999px;
 		padding-top: 100px;
-		background: rgba(0, 0, 0, .8);
+		background: rgba(218, 20, 12, .8);
 		transition: right .3s;
 		-webkit-transition: right .3s;
 	}
@@ -1153,6 +1161,7 @@
 	.more-nav ul {
 		position: relative;
 		z-index: 5;
+		top: 2%;
 	}
 
 	.more-nav li {
@@ -1166,7 +1175,8 @@
 	}
 
 	.more-nav a {
-		color: #c5c8d0;
+		/* color: #c5c8d0; */
+		color: #edf3ff;
 		text-decoration: none;
 	}
 
@@ -1229,20 +1239,18 @@
 		width: 100%;
 	}
 
-	.card-style {
-		overflow-y: auto;
-	}
-
 	.card-style span {
+		top: 52%;
+		position: relative;
 		width: 100%;
-		padding: 10px;
-		font-size: 20px;
+		font-size: 15px;
 		font-weight: 500;
 		display: inline-block;
 		text-align: left;
 	}
 
 	.card-style div p {
+		padding-bottom: 15px;
 		white-space: pre-wrap;
 		white-space: -moz-pre-wrap;
 		white-space: -pre-wrap;
@@ -1327,5 +1335,9 @@
 	.el-table td,
 	.el-table th {
 		padding: 3px 0;
+	}
+
+	.el-card__body {
+		padding-right: 0;
 	}
 </style>

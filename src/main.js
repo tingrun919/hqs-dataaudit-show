@@ -14,8 +14,6 @@ import $ from 'jquery'
 import * as Cookies from "js-cookie";
 var scrollify = require('jquery-scrollify');
 var ECharts = require('vue-echarts')
-// import "babel-polyfill";
-// var Promise = require('es6-promise').Promise;
 //import css
 import '../src/css/homepage.css'
 // import '../src/api/es6-promise.auto.min.js'

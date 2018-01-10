@@ -50,8 +50,7 @@
 				option1: {
 					grid: {
 						containLabel: true,
-						left: '0',
-						right: '5%'
+						left: '1%',
 					},
 					legend: {
 						right: '10%',
@@ -62,7 +61,7 @@
 						show: true,
 						showTitle: true,
 						orient: "vertical",
-						right: '20px',
+						right: '10px',
 						top: '25%',
 						itemGap: 18,
 						itemSize: 25,

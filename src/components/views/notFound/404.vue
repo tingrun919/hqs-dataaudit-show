@@ -65,7 +65,7 @@
 							this.$message.error(res.data.message);
 							this.$router.push('/index')
 							this.$router.go('/index')
-						} else { 
+						} else {
 							loading.close();
 							//部门ID
 							Cookies.set('orgId', res.data.data[0].ORG_ID);
@@ -77,14 +77,21 @@
 							Cookies.set('userid', res.data.data[0].STAFF_ID);
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
-							this.$router.push('/index')
-							this.$router.go('/index')
+							this.myBrowser()
 						}
 					})
 					.catch(err => {
 						loading.close();
 						console.log(err);
 					});
+			},
+			myBrowser() {
+				if (!!window.ActiveXObject || "ActiveXObject" in window) {
+					this.$router.push('/index?borwerAgent=InternetExplorer')
+				} else {
+					this.$router.push('/index')
+					this.$router.go('/index')
+				}
 			}
 		}
 	}

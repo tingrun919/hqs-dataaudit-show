@@ -31,6 +31,9 @@
 			},
 			yaxislist: {
 				type: Array,
+			},
+			tabrange: {
+				type: String
 			}
 		},
 		data() {
@@ -40,7 +43,7 @@
 					title: {
 						text: '互联网及时性',
 						x: 'center',
-						top: '8%',
+						bottom: '0',
 						textStyle: {
 							fontWeight: 'normal',
 							fontSize: 14
@@ -97,17 +100,16 @@
 						type: 'slider',
 						xAxisIndex: 0,
 						filterMode: 'filter',
-						zoomLock: true,
 						start: 0,
-						end: 20,
-						height: 12
+						end: this.tabrange == 2 ? 100 : 20,
+						height: 12,
+						bottom:35,
 					}, {
-						zoomLock: true,
 						type: 'inside',
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: 20
+						end: this.tabrange == 2 ? 100 : 20,
 					}],
 					xAxis: {
 						type: 'category',

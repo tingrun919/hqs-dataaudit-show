@@ -44,6 +44,7 @@
 						orient: 'horizontal',
 						left: "15%",
 						y: 'top',
+						top:35,
 						showTitle: true,
 						itemGap: 18,
 						itemSize: 25,

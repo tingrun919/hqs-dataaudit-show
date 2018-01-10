@@ -6,26 +6,20 @@
 				<span style="padding-right:8px;">|</span>数据稽核应用平台</span>
 		</div>
 		<ul class="nav">
-			<!-- <li class="nav-item"><a href="#/zh-CN/guide" class="">国庆节</a></li>
-			<li class="nav-item">|</li> -->
-			<li class="nav-item"><a href="#/zh-CN/component" class="">{{riqi}} {{week}}</a></li>
+			<li class="nav-item">{{riqi}} {{week}}</li>
 			<li class="nav-item">|</li>
-			<li class="nav-item"><a href="#/zh-CN/resource" class="">{{time}}</a></li>
+			<li class="nav-item">
+				<span class="nav-link" @click="tests">
+					工作流
+				</span>
+			</li>
 			<li class="nav-item">|</li>
-			<li class="nav-item"><a href="#/zh-CN/resource" class="nav-link"></a>{{name}}</a>
-				<span class="arrow"></span>
-				<ul class="nav-dropdown">
-					<li>
-						<!-- <el-badge :value="12" class="item"> -->
-							<span class="nav-link" @click="tests">
-								工作流
-							</span>
-						<!-- </el-badge> -->
-					</li>
-					<li>
-						<span class="nav-link" @click="logout">退出</span>
-					</li>
-				</ul>
+			<li class="nav-item">{{name}}
+
+			</li>
+			<li class="nav-item">|</li>
+			<li class="nav-item">
+				<span class="nav-link" @click="logout">退出</span>
 			</li>
 		</ul>
 	</header>
@@ -38,8 +32,8 @@
 			return {
 				name: Cookies.get('username') + '-' + Cookies.get('orgname'),
 				time: null,
-				riqi:null,
-				week:null,
+				riqi: null,
+				week: null,
 			};
 		},
 		beforeMount() {
@@ -60,24 +54,17 @@
 				var a = new Date();
 				var now = a.toLocaleTimeString().replace(/^\D*/, '')
 				this.time = now
-
-				// this.timer()
 			},
-			myday(){
+			myday() {
 				var a = new Date();
 				var seperator1 = "-";
 				var month = a.getMonth() + 1;
-    			var strDate = a.getDate();
+				var strDate = a.getDate();
 				var currentdate = a.getFullYear() + seperator1 + month + seperator1 + strDate
 				this.riqi = currentdate
 
 				this.week = "星期" + "日一二三四五六".charAt(new Date().getDay());
 
-			},
-			timer(){
-				setInterval(() => {
-					this.mytime()
-  				}, 1000)
 			},
 			tests() {
 				$("#workflow").trigger("click");
