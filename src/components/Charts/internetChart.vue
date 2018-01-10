@@ -83,10 +83,18 @@
 						axisPointer: {
 							type: 'cross'
 						},
+						textStyle: {
+							align: 'left'
+						},
 						formatter: function (params, ticket, callback) {
 							var res = params[0].name;
 							for (var i = 0, l = params.length; i < l; i++) {
-									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') +  params[i].seriesName.split("-")[1];
+								if (params[i].value == '-') {
+									res += ''
+								} else {
+									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') + params[i].seriesName.split("-")[1];
+								}
+
 							}
 							return res;
 						}

@@ -51,12 +51,14 @@ export default {
 				});
 		},
 		getData(orgid, tabid, provid, acctdate) {
+			this.loadingTabLoading = true;
 			return api.get(`dataaudit_show/usertab/selectData?tabid=${tabid}&orgid=${orgid}&provid=${provid}&acctdate=${acctdate}`)
 				.then(res => {
 					this.xaxis = res.data.data.xaxis
 					this.legend = res.data.data.legend
 					this.serieslist = res.data.data.serieslist
 					this.yaxis = res.data.data.yaxis
+					this.loadingTabLoading = false;
 				})
 				.catch(err => {
 					console.log(err);

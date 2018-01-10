@@ -32,9 +32,9 @@
 			}
 		},
 		beforeMount() {
-			if (this.$route.path.split('/')[1] == 'cloudLogin') {
+			if (this.$route.path == '/cloudLogin') {
 				this.iscloud = false;
-				this.handlecloudlogin(this.$route.path.split('/')[2].replace('/', ''))
+				this.handlecloudlogin(this.$route.query.usercount)
 			} else {
 				this.iscloud = true;
 			}
@@ -55,9 +55,17 @@
 				api.get(`dataaudit_show/user/yunLogin?usercount=${usercount}`)
 					.then(res => {
 						if (res.data.code == '100003') {
+							Cookies.set('disSort', '');
+							Cookies.set('orgId', '');
+							Cookies.set('city', '');
+							Cookies.set('userid', '');
+							Cookies.set('username', '');
+							Cookies.set('orgname', '');
 							loading.close();
 							this.$message.error(res.data.message);
-						} else {
+							this.$router.push('/index')
+							this.$router.go('/index')
+						} else { 
 							loading.close();
 							//部门ID
 							Cookies.set('orgId', res.data.data[0].ORG_ID);
@@ -70,7 +78,7 @@
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
 							this.$router.push('/index')
-							// this.$router.go('/index')
+							this.$router.go('/index')
 						}
 					})
 					.catch(err => {

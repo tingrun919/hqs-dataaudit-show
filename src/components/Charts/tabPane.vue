@@ -1,5 +1,5 @@
 <template>
-	<div class="components-container">
+	<div class="components-container" element-loading-text="数据加载中" v-loading="loadingTabLoading">
 		<div class='chart-container'>
 			<span class="select-one">稽核范围</span>
 			<el-select class="select-one" size="mini" v-model="tabRangeDefault" placeholder="请选择">
@@ -14,7 +14,7 @@
 				<el-option v-for="items in prov" :key="items.prov_id" :label="items.prov_name" :value="items.prov_id">
 				</el-option>
 			</el-select>
-			<mix-chart height='600px' width='100%' :tabrange="tabRangeDefault" :xaxislist='xaxis' :legendlist='legend' :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
+			<mix-chart :height="viewHeightMixChart" width='100%' :tabrange="tabRangeDefault" :xaxislist='xaxis' :legendlist='legend' :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
 		</div>
 	</div>
 </template>
@@ -54,6 +54,9 @@
 			}
 		},
 		computed: {
+			viewHeightMixChart:function(){
+				return (window.innerHeight - 220) + 'px'
+			}
 			// isPerson: function () {
 			// 	for (var i = 0; i < this.workflow.length; i++) {
 			// 		var s = this.workflow[i].taskNowperson
@@ -118,6 +121,7 @@
 				isShow:'',
 				// isModal:false,
 				// isSatype:false,
+				loadingTabLoading:false,
 			}
 		},
 		methods: {

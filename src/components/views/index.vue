@@ -15,13 +15,13 @@
 					<div class="more-nav">
 						<ul>
 							<li>
-								<p>国庆节</p>
+								<!-- <p>国庆节</p>
 								<p>
 									10月1日
 								</p>
 								<p>
 									12:32
-								</p>
+								</p> -->
 								<div class="line"></div>
 							</li>
 							<li>
@@ -69,41 +69,41 @@
 					</el-col>
 				</el-row>
 				<el-row style="padding:0;" :gutter="10">
-					<el-col :span="12">
+					<el-col :span="12" element-loading-text="数据加载中" v-loading="loadingLeftUp">
 						<el-card>
 							<internet-Chart :xaxislist='dataXaxis' :height="viewHeight" :legendlist='dataLegend' :serieslist='dataSeriesList' :yaxislist='dataYaxis'
 							 :screenlist='dataScreen'></internet-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6" element-loading-text="扣分情况数据加载中" v-loading="loadingMap">
 						<el-card>
 							<score-Chart :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></score-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6" element-loading-text="地图数据加载中" v-loading="loadingMap">
 						<el-card>
 							<map-Chart :quotalist='scoreQuotaList' :height="viewHeight"></map-Chart>
 						</el-card>
 					</el-col>
 				</el-row>
 				<el-row :gutter="10">
-					<el-col :span="12">
+					<el-col :span="12" element-loading-text="数据加载中" v-loading="loadingLeftDown">
 						<el-card>
-							<matching-Chart :xaxislist='matchXaxis' :height="viewHeight" :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis' :screenlist='matchScreen'></matching-Chart>
+							<matching-Chart :xaxislist='matchXaxis' :height="viewHeight" :legendlist='matchLegend' :serieslist='matchSeriesList' :yaxislist='matchYaxis'
+							 :screenlist='matchScreen'></matching-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6" element-loading-text="数据加载中" v-loading="loadingCenterDown">
 						<el-card>
-							<invalidNumber-Chart :xaxislist='numberXaxis' :height="viewHeight" :legendlist='numberLegend' :serieslist='numberSeriesList' :yaxislist='numberYaxis'
-							 :screenlist='numberScreen'></invalidNumber-Chart>
+							<invalidNumber-Chart :xaxislist='numberXaxis' :height="viewHeight" :legendlist='numberLegend' :serieslist='numberSeriesList'
+							 :yaxislist='numberYaxis' :screenlist='numberScreen'></invalidNumber-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6" element-loading-text="本期评价数据加载中" v-loading="loadingRightDown">
 						<el-card class="card-style">
 							<div :style="{height:viewHeight}">
 								<span>【本期评价】</span>
-								<p>
-									{{screenContent}}
+								<p v-html="screenContent">
 								</p>
 							</div>
 						</el-card>
@@ -152,7 +152,7 @@
 			<div class="inner">
 				<el-row :gutter="10">
 					<el-col :span="12">
-						<el-card>
+						<el-card element-loading-text="数据加载中" v-loading="loadingDayOne">
 							<el-row class="day-row">
 								<el-col :span="8" class="day-col">
 									<span style="line-height:28px;font-size:15px;">稽核范围:</span>
@@ -178,13 +178,14 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetChart-Day :xaxislist='internetDataXaxis' :height="viewHeightDay" :legendlist='internetDataLegend' :serieslist='internetDataSeriesList' :yaxislist='internetDataYaxis'></internetChart-Day>
+									<internetChart-Day :xaxislist='internetDataXaxis' :height="viewHeightDay" :legendlist='internetDataLegend' :serieslist='internetDataSeriesList'
+									 :yaxislist='internetDataYaxis'></internetChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
 					</el-col>
 					<el-col :span="12">
-						<el-card>
+						<el-card element-loading-text="数据加载中" v-loading="loadingDayTwo">
 							<el-row class="day-row">
 								<el-col :span="6" class="day-col-satype">
 									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
@@ -226,7 +227,7 @@
 				</el-row>
 				<el-row :gutter="10">
 					<el-col :span="12">
-						<el-card>
+						<el-card element-loading-text="数据加载中" v-loading="loadingDayThree">
 							<el-row class="day-row">
 								<el-col :span="4" class="day-col-switch">
 									<span style="line-height:28px;font-size:14px;">稽核范围:</span>
@@ -256,20 +257,22 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :height="viewHeightDay" :legendlist='internetTimelyDataLegend' :serieslist='internetTimelyDataSeriesList'
-									 :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
+									<internetTimelyChart-Day :xaxislist='internetTimelyDataXaxis' :height="viewHeightDay" :legendlist='internetTimelyDataLegend'
+									 :serieslist='internetTimelyDataSeriesList' :yaxislist='internetTimelyDataYaxis'></internetTimelyChart-Day>
 								</el-col>
 							</el-row>
 						</el-card>
 					</el-col>
 					<el-col :span="12">
-						<el-card :style="{height:viewHeightDaySignaling}">
+						<el-card :style="{height:viewHeightDaySignaling}" element-loading-text="数据加载中" v-loading="loadingDayFour">
 							<el-row class="day-row-time ">
-								<el-col :span="6" class="day-col">
+								<el-col :span="6" class="day-col" style="text-align:right;">
 									<span style="line-height:28px;font-size:15px;">账期:</span>
 								</el-col>
-								<el-col :span="8" class="day-col">
-									<el-select v-model="signalingTimeliness" size="mini" placeholder="请选择">
+								<el-col :span="8" class="day-col" style="text-align:left;">
+									<el-select v-model="signalingTimeliness" size="mini">
+										<el-option label="请选择" value="">
+										</el-option>
 										<el-option v-for="item in signalingTimelinessList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
 										</el-option>
 									</el-select>
@@ -286,10 +289,10 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<el-table :data="signalingTimelinessTable" stripe height="353" border style="width: 100%">
-										<el-table-column show-overflow-tooltip align="center" prop="acct_date" label="账期" width="100">
+									<el-table :data="signalingTimelinessTable" stripe :height="viewHeightDayTable" border style="width: 100%">
+										<el-table-column show-overflow-tooltip align="center" prop="acct_date" label="账期" width="90">
 										</el-table-column>
-										<el-table-column show-overflow-tooltip align="center" prop="prov_name" label="省份">
+										<el-table-column show-overflow-tooltip align="center" prop="prov_name" width="70" label="省份">
 										</el-table-column>
 										<el-table-column show-overflow-tooltip align="center" label="CS">
 											<el-table-column show-overflow-tooltip align="center" prop="CSnumber" label="中断次数">
@@ -393,6 +396,7 @@
 		<el-button @click="handleDatas" v-show="false" id="buttonDialog"></el-button>
 		<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
 		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
+		<el-button @click="handleMapDetail" v-show="false" id="mapDetail"></el-button>
 		<el-dialog title="样例数据" :modal="isModal" fullscreen :visible.sync="dialogTableVisible">
 			<span>时间</span>
 			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
@@ -463,7 +467,7 @@
 				<el-table-column show-overflow-tooltip align="center" property="quotaName" label="稽核指标名称"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="muMetricname" label="度量名称"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="warnLevel" label="预警级别"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskAcctdata" label="帐期"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskAcctdata" label="账期"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskSatype" label="数据域"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="nowperson" label="现流转人"></el-table-column>
@@ -538,6 +542,20 @@
 					</el-col>
 				</el-row>
 			</el-dialog>
+		</el-dialog>
+		<el-dialog title="扣分详情" :visible.sync="dialogMapDetail">
+			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData">
+				<el-table-column show-overflow-tooltip align="center" property="taskId" label="编码"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskAcctdata" label="账期"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="quotaName" label="指标"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="muMetricname" label="度量"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskSatype" label="数据域"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="当前值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="阈值上限"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="阈值下限"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="扣分值"></el-table-column>
+			</el-table>
 		</el-dialog>
 	</div>
 </template>
@@ -664,6 +682,8 @@
 				innerVisible: false,
 				outerVisible2: false,
 				innerVisible2: false,
+				dialogMapDetail: false,
+				dialogMapDetailData: [],
 				sampletime: '',
 				sampletimeList: [],
 				sampleprov: '',
@@ -700,6 +720,18 @@
 				expands: [],
 
 				signalingdialog: false,
+
+				loadingMap: false,
+				loadingLeftUp: false,
+				loadingLeftDown: false,
+				loadingCenterDown:false,
+				loadingRightDown:false,
+
+				loadingDayOne:false,
+				loadingDayTwo:false,
+				loadingDayThree:false,
+				loadingDayFour:false,
+
 			}
 		},
 		beforeMount() {
@@ -754,6 +786,10 @@
 			//获取周报数据
 			// console.log((window.innerHeight - 60) / 2 + 'px', '2222222222')
 			this.getWeekScore()
+			this.getWeekData()
+			this.getWeekMatch()
+			this.getWeekNumber()
+			this.getWeekEvaluation()
 		},
 		// beforeRouteEnter(to, from, next) {
 		// 	next(vm => {
@@ -814,6 +850,9 @@
 			viewHeightDaySignaling: function () {
 				return (window.innerHeight - 40) / 2 + 'px'
 			},
+			viewHeightDayTable: function () {
+				return (window.innerHeight - 140) / 2
+			},
 		},
 		methods: {
 			//处理鼠标滑动到某个页面时候触发的方法
@@ -840,8 +879,13 @@
 					//周报
 				} else if (ref == 'week') {
 					this.getWeekScore()
+					this.getWeekData()
+					this.getWeekMatch()
+					this.getWeekNumber()
+					this.getWeekEvaluation()
 					//日报
 				} else if (ref == 'day') {
+					
 					this.getDayAcctDate(1)
 					this.getDayAcctDate(2)
 					this.getDayAcctDate(3)
@@ -849,6 +893,7 @@
 					this.getDayProv()
 					this.getSignalingTimely()
 					this.getSignalingTimeliness(this.signalingTimeliness)
+					
 				}
 			},
 			//获取工作流数据
@@ -932,6 +977,42 @@
 			//显示信令及时性
 			handleViewSingaling() {
 				this.getSignalingTimeliness(this.signalingTimeliness)
+			},
+			handleEdit(index, row) {
+				this.mailcontent = row.mailContent
+				this.innerVisible = true
+			},
+			handleMapDetail() {
+				this.getMapDetailData(Cookies.get('cityName'));
+			},
+			getSummaries(param) {
+				const { columns, data } = param;
+				const sums = [];
+				columns.forEach((column, index) => {
+					if (index === 0) {
+						sums[index] = '合计';
+						return;
+					}
+					if (index === 9) {
+						const values = data.map(item => Number(item[column.property]));
+						if (!values.every(value => isNaN(value))) {
+							sums[index] = values.reduce((prev, curr) => {
+								const value = Number(curr);
+								if (!isNaN(value)) {
+									return prev + curr;
+								} else {
+									return prev;
+								}
+							}, 0);
+							sums[index] += '分';
+						} else {
+							sums[index] = '-';
+						}
+					}
+
+				});
+
+				return sums;
 			}
 		}
 	}
@@ -1162,12 +1243,12 @@
 	}
 
 	.card-style div p {
+		white-space: pre-wrap;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		word-wrap: break-word;
 		text-align: left;
-		/* overflow: hidden; */
-		/* text-overflow: ellipsis; */
-		/* display: -webkit-box; */
-		/* -webkit-line-clamp: 20; */
-		/* -webkit-box-orient: vertical; */
 		font-size: 15px;
 	}
 
@@ -1241,5 +1322,10 @@
 
 	.current-report span {
 		color: #DA140C;
+	}
+
+	.el-table td,
+	.el-table th {
+		padding: 3px 0;
 	}
 </style>

@@ -19,7 +19,6 @@
 			},
 			height: {
 				type: String,
-				// default: '330px'
 			}
 		},
 		data() {
@@ -44,8 +43,6 @@
 				this.chart.setOption({
 					title: {
 						text: '小区匹配率',
-						// x: 'center',
-						// y: 'bottom',
 						bottom: '25%',
 						left: '43%',
 						textStyle: {
@@ -56,19 +53,6 @@
 					tooltip: {
 						trigger: 'axis'
 					},
-					// legend: {
-					// 	data: ['匹配率']
-					// },
-					// toolbox: {
-					// 	show: true,
-					// 	feature: {
-					// 		mark: { show: true },
-					// 		dataView: { show: true, readOnly: false },
-					// 		magicType: { show: true, type: ['line', 'bar'] },
-					// 		restore: { show: true },
-					// 		saveAsImage: { show: true }
-					// 	}
-					// },
 					grid: {
 						containLabel: true,
 						left: '1%',

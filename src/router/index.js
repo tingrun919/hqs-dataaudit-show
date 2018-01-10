@@ -36,11 +36,6 @@ export default new Router({
 				component: login
 			},
 			{
-				path: '/login/:usercount',
-				name: 'CLOUDLOGIN',
-				component: login
-			},
-			{
 				path: '*',
 				component: NotFoundComponent
 			}

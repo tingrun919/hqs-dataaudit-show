@@ -7,7 +7,6 @@
 
 <script>
 	import echarts from 'echarts'
-	// require('echarts/theme/macarons')
 	import * as Cookies from "js-cookie";
 
 	export default {
@@ -26,7 +25,6 @@
 			},
 			height: {
 				type: String,
-				default: '500%'
 			},
 			xaxislist: {
 				type: Array,
@@ -66,8 +64,8 @@
 						orient: "vertical",
 						right: '20px',
 						top: '25%',
-						itemGap:18,
-						itemSize:25,
+						itemGap: 18,
+						itemSize: 25,
 						feature: {
 							myReport: {
 								//样例数据
@@ -147,10 +145,18 @@
 						axisPointer: {
 							type: 'cross'
 						},
+						textStyle: {
+							align: 'left'
+						},
 						formatter: function (params, ticket, callback) {
 							var res = params[0].name;
 							for (var i = 0, l = params.length; i < l; i++) {
-									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') +  params[i].seriesName.split("-")[1];
+								if (params[i].value == '-') {
+									res += ''
+								} else {
+									res += '<br/>' + params[i].seriesName.split("-")[0] + ' : ' + (params[i].value ? params[i].value : '-') + params[i].seriesName.split("-")[1];
+								}
+
 							}
 							return res;
 						}
@@ -161,13 +167,13 @@
 						bottom: '20',
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 20
+						end: this.tabrange == 2 ? 100 : 50
 					}, {
 						type: 'inside',
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 20
+						end: this.tabrange == 2 ? 100 : 50
 					}],
 					xAxis: {
 						type: 'category',
@@ -182,7 +188,7 @@
 					yAxis: this.yAxisMethod(),
 					legend: {
 						data: this.legendlist,
-						formatter:function (name) {
+						formatter: function (name) {
 							return name.split("-")[0];
 						}
 					},
@@ -218,7 +224,7 @@
 					var item = {
 						type: 'value',
 						position: i == 0 ? 'left' : 'right',
-						splitNumber:4,
+						splitNumber: 4,
 						axisLabel: {
 							formatter: '{value} ' + this.yaxislist[i]
 						}

@@ -5,6 +5,7 @@
 <script>
 	import echarts from 'echarts'
 	import 'echarts/map/js/china.js';
+	import * as Cookies from "js-cookie";
 	require('echarts/theme/roma') // echarts 主题
 
 	const animationDuration = 3000
@@ -44,11 +45,11 @@
 						left: "15%",
 						y: 'top',
 						showTitle: true,
-						itemGap:18,
-						itemSize:25,
+						itemGap: 18,
+						itemSize: 25,
 						feature: {
 							myReport: {
-								title: '样例数据',
+								title: '周报',
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
 									$("#dialogs").trigger("click");
@@ -102,7 +103,6 @@
 			},
 		},
 		mounted() {
-			// this.initChart()
 			this.chart = null
 		},
 		beforeDestroy() {
@@ -115,7 +115,10 @@
 		methods: {
 			initChart() {
 				this.chart = echarts.init(this.$el, 'roma')
-				
+				this.chart.on('click', function (params) {
+					Cookies.set('cityName',params.name)
+					$("#mapDetail").trigger("click");
+				});
 				this.chart.setOption(this.option)
 
 				this.chart.setOption({
@@ -134,13 +137,16 @@
 					},
 				]
 				for (var i = 0; i < this.quotalist.length; i++) {
-					var item={
-						name:this.quotalist[i].prov_name.replace('省','').replace('市','').replace('自治区','').replace('维吾尔','').replace('壮族','').replace('回族',''),
-						value:this.quotalist[i].score
+					var item = {
+						name: this.quotalist[i].prov_name.replace('省', '').replace('市', '').replace('自治区', '').replace('维吾尔', '').replace('壮族', '').replace('回族', ''),
+						value: this.quotalist[i].score
 					}
-				this.result.push(item)	
+					this.result.push(item)
 				}
 				return this.result
+			},
+			tests() {
+				console.log(1)
 			}
 		}
 	}
