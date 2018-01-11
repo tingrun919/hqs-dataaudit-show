@@ -176,8 +176,8 @@ export default {
 					console.log(err);
 				});
 		},
-		getWorkFlow(userid) {
-			return api.get(`dataaudit_show/task/selectTask?userid=${userid}`)
+		getWorkFlow(userid, loginname) {
+			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}`)
 				.then(res => {
 					this.outerVisible2 = true
 					this.workflow = res.data.data
@@ -264,8 +264,8 @@ export default {
 					console.log(err);
 				});
 		},
-		getWeeksData(userid) {
-			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}`)
+		getWeeksData(userid, loginname) {
+			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}`)
 				.then(res => {
 					this.outerVisible = true
 					this.weekly = res.data.data
@@ -294,9 +294,9 @@ export default {
 					console.log(err);
 				});
 		},
-		getMapDetailData(prov_name) {
+		getMapDetailData(prov_name, loginname) {
 			this.fullscreenLoading = true;
-			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_name}`)
+			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_name}&usercount=${loginname}`)
 				.then(res => {
 					this.dialogMapDetailData = res.data.data
 					this.dialogMapDetail = true;

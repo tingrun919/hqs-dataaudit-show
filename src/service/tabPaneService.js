@@ -18,7 +18,7 @@ export default {
 					});
 					if (Cookies.get('disSort') == 3) {
 						this.tabRangeDefault = res.data.data[1].rangeId;
-					}else{
+					} else {
 						this.tabRangeDefault = res.data.data[0].rangeId;
 					}
 				})
@@ -50,9 +50,9 @@ export default {
 					console.log(err);
 				});
 		},
-		getData(orgid, tabid, provid, acctdate) {
+		getData(orgid, tabid, provid, acctdate, loginname) {
 			this.loadingTabLoading = true;
-			return api.get(`dataaudit_show/usertab/selectData?tabid=${tabid}&orgid=${orgid}&provid=${provid}&acctdate=${acctdate}`)
+			return api.get(`dataaudit_show/usertab/selectData?tabid=${tabid}&orgid=${orgid}&provid=${provid}&acctdate=${acctdate}&usercount=${loginname}`)
 				.then(res => {
 					this.xaxis = res.data.data.xaxis
 					this.legend = res.data.data.legend

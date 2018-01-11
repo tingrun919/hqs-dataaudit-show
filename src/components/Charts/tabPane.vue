@@ -14,7 +14,8 @@
 				<el-option v-for="items in prov" :key="items.prov_id" :label="items.prov_name" :value="items.prov_id">
 				</el-option>
 			</el-select>
-			<mix-chart :height="viewHeightMixChart" width='100%' :tabrange="tabRangeDefault" :xaxislist='xaxis' :legendlist='legend' :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
+			<mix-chart :height="viewHeightMixChart" width='100%' :tabrange="tabRangeDefault" :xaxislist='xaxis' :legendlist='legend'
+			 :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
 		</div>
 	</div>
 </template>
@@ -33,7 +34,7 @@
 		components: { mixChart, fieldChart },
 		watch: {
 			tabRangeDefault: function () {
-				Cookies.set('tabid',this.tabId)
+				Cookies.set('tabid', this.tabId)
 				if (this.tabRangeDefault == 1) {
 					//日期
 					this.getAcctDate(Cookies.get('orgId'), this.tabId);
@@ -44,26 +45,19 @@
 			},
 			acctDateDefault: function () {
 				if (Cookies.get('disSort') == 3) {
-					this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, this.acctDateDefault)
+					this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, this.acctDateDefault, Cookies.get('loginname'))
 				} else {
-					this.getData(Cookies.get('orgId'), this.tabId, '', this.acctDateDefault)
+					this.getData(Cookies.get('orgId'), this.tabId, '', this.acctDateDefault, Cookies.get('loginname'))
 				}
 			},
 			provDefault: function () {
-				this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, '', )
+				this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, '', Cookies.get('loginname'))
 			}
 		},
 		computed: {
-			viewHeightMixChart:function(){
+			viewHeightMixChart: function () {
 				return (window.innerHeight - 220) + 'px'
 			}
-			// isPerson: function () {
-			// 	for (var i = 0; i < this.workflow.length; i++) {
-			// 		var s = this.workflow[i].taskNowperson
-			// 	}
-			// 	var t = Cookies.get('userid')
-			// 	return s == t ? true : false
-			// }
 		},
 		beforeMount() {
 			this.getRange(Cookies.get('orgId'), this.tabId)
@@ -108,56 +102,56 @@
 				serieslist: [],
 				yaxis: [],
 
-				tasklength:0,
+				tasklength: 0,
 
 				taskStaffs: [],
 				sendPerson: '',
 				copyPerson: '',
 				tasktextarea: '',
-				cuttime:'',
-				taskIds:'',
-				userId:Cookies.get('userid'),
+				cuttime: '',
+				taskIds: '',
+				userId: Cookies.get('userid'),
 
-				isShow:'',
+				isShow: '',
 				// isModal:false,
 				// isSatype:false,
-				loadingTabLoading:false,
+				loadingTabLoading: false,
 			}
 		},
 		methods: {
 			handleDatas() {
-				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'))
+				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
 			},
 			handleDataYl() {
 				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.sampledata)
 			},
 			handleWeelData() {
-				this.getWeeksData(Cookies.get('userid'))
+				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			handleEdit(index, row) {
 				this.mailcontent = row.mailContent
 				this.innerVisible = true
 			},
 			handleWorkflow() {
-				this.getWorkFlow(Cookies.get('userid'))
+				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			handleTask(row) {
 				this.getTaskFlow(row.taskId)
 			},
-			taskStaff(row,type) {
+			taskStaff(row, type) {
 				this.taskIds = row.taskId;
 				this.isShow = type
 				this.getStaff()
 			},
 			sendTask(row) {
-				if(this.isShow == 'send'){
-					this.sendTasktoPerson(this.taskIds,this.sendPerson,this.tasktextarea,this.cuttime,this.copyPerson)
-				}else if(this.isShow == 'success'){
-					this.successTask(this.taskIds,this.sendPerson,this.tasktextarea,this.copyPerson)
-				}else{
-					this.backTask(this.taskIds,this.tasktextarea)
+				if (this.isShow == 'send') {
+					this.sendTasktoPerson(this.taskIds, this.sendPerson, this.tasktextarea, this.cuttime, this.copyPerson)
+				} else if (this.isShow == 'success') {
+					this.successTask(this.taskIds, this.sendPerson, this.tasktextarea, this.copyPerson)
+				} else {
+					this.backTask(this.taskIds, this.tasktextarea)
 				}
-				
+
 			}
 
 		}

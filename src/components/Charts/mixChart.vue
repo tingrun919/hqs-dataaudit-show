@@ -61,7 +61,7 @@
 						show: true,
 						showTitle: true,
 						orient: "vertical",
-						right: '10px',
+						right: '15px',
 						top: '25%',
 						itemGap: 18,
 						itemSize: 25,

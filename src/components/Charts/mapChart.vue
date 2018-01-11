@@ -44,7 +44,7 @@
 						orient: 'horizontal',
 						left: "15%",
 						y: 'top',
-						top:35,
+						top: 25,
 						showTitle: true,
 						itemGap: 18,
 						itemSize: 25,
@@ -117,7 +117,7 @@
 			initChart() {
 				this.chart = echarts.init(this.$el, 'roma')
 				this.chart.on('click', function (params) {
-					Cookies.set('cityName',params.name)
+					Cookies.set('cityName', params.name)
 					$("#mapDetail").trigger("click");
 				});
 				this.chart.setOption(this.option)

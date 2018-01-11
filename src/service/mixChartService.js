@@ -5,14 +5,14 @@ import * as Cookies from "js-cookie";
 export default {
 
 	methods: {
-		getSampleRange(orgid, tabid) {
+		getSampleRange(orgid, tabid, loginname) {
 			return api.get(`dataaudit_show/usertab/selectRange?orgid=${orgid}&tabid=${tabid}`)
 				.then(res => {
-					if(res.data.data.length > 2){
-						this.getSampleData(orgid, tabid, this.sampletime, this.sampleprov, this.sampledata)
+					if (res.data.data.length > 2) {
+						this.getSampleData(loginname, orgid, tabid, this.sampletime, this.sampleprov, this.sampledata)
 						this.isSatype = true;
-					}else{
-						this.getSampleData(orgid, tabid, this.sampletime, this.sampleprov, '')
+					} else {
+						this.getSampleData(loginname, orgid, tabid, this.sampletime, this.sampleprov, '')
 						this.isSatype = false;
 					}
 				})
@@ -20,12 +20,12 @@ export default {
 					console.log(err);
 				});
 		},
-		getSampleTime(orgid, tabid) {
-			return api.get(`dataaudit_show/usertab/selectylAcctdate?orgid=${orgid}&tabid=${tabid}`)
+		getSampleTime(orgid, tabid, loginname) {
+			return api.get(`dataaudit_show/usertab/selectylAcctdate?orgid=${orgid}&tabid=${tabid}&usercount=${loginname}`)
 				.then(res => {
-					if(res.data.code == "100003"){
+					if (res.data.code == "100003") {
 						this.$message.error(res.data.message);
-					}else{
+					} else {
 						this.sampletimeList = res.data.data
 						this.sampletime = res.data.data[0].acctdate
 						this.getSampleProv(orgid)
@@ -40,27 +40,27 @@ export default {
 				.then(res => {
 					this.sampleprovList = res.data.data
 					this.sampleprov = res.data.data[0].prov_id
-					this.getSampleRange(orgid,Cookies.get('tabid'))
+					this.getSampleRange(orgid, Cookies.get('tabid'), Cookies.get('loginname'))
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		getSampleData(orgid, tabid, acctdate, provid, satype) {
-			return api.get(`dataaudit_show/usertab/selectylData?orgid=${orgid}&tabid=${tabid}&acctdate=${acctdate}&provid=${provid}&satype=${satype}`)
+		getSampleData(loginname, orgid, tabid, acctdate, provid, satype) {
+			return api.get(`dataaudit_show/usertab/selectylData?orgid=${orgid}&tabid=${tabid}&acctdate=${acctdate}&provid=${provid}&satype=${satype}&usercount=${loginname}`)
 				.then(res => {
 					this.columnsName = res.data.data.columnsName
 					this.datalist = res.data.data.datalist
 					this.sdtnName = res.data.data.sdtnName
 					this.dialogTableVisible = true
-					
+
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		getWeeksData(userid) {
-			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}`)
+		getWeeksData(userid, loginname) {
+			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}`)
 				.then(res => {
 					this.outerVisible = true
 					this.weekly = res.data.data
@@ -69,8 +69,8 @@ export default {
 					console.log(err);
 				});
 		},
-		getWorkFlow(userid) {
-			return api.get(`dataaudit_show/task/selectTask?userid=${userid}`)
+		getWorkFlow(userid, loginname) {
+			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}`)
 				.then(res => {
 					this.outerVisible2 = true
 					this.workflow = res.data.data
@@ -119,53 +119,53 @@ export default {
 					console.log(err);
 				});
 		},
-		successTask(taskid, userid, event, taskcopy){
+		successTask(taskid, userid, event, taskcopy) {
 			return api.get(`dataaudit_show/task/taskFinish?taskid=${taskid}&userid=${userid}&event=${event}&taskcopy=${taskcopy}`)
-			.then(res => {
-				if (res.data.code == '100003') {
-					this.loading = false
-					this.$message.error(res.data.message);
-				} else {
-					this.$message({
-						message: '发送成功！',
-						type: 'success'
-					});
-					this.innerVisible2 = false
-					this.outerVisible2 = false
+				.then(res => {
+					if (res.data.code == '100003') {
+						this.loading = false
+						this.$message.error(res.data.message);
+					} else {
+						this.$message({
+							message: '发送成功！',
+							type: 'success'
+						});
+						this.innerVisible2 = false
+						this.outerVisible2 = false
 
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		},
-		backTask(taskid, event){
+		backTask(taskid, event) {
 			return api.get(`dataaudit_show/task/taskBack?taskid=${taskid}&event=${event}`)
-			.then(res => {
-				if (res.data.code == '100003') {
-					this.loading = false
-					this.$message.error(res.data.message);
-				} else {
-					this.$message({
-						message: '退回成功！',
-						type: 'success'
-					});
-					this.innerVisible2 = false
-					this.outerVisible2 = false
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
+				.then(res => {
+					if (res.data.code == '100003') {
+						this.loading = false
+						this.$message.error(res.data.message);
+					} else {
+						this.$message({
+							message: '退回成功！',
+							type: 'success'
+						});
+						this.innerVisible2 = false
+						this.outerVisible2 = false
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		},
-		getSampleDataDownload(orgid, tabid, acctdate, provid, satype){
+		getSampleDataDownload(orgid, tabid, acctdate, provid, satype) {
 			return api.get(`dataaudit_show/usertab/excel?orgid=${orgid}&tabid=${tabid}&acctdate=${acctdate}&provid=${provid}&satype=${satype}`)
 				.then(res => {
 					// this.columnsName = res.data.data.columnsName
 					// this.datalist = res.data.data.datalist
 					// this.sdtnName = res.data.data.sdtnName
 					// this.dialogTableVisible = true
-					
+
 				})
 				.catch(err => {
 					console.log(err);

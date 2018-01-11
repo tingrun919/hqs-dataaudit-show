@@ -10,7 +10,9 @@
 			<li class="nav-item">|</li>
 			<li class="nav-item">
 				<span class="nav-link" @click="tests">
-					工作流
+					<el-badge is-dot>
+						工作流
+					</el-badge>
 				</span>
 			</li>
 			<li class="nav-item">|</li>
@@ -48,6 +50,7 @@
 				Cookies.set('userid', '');
 				Cookies.set('username', '');
 				Cookies.set('orgname', '');
+				Cookies.set('loginname','');
 				this.$router.push('/login')
 			},
 			mytime() {

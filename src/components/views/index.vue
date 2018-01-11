@@ -381,9 +381,6 @@
 			</div>
 		</section>
 		<div class="footer" data-section-name="footer">
-			<!-- <div class="inner">
-				<p>Footer</p>
-			</div> -->
 			<footer-View></footer-View>
 		</div>
 		<div style="display:none;">
@@ -906,15 +903,15 @@
 			},
 			//获取工作流数据
 			handleWorkflow() {
-				this.getWorkFlow(Cookies.get('userid'))
+				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			//获取周报数据
 			handleWeelData() {
-				this.getWeeksData(Cookies.get('userid'))
+				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			//获取样例数据
 			handleDatas() {
-				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'))
+				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
 			},
 			//发送任务
 			sendTask(row) {
@@ -929,15 +926,15 @@
 			},
 			//获取样例数据
 			handleDataYl() {
-				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+				this.getSampleData(Cookies.get('loginname'), Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
 			},
 			handleDataDownload() {
 				//控制satype
 				const satype = this.isSatype ? this.sampledata : ''
 				//测试下载路径
-				// this.downUrl = "http://192.168.1.121:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				// this.downUrl = "http://192.168.10.196:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
 				//正式下载路径
-				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype
+				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#download").trigger("click")
@@ -946,9 +943,9 @@
 			//信令及时性下载
 			handleDataDownloadSignling() {
 				//测试下载路径
-				// this.downUrl = "http://192.168.1.121:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness
+				// this.downUrl = "http://192.168.10.196:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
 				//正式下载路径
-				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness
+				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#downloadSignling").trigger("click")
@@ -991,7 +988,7 @@
 				this.innerVisible = true
 			},
 			handleMapDetail() {
-				this.getMapDetailData(Cookies.get('cityName'));
+				this.getMapDetailData(Cookies.get('cityName'), Cookies.get('loginname'));
 			},
 			getSummaries(param) {
 				const { columns, data } = param;
@@ -1096,6 +1093,7 @@
 
 	.el-badge__content.is-fixed {
 		right: 24px;
+		top: 28px;
 	}
 
 	.clearfix:before,
