@@ -10,8 +10,8 @@
 			<li class="nav-item">|</li>
 			<li class="nav-item">
 				<span class="nav-link" @click="tests">
-					<el-badge is-dot>
-						工作流
+					<el-badge is-dot :hidden="istask">
+						<span>工作流</span>
 					</el-badge>
 				</span>
 			</li>
@@ -38,9 +38,18 @@
 				week: null,
 			};
 		},
+		computed:{
+			istask:function(){
+				if(Cookies.get('iftask') == 1)
+					return false
+				else
+					return true
+			}
+		},
 		beforeMount() {
 			// this.timer()
 			this.myday()
+			console.log(this.istask,'iftask')
 		},
 		methods: {
 			logout() {
@@ -51,6 +60,7 @@
 				Cookies.set('username', '');
 				Cookies.set('orgname', '');
 				Cookies.set('loginname','');
+				Cookies.set('iftask','');
 				this.$router.push('/login')
 			},
 			mytime() {

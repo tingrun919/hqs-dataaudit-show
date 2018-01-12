@@ -71,7 +71,7 @@
 						</el-card>
 					</el-col>
 					<el-col :span="6">
-						<el-card>
+						<el-card style="padding-right:10px;">
 							<map-Chart :quotalist='scoreQuotaList' :height="viewHeight"></map-Chart>
 						</el-card>
 					</el-col>
@@ -274,10 +274,10 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24" style="padding-right:20px;">
-									<el-table :data="signalingTimelinessTable" stripe :height="viewHeightDayTable" border style="width: 100%">
-										<el-table-column show-overflow-tooltip align="center" prop="acct_date" label="账期" width="90">
+									<el-table :data="signalingTimelinessTable" @row-click="handleView" stripe :height="viewHeightDayTable" border style="width: 100%">
+										<el-table-column fixed="left" show-overflow-tooltip align="center" prop="acct_date" label="账期" width="90">
 										</el-table-column>
-										<el-table-column show-overflow-tooltip align="center" prop="prov_name" width="70" label="省份">
+										<el-table-column fixed="left" show-overflow-tooltip align="center" prop="prov_name" width="70" label="省份">
 										</el-table-column>
 										<el-table-column show-overflow-tooltip align="center" label="CS">
 											<el-table-column show-overflow-tooltip align="center" prop="CSnumber" label="中断次数">
@@ -297,11 +297,11 @@
 											<el-table-column show-overflow-tooltip align="center" prop="LTEtime" label="中断时长">
 											</el-table-column>
 										</el-table-column>
-										<el-table-column show-overflow-tooltip align="center" label="操作">
+										<!-- <el-table-column show-overflow-tooltip align="center" label="操作">
 											<template slot-scope="scope">
 												<el-button size="mini" @click="handleView(scope.row)" type="success">查看</el-button>
 											</template>
-										</el-table-column>
+										</el-table-column> -->
 									</el-table>
 								</el-col>
 							</el-row>
@@ -310,7 +310,7 @@
 									<span style="color:#0c8fcf;font-size:14px;">信令文件延时性</span>
 								</el-col>
 							</el-row>
-							<el-dialog title="信令延时性" :visible.sync="signalingdialog">
+							<el-dialog title="信令延时性" @close="dialogEnable" :visible.sync="signalingdialog">
 								<el-table :data="signalingTimelinessDetail" stripe border>
 									<el-table-column type="index" :index="indexMethod" label="序号" width="60"></el-table-column>
 									<el-table-column align="center" property="acct_date" label="账期"></el-table-column>
@@ -668,7 +668,7 @@
 				signalingTimelyDataXaxis: [],
 				signalingTimelyDataLegend: [],
 
-				isTime: true,
+				isTime: false,
 
 				dialogTableVisible: false,
 				outerVisible: false,
@@ -980,7 +980,8 @@
 				this.getStaff()
 			},
 			//显示信令及时性详情
-			handleView(row) {
+			handleView(row, event, column) {
+				$.scrollify.disable();
 				this.getSignalingTimeDetail(row.acct_date, row.prov_id);
 			},
 			//显示信令及时性
@@ -1087,7 +1088,7 @@
 	}
 
 	p {
-		font-size: 4em;
+		/* font-size: 4em; */
 		line-height: 1.3;
 	}
 
@@ -1275,7 +1276,6 @@
 	}
 
 	.day-col-satype {
-		letter-spacing: 6px;
 		text-align: right;
 		padding-right: 10px;
 	}

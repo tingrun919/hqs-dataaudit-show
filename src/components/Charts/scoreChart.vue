@@ -36,7 +36,8 @@
 						x: 'center',
 						textStyle: {
 							fontWeight: 'normal',
-							fontSize: 16
+							fontSize: 16,
+							color:'#0c8fcf',
 						}
 					},
 					tooltip: {

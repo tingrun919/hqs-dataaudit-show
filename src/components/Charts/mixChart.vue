@@ -76,7 +76,7 @@
 							},
 							myMail: {
 								//周报
-								title: '周报',
+								title: '稽核报告',
 								icon: 'image://../../dist/static/img/mail.png',
 								onclick: function (params) {
 									$('#dialogs').trigger("click")

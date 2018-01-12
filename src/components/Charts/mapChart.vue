@@ -30,6 +30,16 @@
 			return {
 				chart: null,
 				option: {
+					title: {
+						text: '点击地图可查看省份扣分详情',
+						bottom: '25',
+						x: 'center',
+						textStyle: {
+							fontWeight: 'normal',
+							fontSize: 16,
+							color: '#0c8fcf',
+						}
+					},
 					tooltip: {
 						trigger: 'item'
 					},
@@ -39,17 +49,20 @@
 						max: 100,
 						calculable: true
 					},
+					grid: {
+						right: '10%',
+					},
 					toolbox: {
 						show: true,
 						orient: 'horizontal',
-						left: "center",
+						left: "right",
 						top: 'top',
 						showTitle: true,
 						itemGap: 18,
 						itemSize: 25,
 						feature: {
 							myReport: {
-								title: '周报',
+								title: '稽核报告',
 								icon: 'image://../../dist/static/img/report.png',
 								onclick: function (params) {
 									$("#dialogs").trigger("click");
@@ -69,15 +82,6 @@
 							// 		alert('1');
 							// 	}
 							// },
-							restore: {
-								show: true,
-								icon: 'image://../../dist/static/img/refesh.png'
-							},
-							saveAsImage: {
-								show: true,
-								icon: 'image://../../dist/static/img/save.png'
-							},
-
 						}
 					},
 					series: [
