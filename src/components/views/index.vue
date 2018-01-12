@@ -131,11 +131,6 @@
 						<span class="hover-text"></span>
 					</a>
 				</li>
-				<li>
-					<a class="" href="#footer">
-						<span class="hover-text"></span>
-					</a>
-				</li>
 			</ul>
 		</section>
 		<section class="panel" data-section-name="day" element-loading-text="数据加载中" v-loading="loadingDay">
@@ -378,20 +373,25 @@
 						</keep-alive>
 					</el-tab-pane>
 				</el-tabs>
+				<el-row class="subtitle">
+					<el-col :span="24">
+						<div class="grid-content">
+							<p class="footer-title">©️版权所有 中国联通</p>
+							<p class="footer-subtitle">建设单位：联通系统集成有限公司 山东省分公司</p>
+						</div>
+					</el-col>
+				</el-row>
 			</div>
 		</section>
-		<div class="footer" data-section-name="footer">
-			<footer-View></footer-View>
-		</div>
 		<div style="display:none;">
 			<input type="text" name="" data-greeting="header" ref="inputref" id="scrollData">
 			<el-button @click="triggerScroll" id="1">默认按钮</el-button>
 		</div>
 		<el-button @click="handleDatas" v-show="false" id="buttonDialog"></el-button>
-		<el-button @click="handleWeelData" v-show="false" id="dialogs"></el-button>
+		<el-button @click="handleWeekData" v-show="false" id="dialogs"></el-button>
 		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
 		<el-button @click="handleMapDetail" v-show="false" id="mapDetail"></el-button>
-		<el-dialog title="样例数据" :modal="isModal" fullscreen :visible.sync="dialogTableVisible">
+		<el-dialog title="样例数据" :modal="isModal" @close="dialogEnable" fullscreen :visible.sync="dialogTableVisible">
 			<span>时间</span>
 			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
 				<el-option v-for="item in sampletimeList" :key="item.acctdate" :label="item.acctdate" :value="item.acctdate">
@@ -422,7 +422,7 @@
 				</el-table>
 			</h1>
 		</el-dialog>
-		<el-dialog title="报告列表" fullscreen :modal="isModal" :visible.sync="outerVisible">
+		<el-dialog title="报告列表" @close="dialogEnable" fullscreen :modal="isModal" :visible.sync="outerVisible">
 			<el-table :data="weekly" stripe border style="width: 100%;margin-top:20px;">
 				<el-table-column align="center" prop="mailId" label="报告编号">
 				</el-table-column>
@@ -447,7 +447,7 @@
 				<div v-html="mailcontent"></div>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="我的工作流" lock-scroll fullscreen :modal="isModal" :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
+		<el-dialog title="我的工作流" @close="dialogEnable" fullscreen :modal="isModal" :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
 			<el-table :data="workflow" stripe border @expand-change="handleTask" :row-key="getRowKeys" :expand-row-keys="expands">
 				<el-table-column fixed="left" type="expand" accordion>
 					<template slot-scope="props">
@@ -485,7 +485,7 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-dialog width="80%" title="详情流转" :visible.sync="innerVisible2" append-to-body>
+			<el-dialog width="80%" @close="dialogEnable" title="详情流转" :visible.sync="innerVisible2" append-to-body>
 				<el-row v-if="isShow != 'back'">
 					<el-col :span="2" class="dialog-col col-right" :offset="3">
 						<span style="line-height:28px;">发送</span>
@@ -537,7 +537,7 @@
 				</el-row>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="扣分详情" :visible.sync="dialogMapDetail">
+		<el-dialog title="扣分详情" @close="dialogEnable" :visible.sync="dialogMapDetail">
 			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData">
 				<el-table-column show-overflow-tooltip align="center" property="taskId" label="编码"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
@@ -571,7 +571,6 @@
 
 	//导入头部底部
 	import headerView from '@/components/header/header'
-	import footerView from '@/components/footer/footer'
 	//导入service
 	import * as Cookies from "js-cookie";
 	import indexService from '../../service/indexService'
@@ -581,7 +580,7 @@
 
 	export default {
 		mixins: [indexService, mixChartService],
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, footerView, dynamicDataChart, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, dynamicDataChart, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
 		data() {
 			return {
 				signalingOptions: [],
@@ -724,6 +723,8 @@
 				isSignaling: '',
 				isInternet: '',
 
+				aaa: true,
+
 			}
 		},
 		beforeMount() {
@@ -742,7 +743,7 @@
 				$.scrollify({
 					section: ".panel",
 					scrollbars: false,
-					interstitialSection: ".header,.footer",
+					interstitialSection: ".header",
 					before: function (i, panels) {
 
 						var ref = panels[i].attr("data-section-name");
@@ -903,14 +904,17 @@
 			},
 			//获取工作流数据
 			handleWorkflow() {
+				$.scrollify.disable();
 				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			//获取周报数据
-			handleWeelData() {
+			handleWeekData() {
+				$.scrollify.disable();
 				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
 			},
 			//获取样例数据
 			handleDatas() {
+				$.scrollify.disable();
 				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
 			},
 			//发送任务
@@ -988,7 +992,11 @@
 				this.innerVisible = true
 			},
 			handleMapDetail() {
+				$.scrollify.disable();
 				this.getMapDetailData(Cookies.get('cityName'), Cookies.get('loginname'));
+			},
+			dialogEnable() {
+				$.scrollify.enable();
 			},
 			getSummaries(param) {
 				const { columns, data } = param;
@@ -1070,13 +1078,9 @@
 		background: #eef1f6;
 	}
 
-	.footer {
-		background: #999999;
-	}
-
 	.inner {
 		position: relative;
-		height: 100%;
+		/* height: 100%; */
 		width: 80%;
 		margin: 0 auto;
 		min-height: 100%;
@@ -1310,9 +1314,9 @@
 
 	.title-panel {
 		text-align: left;
-		position: relative;
-		height: 100%;
-		top: 3%;
+		position: absolute;
+		/* height: 100%; */
+		top: 2%;
 		width: 100%;
 	}
 
@@ -1337,5 +1341,28 @@
 
 	.el-card__body {
 		padding-right: 0;
+	}
+
+	.subtitle {
+		bottom: 0%;
+		text-align: center;
+		position: absolute;
+		width: 100%;
+	}
+
+	.grid-content {
+		letter-spacing: 0.7px;
+		padding-bottom: 10px;
+		color: black;
+	}
+
+	.footer-title {
+		font-size: 14px;
+		padding-bottom: 10px;
+	}
+
+	.footer-subtitle {
+		font-size: 14px;
+		color: black;
 	}
 </style>

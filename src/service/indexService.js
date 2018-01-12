@@ -296,7 +296,8 @@ export default {
 		},
 		getMapDetailData(prov_name, loginname) {
 			this.fullscreenLoading = true;
-			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_name}&usercount=${loginname}`)
+			var prov_names = encodeURI(prov_name)
+			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_names}&usercount=${loginname}`)
 				.then(res => {
 					this.dialogMapDetailData = res.data.data
 					this.dialogMapDetail = true;

@@ -101,7 +101,7 @@
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 20,
+						end: this.tabrange == 2 ? 50 : 20,
 						height: 12,
 						bottom:35,
 					}, {
@@ -109,7 +109,7 @@
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 20,
+						end: this.tabrange == 2 ? 50 : 20,
 					}],
 					xAxis: {
 						type: 'category',

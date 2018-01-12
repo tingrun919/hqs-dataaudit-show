@@ -42,9 +42,8 @@
 					toolbox: {
 						show: true,
 						orient: 'horizontal',
-						left: "15%",
-						y: 'top',
-						top: 25,
+						left: "center",
+						top: 'top',
 						showTitle: true,
 						itemGap: 18,
 						itemSize: 25,
@@ -146,9 +145,6 @@
 				}
 				return this.result
 			},
-			tests() {
-				console.log(1)
-			}
 		}
 	}
 </script>

@@ -119,22 +119,22 @@
 			}
 		},
 		methods: {
-			handleDatas() {
-				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
-			},
+			// handleDatas() {
+			// 	this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
+			// },
 			handleDataYl() {
 				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.sampledata)
 			},
-			handleWeelData() {
-				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
-			},
+			// handleWeelData() {
+			// 	this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
+			// },
 			handleEdit(index, row) {
 				this.mailcontent = row.mailContent
 				this.innerVisible = true
 			},
-			handleWorkflow() {
-				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
-			},
+			// handleWorkflow() {
+			// 	this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
+			// },
 			handleTask(row) {
 				this.getTaskFlow(row.taskId)
 			},
