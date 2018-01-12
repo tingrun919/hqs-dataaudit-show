@@ -77,6 +77,8 @@
 							Cookies.set('userid', res.data.data[0].STAFF_ID);
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
+							Cookies.set('iftask',res.data.iftask);
+							Cookies.set('fromlogin','cloudlogin');
 							this.myBrowser()
 						}
 					})

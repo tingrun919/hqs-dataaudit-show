@@ -474,7 +474,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskContent" label="任务内容"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="预警值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="预警值"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="预警上限"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="预警下限"></el-table-column>
 				<el-table-column align="center" property="taskNowperson" label="操作" width="240">

@@ -19,8 +19,8 @@
 			<li class="nav-item">{{name}}
 
 			</li>
-			<li class="nav-item">|</li>
-			<li class="nav-item">
+			<li class="nav-item" v-if="fromlogin">|</li>
+			<li class="nav-item" v-if="fromlogin">
 				<span class="nav-link" @click="logout">退出</span>
 			</li>
 		</ul>
@@ -44,6 +44,12 @@
 					return false
 				else
 					return true
+			},
+			fromlogin:function(){
+				if(Cookies.get('fromlogin') == 'normal')
+					return true
+				else
+					return false
 			}
 		},
 		beforeMount() {
@@ -61,6 +67,7 @@
 				Cookies.set('orgname', '');
 				Cookies.set('loginname','');
 				Cookies.set('iftask','');
+				Cookies.set('fromlogin','');
 				this.$router.push('/login')
 			},
 			mytime() {

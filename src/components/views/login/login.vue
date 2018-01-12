@@ -31,14 +31,6 @@
 				loading: false,
 			}
 		},
-		beforeMount() {
-			if (Cookies.get('orgId') && Cookies.get('disSort')) {
-				this.$router.push('/index')
-				this.$router.go('/index')
-			} else {
-				this.$router.push('/login')
-			}
-		},
 		methods: {
 			handleLogin() {
 				this.loading = true
@@ -60,6 +52,7 @@
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
 							Cookies.set('loginname',res.data.data[0].LOGIN_NAME);
 							Cookies.set('iftask',res.data.iftask);
+							Cookies.set('fromlogin','normal');
 							this.loading = false
 							this.myBrowser()
 						}
