@@ -1,5 +1,6 @@
 import API from '../api/API'
 const api = new API()
+import * as Cookies from "js-cookie";
 
 export default {
 
@@ -14,22 +15,25 @@ export default {
 						if (typeid == 1) {
 							this.internetOptions = this.internetOptions.concat(result[i]);
 							if (i == 0) {
-								this.internetActive = result[i].tabName;
+								this.internetActive = result[i].tabId;
 								this.internetId = result[i].tabId;
+								Cookies.set('internetTabid',result[i].tabId)
 							}
 							//信令
 						} else if (typeid == 2) {
 							this.signalingOptions = this.signalingOptions.concat(result[i]);
 							if (i == 0) {
-								this.signalingActive = result[i].tabName;
+								this.signalingActive = result[i].tabId;
 								this.signalingId = result[i].tabId;
+								Cookies.set('signalingTabid',result[i].tabId)
 							}
 							//接口
 						} else if (typeid == 3) {
 							this.interfaceOptions = this.interfaceOptions.concat(result[i]);
 							if (i == 0) {
-								this.interfaceActive = result[i].tabName;
+								this.interfaceActive = result[i].tabId;
 								this.interfaceId = result[i].tabId;
+								Cookies.set('interfaceTabid',result[i].tabId)
 							}
 						}
 					}

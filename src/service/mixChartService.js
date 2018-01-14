@@ -24,6 +24,7 @@ export default {
 			return api.get(`dataaudit_show/usertab/selectylAcctdate?orgid=${orgid}&tabid=${tabid}&usercount=${loginname}`)
 				.then(res => {
 					if (res.data.code == "100003") {
+						this.dialogEnable()
 						this.$message.error(res.data.message);
 					} else {
 						this.sampletimeList = res.data.data
@@ -40,7 +41,13 @@ export default {
 				.then(res => {
 					this.sampleprovList = res.data.data
 					this.sampleprov = res.data.data[0].prov_id
-					this.getSampleRange(orgid, Cookies.get('tabid'), Cookies.get('loginname'))
+					if (Cookies.get('isTabType') == 'internet') {
+						this.getSampleRange(orgid, Cookies.get('internetTabid'), Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'signaling') {
+						this.getSampleRange(orgid, Cookies.get('signalingTabid'), Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'interface') {
+						this.getSampleRange(orgid, Cookies.get('interfaceTabid'), Cookies.get('loginname'))
+					}
 				})
 				.catch(err => {
 					console.log(err);

@@ -92,7 +92,7 @@
 					<el-col :span="6">
 						<el-card class="card-style">
 							<span>【本期评价】</span>
-							<div :style="{height:viewHeight}" style="overflow-y: auto;margin-bottom:-25px;margin-top:10px;">
+							<div :style="{height:viewHeight}" style="overflow-y: auto;margin-bottom:-25px;margin-top:10px;padding-right:10px;">
 								<p v-html="screenContent">
 								</p>
 							</div>
@@ -334,10 +334,10 @@
 						<span>1</span>信令详单
 					</p>
 				</div>
-				<el-tabs v-model="signalingActive" type="border-card">
-					<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+				<el-tabs v-model="signalingActive" type="border-card" @tab-click="handlesetTabid">
+					<el-tab-pane v-for="item in signalingOptions" :label="item.tabName" :key='item.tabName' :name="item.tabId">
 						<keep-alive>
-							<tab-pane v-if='signalingActive==item.tabName' :tabId='item.tabId'></tab-pane>
+							<tab-pane v-if='signalingActive==item.tabId'></tab-pane>
 						</keep-alive>
 					</el-tab-pane>
 				</el-tabs>
@@ -350,10 +350,10 @@
 						<span>1</span>互联网详单
 					</p>
 				</div>
-				<el-tabs v-model="internetActive" type="border-card">
-					<el-tab-pane v-for="item in internetOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+				<el-tabs v-model="internetActive" type="border-card" @tab-click="handlesetTabid">
+					<el-tab-pane v-for="item in internetOptions" :label="item.tabName" :key='item.tabName' :name="item.tabId">
 						<keep-alive>
-							<tab-pane v-if='internetActive==item.tabName' :tabId='item.tabId'></tab-pane>
+							<tab-pane v-if='internetActive==item.tabId'></tab-pane>
 						</keep-alive>
 					</el-tab-pane>
 				</el-tabs>
@@ -366,10 +366,10 @@
 						<span>1</span>接口文件稽核
 					</p>
 				</div>
-				<el-tabs v-model="interfaceActive" type="border-card">
-					<el-tab-pane v-for="item in interfaceOptions" :label="item.tabName" :key='item.tabName' :name="item.tabName">
+				<el-tabs v-model="interfaceActive" type="border-card" @tab-click="handlesetTabid">
+					<el-tab-pane v-for="item in interfaceOptions" :label="item.tabName" :key='item.tabName' :name="item.tabId">
 						<keep-alive>
-							<tab-pane v-if='interfaceActive==item.tabName' :tabId='item.tabId'></tab-pane>
+							<tab-pane v-if='interfaceActive==item.tabId'></tab-pane>
 						</keep-alive>
 					</el-tab-pane>
 				</el-tabs>
@@ -858,6 +858,7 @@
 				var ref = $("#scrollData").attr("data-greeting");
 				//互联网
 				if (ref == "internet") {
+					Cookies.set('isTabType', 'internet')
 					if (this.isInternet == '') {
 						this.internetOptions = [],
 							this.internetActive = '',
@@ -868,6 +869,7 @@
 
 					//信令
 				} else if (ref == "signaling") {
+					Cookies.set('isTabType', 'signaling')
 					if (this.isSignaling == '') {
 						this.signalingOptions = [],
 							this.signalingActive = '',
@@ -878,6 +880,7 @@
 
 					//接口
 				} else if (ref == "interface") {
+					Cookies.set('isTabType', 'interface')
 					if (this.isInterface == '') {
 						this.interfaceOptions = [],
 							this.interfaceActive = '',
@@ -915,7 +918,13 @@
 			//获取样例数据
 			handleDatas() {
 				$.scrollify.disable();
-				this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
+				if (Cookies.get('isTabType') == 'internet') {
+					this.getSampleTime(Cookies.get('orgId'), Cookies.get('internetTabid'), Cookies.get('loginname'))
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					this.getSampleTime(Cookies.get('orgId'), Cookies.get('signalingTabid'), Cookies.get('loginname'))
+				} else if (Cookies.get('isTabType') == 'interface') {
+					this.getSampleTime(Cookies.get('orgId'), Cookies.get('interfaceTabid'), Cookies.get('loginname'))
+				}
 			},
 			//发送任务
 			sendTask(row) {
@@ -930,15 +939,26 @@
 			},
 			//获取样例数据
 			handleDataYl() {
-				this.getSampleData(Cookies.get('loginname'), Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+				if (Cookies.get('isTabType') == 'internet') {
+					this.getSampleData(Cookies.get('loginname'), Cookies.get('orgId'), Cookies.get('internetTabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					this.getSampleData(Cookies.get('loginname'), Cookies.get('orgId'), Cookies.get('signalingTabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+				} else if (Cookies.get('isTabType') == 'interface') {
+					this.getSampleData(Cookies.get('loginname'), Cookies.get('orgId'), Cookies.get('interfaceTabid'), this.sampletime, this.sampleprov, this.isSatype ? this.sampledata : '')
+				}
 			},
 			handleDataDownload() {
 				//控制satype
 				const satype = this.isSatype ? this.sampledata : ''
-				//测试下载路径
-				// this.downUrl = "http://192.168.10.196:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
+				if (Cookies.get('isTabType') == 'internet') {
+					const tabid = Cookies.get('internetTabid')
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					const tabid = Cookies.get('internetTabid')
+				} else if (Cookies.get('isTabType') == 'interface') {
+					const tabid = Cookies.get('internetTabid')
+				}
 				//正式下载路径
-				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + Cookies.get('tabid') + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
+				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + tabid + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#download").trigger("click")
@@ -946,8 +966,6 @@
 			},
 			//信令及时性下载
 			handleDataDownloadSignling() {
-				//测试下载路径
-				// this.downUrl = "http://192.168.10.196:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
 				//正式下载路径
 				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
@@ -1027,6 +1045,15 @@
 				});
 
 				return sums;
+			},
+			handlesetTabid(tab) {
+				if (Cookies.get('isTabType') == 'internet') {
+					Cookies.set('internetTabid',tab.name)
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					Cookies.set('signalingTabid',tab.name)
+				} else if (Cookies.get('isTabType') == 'interface') {
+					Cookies.set('interfaceTabid',tab.name)
+				}
 			}
 		}
 	}
@@ -1117,6 +1144,10 @@
 		z-index: 99;
 		position: relative;
 		padding-right: 5px;
+	}
+
+	p {
+		line-height: 14px;
 	}
 
 	.nav-header {

@@ -30,14 +30,18 @@
 
 	export default {
 		mixins: [tabPaneService, mixChartService],
-		props: ['tabId'],
 		components: { mixChart, fieldChart },
 		watch: {
 			tabRangeDefault: function () {
-				Cookies.set('tabid', this.tabId)
 				if (this.tabRangeDefault == 1) {
 					//日期
-					this.getAcctDate(Cookies.get('orgId'), this.tabId);
+					if (Cookies.get('isTabType') == 'internet') {
+						this.getAcctDate(Cookies.get('orgId'), Cookies.get('internetTabid'));
+					} else if (Cookies.get('isTabType') == 'signaling') {
+						this.getAcctDate(Cookies.get('orgId'), Cookies.get('signalingTabid'));
+					} else if (Cookies.get('isTabType') == 'interface') {
+						this.getAcctDate(Cookies.get('orgId'), Cookies.get('interfaceTabid'));
+					}
 				} else {
 					//地域
 					this.getProv(Cookies.get('orgId'));
@@ -45,13 +49,31 @@
 			},
 			acctDateDefault: function () {
 				if (Cookies.get('disSort') == 3) {
-					this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, this.acctDateDefault, Cookies.get('loginname'))
+					if (Cookies.get('isTabType') == 'internet') {
+						this.getData(Cookies.get('orgId'), Cookies.get('internetTabid'), this.provDefault, this.acctDateDefault, Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'signaling') {
+						this.getData(Cookies.get('orgId'), Cookies.get('signalingTabid'), this.provDefault, this.acctDateDefault, Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'interface') {
+						this.getData(Cookies.get('orgId'), Cookies.get('interfaceTabid'), this.provDefault, this.acctDateDefault, Cookies.get('loginname'))
+					}
 				} else {
-					this.getData(Cookies.get('orgId'), this.tabId, '', this.acctDateDefault, Cookies.get('loginname'))
+					if (Cookies.get('isTabType') == 'internet') {
+						this.getData(Cookies.get('orgId'), Cookies.get('internetTabid'), '', this.acctDateDefault, Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'signaling') {
+						this.getData(Cookies.get('orgId'), Cookies.get('signalingTabid'), '', this.acctDateDefault, Cookies.get('loginname'))
+					} else if (Cookies.get('isTabType') == 'interface') {
+						this.getData(Cookies.get('orgId'), Cookies.get('interfaceTabid'), '', this.acctDateDefault, Cookies.get('loginname'))
+					}
 				}
 			},
 			provDefault: function () {
-				this.getData(Cookies.get('orgId'), this.tabId, this.provDefault, '', Cookies.get('loginname'))
+				if (Cookies.get('isTabType') == 'internet') {
+					this.getData(Cookies.get('orgId'), Cookies.get('internetTabid'), this.provDefault, '', Cookies.get('loginname'))
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					this.getData(Cookies.get('orgId'), Cookies.get('signalingTabid'), this.provDefault, '', Cookies.get('loginname'))
+				} else if (Cookies.get('isTabType') == 'interface') {
+					this.getData(Cookies.get('orgId'), Cookies.get('interfaceTabid'), this.provDefault, '', Cookies.get('loginname'))
+				}
 			}
 		},
 		computed: {
@@ -60,7 +82,13 @@
 			}
 		},
 		beforeMount() {
-			this.getRange(Cookies.get('orgId'), this.tabId)
+			if (Cookies.get('isTabType') == 'internet') {
+				this.getRange(Cookies.get('orgId'), Cookies.get('internetTabid'))
+			} else if (Cookies.get('isTabType') == 'signaling') {
+				this.getRange(Cookies.get('orgId'), Cookies.get('signalingTabid'))
+			} else if (Cookies.get('isTabType') == 'interface') {
+				this.getRange(Cookies.get('orgId'), Cookies.get('interfaceTabid'))
+			}
 		},
 		data() {
 			return {
@@ -74,10 +102,6 @@
 				innerVisible: false,
 				outerVisible2: false,
 				innerVisible2: false,
-
-				// columnsName: [],
-				// datalist: [],
-				// sdtnName:[],
 
 				weekly: [],
 				mailcontent: '',
@@ -113,49 +137,9 @@
 				userId: Cookies.get('userid'),
 
 				isShow: '',
-				// isModal:false,
-				// isSatype:false,
 				loadingTabLoading: false,
 			}
 		},
-		methods: {
-			// handleDatas() {
-			// 	this.getSampleTime(Cookies.get('orgId'), Cookies.get('tabid'), Cookies.get('loginname'))
-			// },
-			handleDataYl() {
-				this.getSampleData(Cookies.get('orgId'), Cookies.get('tabid'), this.sampletime, this.sampleprov, this.sampledata)
-			},
-			// handleWeelData() {
-			// 	this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
-			// },
-			handleEdit(index, row) {
-				this.mailcontent = row.mailContent
-				this.innerVisible = true
-			},
-			// handleWorkflow() {
-			// 	this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
-			// },
-			handleTask(row) {
-				this.getTaskFlow(row.taskId)
-			},
-			taskStaff(row, type) {
-				this.taskIds = row.taskId;
-				this.isShow = type
-				this.getStaff()
-			},
-			sendTask(row) {
-				if (this.isShow == 'send') {
-					this.sendTasktoPerson(this.taskIds, this.sendPerson, this.tasktextarea, this.cuttime, this.copyPerson)
-				} else if (this.isShow == 'success') {
-					this.successTask(this.taskIds, this.sendPerson, this.tasktextarea, this.copyPerson)
-				} else {
-					this.backTask(this.taskIds, this.tasktextarea)
-				}
-
-			}
-
-		}
-
 	}
 </script>
 
