@@ -391,6 +391,7 @@
 		<el-button @click="handleWeekData" v-show="false" id="dialogs"></el-button>
 		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
 		<el-button @click="handleMapDetail" v-show="false" id="mapDetail"></el-button>
+		<el-button @click="handleQuota" v-show="false" id="quotaDialog"></el-button>
 		<el-dialog title="样例数据" :modal="isModal" @close="dialogEnable" fullscreen :visible.sync="dialogTableVisible">
 			<span>时间</span>
 			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
@@ -551,6 +552,11 @@
 				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="扣分值"></el-table-column>
 			</el-table>
 		</el-dialog>
+		<el-dialog :title="quotaTitle" @close="dialogEnable" :visible.sync="dialogQuota">
+			<span v-for="item in quota">
+				{{item.muMetricname +':'+ item.quotaCaliber}}<br /><br />
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -561,9 +567,7 @@
 	import matchingChart from '@/components/Charts/matchingChart'
 	import invalidNumberChart from '@/components/Charts/invalidNumberChart'
 	import mapChart from '@/components/Charts/mapChart'
-	import testChart2 from '@/components/Charts/testChart2'
 	import tabPane from '@/components/Charts/tabPane'
-	import dynamicDataChart from '@/components/Charts/dynamicDataChart'
 	import internetChartDay from '@/components/Charts/internetChartDay'
 	import matchingChartDay from '@/components/Charts/matchingChartDay'
 	import signalingChartDay from '@/components/Charts/signalingChartDay'
@@ -580,7 +584,7 @@
 
 	export default {
 		mixins: [indexService, mixChartService],
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, dynamicDataChart, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
 		data() {
 			return {
 				signalingOptions: [],
@@ -711,6 +715,8 @@
 					return row.taskId;
 				},
 				expands: [],
+				quota:[],
+				quotaTitle:'',
 
 				signalingdialog: false,
 
@@ -718,12 +724,12 @@
 
 				loadingDay: false,
 
+				dialogQuota:false,
+
 				isDayData: '',
 				isInterface: '',
 				isSignaling: '',
 				isInternet: '',
-
-				aaa: true,
 
 			}
 		},
@@ -951,11 +957,11 @@
 				//控制satype
 				const satype = this.isSatype ? this.sampledata : ''
 				if (Cookies.get('isTabType') == 'internet') {
-					const tabid = Cookies.get('internetTabid')
+					var tabid = Cookies.get('internetTabid')
 				} else if (Cookies.get('isTabType') == 'signaling') {
-					const tabid = Cookies.get('internetTabid')
+					var tabid = Cookies.get('signalingTabid')
 				} else if (Cookies.get('isTabType') == 'interface') {
-					const tabid = Cookies.get('internetTabid')
+					var tabid = Cookies.get('interfaceTabid')
 				}
 				//正式下载路径
 				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + tabid + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
@@ -1053,6 +1059,31 @@
 					Cookies.set('signalingTabid',tab.name)
 				} else if (Cookies.get('isTabType') == 'interface') {
 					Cookies.set('interfaceTabid',tab.name)
+				}
+			},
+			handleQuota(){
+				$.scrollify.disable();
+				if (Cookies.get('isTabType') == 'internet') {
+					for(var i = 0; i<this.internetOptions.length; i++){
+						if(this.internetOptions[i].tabId == Cookies.get('internetTabid')){
+							this.quotaTitle = this.internetOptions[i].tabName
+						}
+					}
+					this.getQuota(Cookies.get('orgId'), Cookies.get('internetTabid'))
+				} else if (Cookies.get('isTabType') == 'signaling') {
+					for(var i = 0; i<this.signalingOptions.length; i++){
+						if(this.signalingOptions[i].tabId == Cookies.get('signalingTabid')){
+							this.quotaTitle = this.signalingOptions[i].tabName
+						}
+					}
+					this.getQuota(Cookies.get('orgId'), Cookies.get('signalingTabid'))
+				} else if (Cookies.get('isTabType') == 'interface') {
+					for(var i = 0; i<this.interfaceOptions.length; i++){
+						if(this.interfaceOptions[i].tabId == Cookies.get('interfaceTabid')){
+							this.quotaTitle = this.interfaceOptions[i].tabName
+						}
+					}
+					this.getQuota(Cookies.get('orgId'), Cookies.get('interfaceTabid'))
 				}
 			}
 		}

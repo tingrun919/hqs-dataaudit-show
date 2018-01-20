@@ -53,9 +53,7 @@
 			}
 		},
 		beforeMount() {
-			// this.timer()
 			this.myday()
-			console.log(this.istask,'iftask')
 		},
 		methods: {
 			logout() {

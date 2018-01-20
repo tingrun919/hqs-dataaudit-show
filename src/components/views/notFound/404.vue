@@ -63,8 +63,6 @@
 							Cookies.set('orgname', '');
 							loading.close();
 							this.$message.error(res.data.message);
-							this.$router.push('/index')
-							this.$router.go('/index')
 						} else {
 							loading.close();
 							//部门ID

@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/views/index'
-import Chart from '@/components/Charts/test'
-import Test from '@/components/testComp'
-import dynamicData from '@/components/Charts/dynamicDataChart'
 import login from '@/components/views/login/login'
 
 
@@ -24,11 +21,6 @@ export default new Router({
 				path: '/index',
 				name: 'INDEX',
 				component: Index
-			},
-			{
-				path: '/test',
-				name: 'DYNAMICDATA',
-				component: Chart
 			},
 			{
 				path: '/login',

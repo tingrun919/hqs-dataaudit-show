@@ -22,7 +22,6 @@
 
 <script>
 	import mixChart from '@/components/Charts/mixChart.vue'
-	import fieldChart from '@/components/Charts/fieldChart.vue'
 
 	import tabPaneService from '../../service/tabPaneService'
 	import mixChartService from '../../service/mixChartService'
@@ -30,7 +29,7 @@
 
 	export default {
 		mixins: [tabPaneService, mixChartService],
-		components: { mixChart, fieldChart },
+		components: { mixChart },
 		watch: {
 			tabRangeDefault: function () {
 				if (this.tabRangeDefault == 1) {
@@ -125,6 +124,7 @@
 				legend: [],
 				serieslist: [],
 				yaxis: [],
+				quotaCycle:[],
 
 				tasklength: 0,
 

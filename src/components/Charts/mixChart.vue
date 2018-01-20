@@ -66,6 +66,14 @@
 						itemGap: 18,
 						itemSize: 25,
 						feature: {
+							myCycle: {
+								//样例数据
+								title: '稽核口径',
+								icon: 'image://../../dist/static/img/explanation.png',
+								onclick: function (params) {
+									$("#quotaDialog").trigger("click");
+								}
+							},
 							myReport: {
 								//样例数据
 								title: '样例数据',
@@ -166,13 +174,13 @@
 						bottom: '20',
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 50
+						end: this.tabrange == 2 ? 100 : 100
 					}, {
 						type: 'inside',
 						xAxisIndex: 0,
 						filterMode: 'filter',
 						start: 0,
-						end: this.tabrange == 2 ? 100 : 50
+						end: this.tabrange == 2 ? 100 : 100
 					}],
 					xAxis: {
 						type: 'category',
@@ -187,6 +195,7 @@
 					yAxis: this.yAxisMethod(),
 					legend: {
 						data: this.legendlist,
+						selected: this.isDefaultLegend(),
 						formatter: function (name) {
 							return name.split("-")[0];
 						}
@@ -230,8 +239,16 @@
 					}
 					this.yAxisData.push(item);
 				}
+				
 				return this.yAxisData
 			},
+			isDefaultLegend() {
+				var item = {}
+				for (var i = 1; i < this.legendlist.length; i++) {
+					item[this.legendlist[i]] = false					
+				}
+				return item
+			}
 		}
 	}
 </script>

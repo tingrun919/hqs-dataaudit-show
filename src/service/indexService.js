@@ -310,6 +310,21 @@ export default {
 				.catch(err => {
 					console.log(err);
 				});
+		},
+		getQuota(orgid, tabid){
+			return api.get(`dataaudit_show/usertab/selCaliber?orgid=${orgid}&tabid=${tabid}`)
+			.then(res => {
+				if (res.data.code == "100003") {
+					this.dialogEnable()
+					this.$message.error(res.data.message);
+				} else {
+					this.quota = res.data.data
+					this.dialogQuota = true;
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
 		}
 	}
 }
