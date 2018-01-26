@@ -62,7 +62,11 @@
 							Cookies.set('username', '');
 							Cookies.set('orgname', '');
 							loading.close();
-							this.$message.error(res.data.message);
+							this.$message({
+								duration: 0,
+								message: res.data.message,
+								type: 'error'
+							});
 						} else {
 							loading.close();
 							//部门ID
@@ -75,8 +79,8 @@
 							Cookies.set('userid', res.data.data[0].STAFF_ID);
 							Cookies.set('username', res.data.data[0].STAFF_NAME);
 							Cookies.set('orgname', res.data.data[0].ORG_NAME);
-							Cookies.set('iftask',res.data.iftask);
-							Cookies.set('fromlogin','cloudlogin');
+							Cookies.set('iftask', res.data.iftask);
+							Cookies.set('fromlogin', 'cloudlogin');
 							this.myBrowser()
 						}
 					})

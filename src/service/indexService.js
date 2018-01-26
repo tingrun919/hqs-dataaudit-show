@@ -17,7 +17,7 @@ export default {
 							if (i == 0) {
 								this.internetActive = result[i].tabId;
 								this.internetId = result[i].tabId;
-								Cookies.set('internetTabid',result[i].tabId)
+								Cookies.set('internetTabid', result[i].tabId)
 							}
 							//信令
 						} else if (typeid == 2) {
@@ -25,7 +25,7 @@ export default {
 							if (i == 0) {
 								this.signalingActive = result[i].tabId;
 								this.signalingId = result[i].tabId;
-								Cookies.set('signalingTabid',result[i].tabId)
+								Cookies.set('signalingTabid', result[i].tabId)
 							}
 							//接口
 						} else if (typeid == 3) {
@@ -33,7 +33,7 @@ export default {
 							if (i == 0) {
 								this.interfaceActive = result[i].tabId;
 								this.interfaceId = result[i].tabId;
-								Cookies.set('interfaceTabid',result[i].tabId)
+								Cookies.set('interfaceTabid', result[i].tabId)
 							}
 						}
 					}
@@ -180,11 +180,17 @@ export default {
 					console.log(err);
 				});
 		},
-		getWorkFlow(userid, loginname) {
-			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}`)
+		getWorkFlow(userid, loginname,prov,state,start,end,zhibiao,checked) {
+			var s = '', a = '';
+			if (start != null || end != null) {
+				var s = this.getDateFormat(start)
+				var a = this.getDateFormat(end)
+			}
+			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}&provid=${prov}&state=${state}&begintime=${s}&endtime=${a}&quotaname=${zhibiao}&nowperson=${checked ? 1 : 0}`)
 				.then(res => {
 					this.outerVisible2 = true
 					this.workflow = res.data.data
+					this.getDayProv()
 				})
 				.catch(err => {
 					console.log(err);
@@ -268,8 +274,13 @@ export default {
 					console.log(err);
 				});
 		},
-		getWeeksData(userid, loginname) {
-			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}`)
+		getWeeksData(userid, loginname, begintime, endtime) {
+			var s = '', a = '';
+			if (begintime != null || endtime != null) {
+				var s = this.getDateFormat(begintime)
+				var a = this.getDateFormat(endtime)
+			}
+			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}&begintime=${s}&endtime=${a}`)
 				.then(res => {
 					this.outerVisible = true
 					this.weekly = res.data.data
@@ -311,21 +322,30 @@ export default {
 					console.log(err);
 				});
 		},
-		getQuota(orgid, tabid){
+		getQuota(orgid, tabid) {
 			return api.get(`dataaudit_show/usertab/selCaliber?orgid=${orgid}&tabid=${tabid}`)
-			.then(res => {
-				if (res.data.code == "100003") {
-					this.dialogEnable()
-					this.$message.error(res.data.message);
-				} else {
-					this.quota = res.data.data
-					this.dialogQuota = true;
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			});
-		}
+				.then(res => {
+					if (res.data.code == "100003") {
+						this.dialogEnable()
+						this.$message.error(res.data.message);
+					} else {
+						this.quota = res.data.data
+						this.dialogQuota = true;
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getDateFormat(date) {
+			if (!date.isNan) {
+				var date = new Date(date);
+			}
+			var y = date.getFullYear();
+			var m = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+			var d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() + ' ';
+			return y + "" + m + "" + d;
+		},
 	}
 }
 

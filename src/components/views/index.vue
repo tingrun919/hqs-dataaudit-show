@@ -313,12 +313,12 @@
 							<el-dialog title="信令延时性" @close="dialogEnable" :visible.sync="signalingdialog">
 								<el-table :data="signalingTimelinessDetail" stripe border>
 									<el-table-column type="index" :index="indexMethod" label="序号" width="60"></el-table-column>
-									<el-table-column align="center" property="acct_date" label="账期"></el-table-column>
+									<el-table-column align="center" width="100" property="acct_date" label="账期"></el-table-column>
 									<el-table-column align="center" property="prov_name" label="省份"></el-table-column>
 									<el-table-column align="center" property="sa_type" label="数据域"></el-table-column>
 									<el-table-column align="center" property="ventor_desc" label="厂商"></el-table-column>
 									<el-table-column align="center" show-overflow-tooltip property="interface_desc" label="接口"></el-table-column>
-									<el-table-column align="center" property="longtime" label="中断时间"></el-table-column>
+									<el-table-column align="center" width="100" property="longtime" label="中断时间"></el-table-column>
 									<el-table-column align="center" property="time" label="中断时长"></el-table-column>
 								</el-table>
 							</el-dialog>
@@ -424,6 +424,15 @@
 			</h1>
 		</el-dialog>
 		<el-dialog title="报告列表" @close="dialogEnable" fullscreen :modal="isModal" :visible.sync="outerVisible">
+			<div class="block">
+				<span class="demonstration">账期</span>
+				<el-date-picker v-model="value1" type="date" placeholder="选择起始日期">
+				</el-date-picker>
+				<span class="demonstration">—</span>
+				<el-date-picker v-model="value2" type="date" placeholder="选择结束日期">
+				</el-date-picker>
+				<el-button @click="handleWeekData" type="primary">查询</el-button>
+			</div>
 			<el-table :data="weekly" stripe border style="width: 100%;margin-top:20px;">
 				<el-table-column align="center" prop="mailId" label="报告编号">
 				</el-table-column>
@@ -449,6 +458,44 @@
 			</el-dialog>
 		</el-dialog>
 		<el-dialog title="我的工作流" @close="dialogEnable" fullscreen :modal="isModal" :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
+			<el-row>
+				<el-col :span="12" style="text-align:right;">
+					<span class="demonstration">账期</span>
+					<el-date-picker size="small" v-model="value3" type="date" placeholder="选择起始日期">
+					</el-date-picker>
+					<span class="demonstration">—</span>
+					<el-date-picker size="small" v-model="value4" type="date" placeholder="选择结束日期">
+					</el-date-picker>
+				</el-col>
+				<el-col :span="12" style="text-align:left;">
+					<span>省份</span>
+					<el-select v-model="workflowProv" size="mini">
+						<el-option label="请选择" value="">
+						</el-option>
+						<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
+						</el-option>
+					</el-select>
+					<span>状态</span>
+					<el-select size="small" v-model="workflowState" placeholder="请选择状态">
+						<el-option label="请选择" value="">
+						</el-option>
+						<el-option label="进行中" value="2">
+						</el-option>
+						<el-option label="已完成" value="3">
+						</el-option>
+					</el-select>
+				</el-col>
+			</el-row>
+			<el-row>
+				<el-col :span="12" style="padding-left:7%;">
+					<span>指标</span>
+					<el-input v-model="worlkflowzhibiao" placeholder="请输入内容" size="small" style="width:40%;"></el-input>
+				</el-col>
+				<el-col :span="12" style="text-align:left;">
+					<el-checkbox v-model="checked">只显示现流转人是我的任务</el-checkbox>
+					<el-button @click="handleWorkflow" type="primary" size="small" style="margin-left:8%;">查询</el-button>
+				</el-col>
+			</el-row>
 			<el-table :data="workflow" stripe border @expand-change="handleTask" :row-key="getRowKeys" :expand-row-keys="expands">
 				<el-table-column fixed="left" type="expand" accordion>
 					<template slot-scope="props">
@@ -715,8 +762,8 @@
 					return row.taskId;
 				},
 				expands: [],
-				quota:[],
-				quotaTitle:'',
+				quota: [],
+				quotaTitle: '',
 
 				signalingdialog: false,
 
@@ -724,13 +771,23 @@
 
 				loadingDay: false,
 
-				dialogQuota:false,
+				dialogQuota: false,
 
 				isDayData: '',
 				isInterface: '',
 				isSignaling: '',
 				isInternet: '',
 
+				value1: new Date() - 3600 * 1000 * 24 * 7,
+				value2: new Date(),
+
+				value3: new Date() - 3600 * 1000 * 24 * 7,
+				value4: new Date(),
+
+				checked: false,
+				workflowProv: '',
+				workflowState: '',
+				worlkflowzhibiao:'',
 			}
 		},
 		beforeMount() {
@@ -914,12 +971,12 @@
 			//获取工作流数据
 			handleWorkflow() {
 				$.scrollify.disable();
-				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'))
+				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'),this.workflowProv,this.workflowState,this.value3,this.value4,this.worlkflowzhibiao,this.checked)
 			},
 			//获取周报数据
 			handleWeekData() {
 				$.scrollify.disable();
-				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'))
+				this.getWeeksData(Cookies.get('userid'), Cookies.get('loginname'), this.value1, this.value2)
 			},
 			//获取样例数据
 			handleDatas() {
@@ -1054,38 +1111,38 @@
 			},
 			handlesetTabid(tab) {
 				if (Cookies.get('isTabType') == 'internet') {
-					Cookies.set('internetTabid',tab.name)
+					Cookies.set('internetTabid', tab.name)
 				} else if (Cookies.get('isTabType') == 'signaling') {
-					Cookies.set('signalingTabid',tab.name)
+					Cookies.set('signalingTabid', tab.name)
 				} else if (Cookies.get('isTabType') == 'interface') {
-					Cookies.set('interfaceTabid',tab.name)
+					Cookies.set('interfaceTabid', tab.name)
 				}
 			},
-			handleQuota(){
+			handleQuota() {
 				$.scrollify.disable();
 				if (Cookies.get('isTabType') == 'internet') {
-					for(var i = 0; i<this.internetOptions.length; i++){
-						if(this.internetOptions[i].tabId == Cookies.get('internetTabid')){
+					for (var i = 0; i < this.internetOptions.length; i++) {
+						if (this.internetOptions[i].tabId == Cookies.get('internetTabid')) {
 							this.quotaTitle = this.internetOptions[i].tabName
 						}
 					}
 					this.getQuota(Cookies.get('orgId'), Cookies.get('internetTabid'))
 				} else if (Cookies.get('isTabType') == 'signaling') {
-					for(var i = 0; i<this.signalingOptions.length; i++){
-						if(this.signalingOptions[i].tabId == Cookies.get('signalingTabid')){
+					for (var i = 0; i < this.signalingOptions.length; i++) {
+						if (this.signalingOptions[i].tabId == Cookies.get('signalingTabid')) {
 							this.quotaTitle = this.signalingOptions[i].tabName
 						}
 					}
 					this.getQuota(Cookies.get('orgId'), Cookies.get('signalingTabid'))
 				} else if (Cookies.get('isTabType') == 'interface') {
-					for(var i = 0; i<this.interfaceOptions.length; i++){
-						if(this.interfaceOptions[i].tabId == Cookies.get('interfaceTabid')){
+					for (var i = 0; i < this.interfaceOptions.length; i++) {
+						if (this.interfaceOptions[i].tabId == Cookies.get('interfaceTabid')) {
 							this.quotaTitle = this.interfaceOptions[i].tabName
 						}
 					}
 					this.getQuota(Cookies.get('orgId'), Cookies.get('interfaceTabid'))
 				}
-			}
+			},
 		}
 	}
 </script>

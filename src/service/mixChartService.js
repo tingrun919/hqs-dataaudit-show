@@ -66,26 +66,26 @@ export default {
 					console.log(err);
 				});
 		},
-		getWeeksData(userid, loginname) {
-			return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}`)
-				.then(res => {
-					this.outerVisible = true
-					this.weekly = res.data.data
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		getWorkFlow(userid, loginname) {
-			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}`)
-				.then(res => {
-					this.outerVisible2 = true
-					this.workflow = res.data.data
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
+		// getWeeksData(userid, loginname) {
+		// 	return api.get(`dataaudit_show/email/selWeekly?userid=${userid}&usercount=${loginname}`)
+		// 		.then(res => {
+		// 			this.outerVisible = true
+		// 			this.weekly = res.data.data
+		// 		})
+		// 		.catch(err => {
+		// 			console.log(err);
+		// 		});
+		// },
+		// getWorkFlow(userid, loginname) {
+		// 	return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}`)
+		// 		.then(res => {
+		// 			this.outerVisible2 = true
+		// 			this.workflow = res.data.data
+		// 		})
+		// 		.catch(err => {
+		// 			console.log(err);
+		// 		});
+		// },
 		getTaskFlow(taskid) {
 			return api.get(`dataaudit_show/task/selectTaskFlow?taskid=${taskid}`)
 				.then(res => {
