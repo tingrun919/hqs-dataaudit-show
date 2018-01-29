@@ -182,8 +182,10 @@ export default {
 		},
 		getWorkFlow(userid, loginname,prov,state,start,end,zhibiao,checked) {
 			var s = '', a = '';
-			if (start != null || end != null) {
+			if (start != null) {
 				var s = this.getDateFormat(start)
+			}
+			if (end != null) {
 				var a = this.getDateFormat(end)
 			}
 			return api.get(`dataaudit_show/task/selectTask?userid=${userid}&usercount=${loginname}&provid=${prov}&state=${state}&begintime=${s}&endtime=${a}&quotaname=${zhibiao}&nowperson=${checked ? 1 : 0}`)

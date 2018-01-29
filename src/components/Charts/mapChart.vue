@@ -63,20 +63,20 @@
 						feature: {
 							myReport: {
 								title: '稽核报告',
-								icon: 'image://../../dist/static/img/report.png',
+								icon: 'image://../../data_audit/static/img/report.png',
 								onclick: function (params) {
 									$("#dialogs").trigger("click");
 								}
 							},
 							myRecording: {
 								title: '工作流',
-								icon: 'image://../../dist/static/img/recording.png',
+								icon: 'image://../../data_audit/static/img/recording.png',
 								onclick: function (params) {
 									$("#workflow").trigger("click");
 								}
 							},
 							// myFootprint: {
-							// 	icon: 'image://../../dist/static/img/footprint.png',
+							// 	icon: 'image://../../data_audit/static/img/footprint.png',
 							// 	onclick: function (params) {
 							// 		console.log(params);
 							// 		alert('1');

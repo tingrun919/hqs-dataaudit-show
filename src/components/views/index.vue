@@ -458,7 +458,7 @@
 			</el-dialog>
 		</el-dialog>
 		<el-dialog title="我的工作流" @close="dialogEnable" fullscreen :modal="isModal" :modal-append-to-body="appendBody" :visible.sync="outerVisible2">
-			<el-row>
+			<el-row :gutter="20">
 				<el-col :span="12" style="text-align:right;">
 					<span class="demonstration">账期</span>
 					<el-date-picker size="small" v-model="value3" type="date" placeholder="选择起始日期">
@@ -467,7 +467,7 @@
 					<el-date-picker size="small" v-model="value4" type="date" placeholder="选择结束日期">
 					</el-date-picker>
 				</el-col>
-				<el-col :span="12" style="text-align:left;">
+				<el-col :span="9" style="text-align:left;">
 					<span>省份</span>
 					<el-select v-model="workflowProv" size="mini">
 						<el-option label="请选择" value="">
@@ -475,7 +475,7 @@
 						<el-option v-for="item in internetProvList" :key="item.prov_id" :label="item.prov_name" :value="item.prov_id">
 						</el-option>
 					</el-select>
-					<span>状态</span>
+					<span style="padding-left:15px;">状态</span>
 					<el-select size="small" v-model="workflowState" placeholder="请选择状态">
 						<el-option label="请选择" value="">
 						</el-option>
@@ -486,17 +486,17 @@
 					</el-select>
 				</el-col>
 			</el-row>
-			<el-row>
-				<el-col :span="12" style="padding-left:7%;">
+			<el-row :gutter="20">
+				<el-col :span="12" style="text-align:right;">
 					<span>指标</span>
-					<el-input v-model="worlkflowzhibiao" placeholder="请输入内容" size="small" style="width:40%;"></el-input>
+					<el-input v-model="worlkflowzhibiao" placeholder="请输入内容" size="small" style="width:220px;"></el-input>
+					<el-checkbox v-model="checked" style="width:237px;text-align:right;">只显示现流转人是我的任务</el-checkbox>					
 				</el-col>
-				<el-col :span="12" style="text-align:left;">
-					<el-checkbox v-model="checked">只显示现流转人是我的任务</el-checkbox>
-					<el-button @click="handleWorkflow" type="primary" size="small" style="margin-left:8%;">查询</el-button>
+				<el-col :span="9" style="text-align:left;">
+					<el-button @click="handleWorkflow" type="primary" size="small">查询</el-button>
 				</el-col>
 			</el-row>
-			<el-table :data="workflow" stripe border @expand-change="handleTask" :row-key="getRowKeys" :expand-row-keys="expands">
+			<el-table style="margin-top:20px;" :data="workflow" stripe border @expand-change="handleTask" :row-key="getRowKeys" :expand-row-keys="expands">
 				<el-table-column fixed="left" type="expand" accordion>
 					<template slot-scope="props">
 						<el-steps :active="tasklength" align-center>

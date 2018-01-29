@@ -69,7 +69,7 @@
 							myCycle: {
 								//样例数据
 								title: '稽核口径',
-								icon: 'image://../../dist/static/img/explanation.png',
+								icon: 'image://../../data_audit/static/img/explanation.png',
 								onclick: function (params) {
 									$("#quotaDialog").trigger("click");
 								}
@@ -77,7 +77,7 @@
 							myReport: {
 								//样例数据
 								title: '样例数据',
-								icon: 'image://../../dist/static/img/report.png',
+								icon: 'image://../../data_audit/static/img/report.png',
 								onclick: function (params) {
 									$("#buttonDialog").trigger("click");
 								}
@@ -85,7 +85,7 @@
 							myMail: {
 								//周报
 								title: '稽核报告',
-								icon: 'image://../../dist/static/img/mail.png',
+								icon: 'image://../../data_audit/static/img/mail.png',
 								onclick: function (params) {
 									$('#dialogs').trigger("click")
 								}
@@ -93,13 +93,13 @@
 							myRecording: {
 								//工作流
 								title: '工作流',
-								icon: 'image://../../dist/static/img/recording.png',
+								icon: 'image://../../data_audit/static/img/recording.png',
 								onclick: function (params) {
 									$("#workflow").trigger("click");
 								}
 							},
 							// myFootprint: {
-							// 	icon: 'image://../../dist/static/img/footprint.png',
+							// 	icon: 'image://../../data_audit/static/img/footprint.png',
 							// 	onclick: function (params) {
 							// 		console.log(params);
 							// 		alert('1');
@@ -108,17 +108,17 @@
 							magicType: {
 								type: ['line', 'bar'],
 								icon: {
-									line: "image://../../dist/static/img/line.png",
-									bar: "image://../../dist/static/img/pie.png"
+									line: "image://../../data_audit/static/img/line.png",
+									bar: "image://../../data_audit/static/img/pie.png"
 								},
 							},
 							restore: {
 								show: true,
-								icon: 'image://../../dist/static/img/refesh.png'
+								icon: 'image://../../data_audit/static/img/refesh.png'
 							},
 							saveAsImage: {
 								show: true,
-								icon: 'image://../../dist/static/img/save.png'
+								icon: 'image://../../data_audit/static/img/save.png'
 							},
 
 						}
