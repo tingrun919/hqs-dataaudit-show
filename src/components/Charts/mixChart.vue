@@ -74,6 +74,14 @@
 									$("#quotaDialog").trigger("click");
 								}
 							},
+							myExport: {
+								//导出指标数据
+								title: '导出指标数据',
+								icon: 'image://../../data_audit/static/img/export.png',
+								onclick: function (params) {
+									$("#exportdata").trigger("click");
+								}
+							},
 							myReport: {
 								//样例数据
 								title: '样例数据',

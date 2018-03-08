@@ -8,7 +8,7 @@
 			<li data-href="#internet">互联网详单</li>
 			<li data-href="#interface">接口文件稽核</li>
 		</ul>
-		<div class="nav-header">
+		<!-- <div class="nav-header">
 			<ul class="nav-list">
 				<li class="nav-li">
 					<span class="btn-nav"><i class="icon"></i>更多</span>
@@ -39,17 +39,11 @@
 								接口文件稽核
 							</a>
 							</li>
-							<!-- <li>
-								<div class="line"></div>
-								<p style="padding-top:30px;font-size:12spx;">
-									{{name}}
-								</p>
-							</li> -->
 						</ul>
 					</div>
 				</li>
 			</ul>
-		</div>
+		</div> -->
 		<section class="panel" data-section-name="week" element-loading-text="数据加载中" v-loading="loadingWeek">
 			<div class="inner">
 				<el-row style="padding:0;">
@@ -103,32 +97,32 @@
 			<ul class="pagination">
 				<li>
 					<a class="active" href="#header">
-						<span class="hover-text"></span>
+						<span class="hover-text">状态栏</span>
 					</a>
 				</li>
 				<li>
 					<a class="" href="#week">
-						<span class="hover-text"></span>
+						<span class="hover-text">周稽核报告</span>
 					</a>
 				</li>
 				<li>
 					<a class="" href="#day">
-						<span class="hover-text"></span>
+						<span class="hover-text">日稽核报告</span>
 					</a>
 				</li>
 				<li>
 					<a class="" href="#signaling">
-						<span class="hover-text"></span>
+						<span class="hover-text">信令详单</span>
 					</a>
 				</li>
 				<li>
 					<a class="" href="#internet">
-						<span class="hover-text"></span>
+						<span class="hover-text">互联网详单</span>
 					</a>
 				</li>
 				<li>
 					<a class="" href="#interface">
-						<span class="hover-text"></span>
+						<span class="hover-text">接口文件稽核</span>
 					</a>
 				</li>
 			</ul>
@@ -392,6 +386,8 @@
 		<el-button @click="handleWorkflow" v-show="false" id="workflow"></el-button>
 		<el-button @click="handleMapDetail" v-show="false" id="mapDetail"></el-button>
 		<el-button @click="handleQuota" v-show="false" id="quotaDialog"></el-button>
+		<el-button @click="handleExportData" v-show="false" id="exportdata"></el-button>
+
 		<el-dialog title="样例数据" :modal="isModal" @close="dialogEnable" fullscreen :visible.sync="dialogTableVisible">
 			<span>时间</span>
 			<el-select size="small" v-model="sampletime" placeholder="请选择时间">
@@ -490,7 +486,7 @@
 				<el-col :span="12" style="text-align:right;">
 					<span>指标</span>
 					<el-input v-model="worlkflowzhibiao" placeholder="请输入内容" size="small" style="width:220px;"></el-input>
-					<el-checkbox v-model="checked" style="width:237px;text-align:right;">只显示现流转人是我的任务</el-checkbox>					
+					<el-checkbox v-model="checked" style="width:237px;text-align:right;">只显示现流转人是我的任务</el-checkbox>
 				</el-col>
 				<el-col :span="9" style="text-align:left;">
 					<el-button @click="handleWorkflow" type="primary" size="small">查询</el-button>
@@ -522,7 +518,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskContent" label="任务内容"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="预警值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="指标值"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="预警上限"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="预警下限"></el-table-column>
 				<el-table-column align="center" property="taskNowperson" label="操作" width="240">
@@ -599,10 +595,52 @@
 				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="扣分值"></el-table-column>
 			</el-table>
 		</el-dialog>
-		<el-dialog :title="quotaTitle" @close="dialogEnable" :visible.sync="dialogQuota">
-			<span v-for="item in quota">
-				{{item.muMetricname +':'+ item.quotaCaliber}}<br /><br />
-			</span>
+		<el-dialog @close="dialogEnable" :visible.sync="dialogQuota">
+			<div class="quota-border">
+				<div class="quota-title">
+					<p class="quota-title-info">{{quotaTitle}}</p>
+					<p v-for="(item,index) in quota" style="line-height: 4;text-align: left;padding-left: 20px;">
+							{{index + 1}}.
+							{{item.quotaName +':'+ item.quotaCaliber}}<br />
+					</p>
+				</div>
+			</div>
+		</el-dialog>
+		<el-dialog title="导出指标" @close="dialogEnable" width="60%" :visible.sync="dialogFormExportData">
+			<el-row style="text-align:left;padding-left:5%;">
+				<span class="demonstration">指标类型</span>
+				<el-select v-model="exportCycle" placeholder="请选择指标类型">
+					<el-option label="周" value="1"></el-option>
+					<el-option label="日" value="0"></el-option>
+				</el-select>
+			</el-row>
+			<el-row style="text-align:left;padding-left:5%;">
+				<span class="demonstration">指标名称</span>
+				<el-select style="width:80%;" v-model="exportQuota" multiple placeholder="请选择指标名">
+					<el-option v-for="item in exportQuotaOption" :key="item.quotaId" :value="item.quotaId" :label="item.quotaName"></el-option>
+				</el-select>
+			</el-row>
+			<el-row style="text-align:left;padding-left:5%;">
+				<div class="block">
+					<span class="demonstration">省份名称</span>
+					<el-select v-model="exportProv" placeholder="省份">
+						<el-option label="全部" value="0"></el-option>
+						<el-option v-for="item in exportProvOption" :key="item.prov_id" :value="item.prov_id" :label="item.prov_name"></el-option>
+					</el-select>
+					<span class="demonstration" style="padding-left:10px;">账期</span>
+					<el-date-picker v-model="value5" type="date" placeholder="选择起始日期">
+					</el-date-picker>
+					<span class="demonstration">—</span>
+					<el-date-picker v-model="value6" type="date" :disabled="disabledExport" placeholder="选择结束日期">
+					</el-date-picker>
+				</div>
+			</el-row>
+			<el-row>
+				<el-button @click="handleDataDownloadExportData" type="primary">导出</el-button>
+				<a :href="downUrl" target='blank' style="display:none;">
+					<span id="downloadExportData">下载</span>
+				</a>
+			</el-row>
 		</el-dialog>
 	</div>
 </template>
@@ -787,7 +825,16 @@
 				checked: false,
 				workflowProv: '',
 				workflowState: '',
-				worlkflowzhibiao:'',
+				worlkflowzhibiao: '',
+				dialogFormExportData: false,
+				exportCycle: '0',
+				exportQuota: [],
+				exportQuotaOption: [],
+				exportProv: '',
+				exportProvOption: [],
+				value5: new Date(),
+				value6: new Date(),
+				checkExport:false,
 			}
 		},
 		beforeMount() {
@@ -899,6 +946,11 @@
 			},
 			isTime: function () {
 				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0, '')
+			},
+			exportCycle:function(){
+				this.exportQuota = [];
+				this.exportQuotaOption = [],
+				this.getInitExportData(Cookies.get('orgId'), this.exportCycle)
 			}
 		},
 		computed: {
@@ -914,6 +966,13 @@
 			viewHeightDayTable: function () {
 				return (window.innerHeight - 280) / 2
 			},
+			disabledExport: function () {
+				if (this.exportProv != 0) {
+					return false
+				} else {
+					return true
+				}
+			}
 		},
 		methods: {
 			//处理鼠标滑动到某个页面时候触发的方法
@@ -971,7 +1030,7 @@
 			//获取工作流数据
 			handleWorkflow() {
 				$.scrollify.disable();
-				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'),this.workflowProv,this.workflowState,this.value3,this.value4,this.worlkflowzhibiao,this.checked)
+				this.getWorkFlow(Cookies.get('userid'), Cookies.get('loginname'), this.workflowProv, this.workflowState, this.value3, this.value4, this.worlkflowzhibiao, this.checked)
 			},
 			//获取周报数据
 			handleWeekData() {
@@ -1142,6 +1201,45 @@
 					}
 					this.getQuota(Cookies.get('orgId'), Cookies.get('interfaceTabid'))
 				}
+			},
+			handleExportData() {
+				$.scrollify.disable();
+				this.getInitExportData(Cookies.get('orgId'), this.exportCycle)
+			},
+			handleDataDownloadExportData() {
+				var exportQuotaResult = '';
+				for (var i = 0; i < this.exportQuota.length; i++) {
+					exportQuotaResult += this.exportQuota[i] + ","
+				}
+				if(this.exportQuota.length <= 0){
+					alert('指标名称不能空！')
+					return false;
+				}
+				if(this.exportProv.length <= 0){
+					alert('城市名称不能空！')
+					return false;
+				}
+				if(!this.value5){
+					alert('请选择开始时间！')
+					return false;
+				}
+				if(!this.value6){
+					alert('请选择结束时间！')
+					return false;
+				}
+				var endtimeexport = this.disabledExport ? '' : this.getDateFormat(this.value6)
+
+				this.getCheckExportData(Cookies.get('orgId'),this.exportProv,exportQuotaResult,this.getDateFormat(this.value5),endtimeexport).then(()=>{
+					if(this.checkExport){
+						//正式下载路径
+						this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/quotaExcel?orgid=" + Cookies.get('orgId') + "&provid=" + this.exportProv + "&quotaid=" + exportQuotaResult + "&begintime=" + this.getDateFormat(this.value5) + "&endtime=" + endtimeexport
+						//处理a按钮操作下载，定时器500ms后触发
+						setTimeout(() => {
+							$("#downloadExportData").trigger("click")
+						}, 500);
+					}
+				})
+
 			},
 		}
 	}
@@ -1380,6 +1478,7 @@
 		word-wrap: break-word;
 		text-align: left;
 		font-size: 15px;
+		line-height: 1.5;
 	}
 
 	.day-row {
@@ -1483,5 +1582,58 @@
 	.footer-subtitle {
 		font-size: 14px;
 		color: black;
+	}
+
+	.pagination a .hover-text {
+		position: absolute;
+		right: 15px;
+		top: 8px;
+		width: 400%;
+		text-align: right;
+		opacity: 0;
+		-webkit-transition: opacity 0.5s ease;
+		transition: opacity 0.5s ease;
+		padding-right: 5px;
+	}
+
+	.pagination a:hover .hover-text {
+		opacity: 1;
+	}
+
+	.pagination a:after {
+		-webkit-transition: box-shadow 0.5s ease;
+		transition: box-shadow 0.5s ease;
+		width: 10px;
+		height: 10px;
+		display: block;
+		border: 1px solid;
+		border-radius: 50%;
+		content: '';
+		position: absolute;
+		margin: auto;
+		top: 0;
+		right: 4px;
+		bottom: 0;
+	}
+
+	.quota-border {
+		border: 1px solid #686868;
+		padding-top: 20px;
+		border-radius: 10px;
+	}
+
+	.quota-title {
+		/* border: 1px solid salmon; */
+		/* position: absolute;
+		top: 22%;
+		background: #fff;
+		left: 10%; */
+	}
+	.quota-title-info{
+		position: absolute;
+		top: 50px;
+		left: 50px;
+		background: #fff;
+		font-size: 20px;
 	}
 </style>

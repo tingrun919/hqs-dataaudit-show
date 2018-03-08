@@ -180,7 +180,7 @@ export default {
 					console.log(err);
 				});
 		},
-		getWorkFlow(userid, loginname,prov,state,start,end,zhibiao,checked) {
+		getWorkFlow(userid, loginname, prov, state, start, end, zhibiao, checked) {
 			var s = '', a = '';
 			if (start != null) {
 				var s = this.getDateFormat(start)
@@ -348,6 +348,42 @@ export default {
 			var d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() + ' ';
 			return y + "" + m + "" + d;
 		},
+		getInitExportData(orgid, cycle) {
+			this.dialogFormExportData = true
+			return api.get(`dataaudit_show/usertab/selectQuota?cycle=${cycle}`)
+				.then(res => {
+					this.exportQuotaOption = res.data.data;
+					this.getInitExportDataProv(orgid)
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getInitExportDataProv(orgid) {
+			return api.get(`dataaudit_show/usertab/selectProv?orgid=${orgid}`)
+				.then(res => {
+					this.exportProvOption = res.data.data;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getCheckExportData(orgid, provid, quotaid, begintime, endtime) {
+			return api.get(`dataaudit_show/usertab/selquotaExcel?orgid=${orgid}&provid=${provid}&quotaid=${quotaid}&begintime=${begintime}&endtime=${endtime}`)
+				.then(res => {
+					if(res.data.code == 100000){
+						this.checkExport = true;
+					}else{
+						alert(res.data.message)
+						this.checkExport = false;
+					}
+					
+					// this.exportProvOption = res.data.data;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		}
 	}
 }
 
