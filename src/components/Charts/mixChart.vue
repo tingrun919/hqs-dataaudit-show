@@ -40,6 +40,9 @@
 			},
 			tabrange: {
 				type: String
+			},
+			quotalist: {
+				type: Array
 			}
 		},
 		data() {
@@ -98,14 +101,14 @@
 									$('#dialogs').trigger("click")
 								}
 							},
-							myRecording: {
-								//工作流
-								title: '工作流',
-								icon: 'image://../../data_audit/static/img/recording.png',
-								onclick: function (params) {
-									$("#workflow").trigger("click");
-								}
-							},
+							// myRecording: {
+							// 	//工作流
+							// 	title: '工作流',
+							// 	icon: 'image://../../data_audit/static/img/recording.png',
+							// 	onclick: function (params) {
+							// 		$("#workflow").trigger("click");
+							// 	}
+							// },
 							// myFootprint: {
 							// 	icon: 'image://../../data_audit/static/img/footprint.png',
 							// 	onclick: function (params) {
@@ -210,7 +213,15 @@
 					},
 					series: this.yDataList()
 				})
-
+				var path = Cookies.get('isTabType');
+				// console.log(this.quotalist[0].tabId,'serieslistserieslistserieslistserieslistserieslist')
+				var quotaid = this.quotalist[0].tabId
+				this.chart.on('legendselectchanged', function (params) {
+					// 获取点击图例的选中状态
+					var isSelected = params.selected[params.name];
+					// 状态存入cookies
+					Cookies.set(path + 'legendselectchanged' + quotaid, params.selected)
+				});
 			},
 			yDataList() {
 				this.yData = []
@@ -247,15 +258,23 @@
 					}
 					this.yAxisData.push(item);
 				}
-				
+
 				return this.yAxisData
 			},
 			isDefaultLegend() {
-				var item = {}
-				for (var i = 1; i < this.legendlist.length; i++) {
-					item[this.legendlist[i]] = false					
+				var path = Cookies.get('isTabType');
+				var quotaid = this.quotalist[0].tabId
+				console.log(path, 'pathpathpathpathpathpathpathpathpathpath')
+				console.log(path + 'legendselectchanged' + quotaid, 'path')
+				if (Cookies.get(path + 'legendselectchanged' + quotaid)) {
+					var obj = JSON.parse(Cookies.get(path + 'legendselectchanged' + quotaid))
+				} else {
+					var obj = {}
+					for (var i = 1; i < this.legendlist.length; i++) {
+						obj[this.legendlist[i]] = false
+					}
 				}
-				return item
+				return obj
 			}
 		}
 	}

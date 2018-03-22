@@ -58,6 +58,7 @@ export default {
 					this.legend = res.data.data.legend
 					this.serieslist = res.data.data.serieslist
 					this.yaxis = res.data.data.yaxis
+					this.quota = res.data.data.quota
 					this.loadingTabLoading = false;
 				})
 				.catch(err => {

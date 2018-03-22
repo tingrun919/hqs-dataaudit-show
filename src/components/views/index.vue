@@ -44,6 +44,20 @@
 				</li>
 			</ul>
 		</div> -->
+		<div class="nav-header-bulletin">
+			<ul class="nav-list-bulletin" :style="{ right: size + 'px' }">
+				<li class="nav-li-bulletin">
+					<div class="btn-nav-title" @click="testa" :style="{ backgroundImage: 'url(' + src + ')' }">
+						<span>公</span>
+						<span>告</span>
+					</div>
+					<span class="btn-nav-bulletin">{{bulletin.notice_name}}</span>
+					<div class="more-nav-bulletin" :style="{height:viewHeightBulletin}">
+						<p v-html="bulletin.notice_content"></p>
+					</div>
+				</li>
+			</ul>
+		</div>
 		<section class="panel" data-section-name="week" element-loading-text="数据加载中" v-loading="loadingWeek">
 			<div class="inner">
 				<el-row style="padding:0;">
@@ -59,7 +73,28 @@
 							 :screenlist='dataScreen'></internet-Chart>
 						</el-card>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="12">
+						<el-card>
+							<el-button style="position: absolute;right:21%;z-index: 10;" @click="handlemore">查看更多</el-button>
+							<internetChart1 :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></internetChart1>
+						</el-card>
+						<el-dialog :title="moredataDate + '指标异常排行'" @close="dialogEnable" :visible.sync="moredialog">
+							<el-table :data="moredata" stripe border max-height="300">
+								<el-table-column align="center" property="prov_name" label="省份"></el-table-column>
+								<el-table-column align="center" property="score" label="本期分值"></el-table-column>
+								<el-table-column align="center" property="rank" label="本期排名"></el-table-column>
+								<el-table-column align="center" property="score1" label="上期分值"></el-table-column>
+								<el-table-column align="center" property="rank1" label="上期排名"></el-table-column>
+								<el-table-column label="操作" width="300">
+									<template slot-scope="scope">
+										<el-button size="mini" @click="handlemoreDateData(scope.row.prov_name, 0)">查看本期详情</el-button>
+										<el-button size="mini" type="danger" @click="handlemoreDateData(scope.row.prov_name, 1)">查看上期详情</el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+						</el-dialog>
+					</el-col>
+					<!-- <el-col :span="6">
 						<el-card>
 							<score-Chart :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></score-Chart>
 						</el-card>
@@ -68,7 +103,7 @@
 						<el-card style="padding-right:10px;">
 							<map-Chart :quotalist='scoreQuotaList' :height="viewHeight"></map-Chart>
 						</el-card>
-					</el-col>
+					</el-col> -->
 				</el-row>
 				<el-row :gutter="10">
 					<el-col :span="12">
@@ -367,14 +402,14 @@
 						</keep-alive>
 					</el-tab-pane>
 				</el-tabs>
-				<el-row class="subtitle">
+				<!-- <el-row class="subtitle">
 					<el-col :span="24">
 						<div class="grid-content">
 							<p class="footer-title">©️版权所有 中国联通</p>
 							<p class="footer-subtitle">建设单位：联通系统集成有限公司 山东省分公司</p>
 						</div>
 					</el-col>
-				</el-row>
+				</el-row> -->
 			</div>
 		</section>
 		<div style="display:none;">
@@ -599,10 +634,11 @@
 			<div class="quota-border">
 				<div class="quota-title">
 					<p class="quota-title-info">{{quotaTitle}}</p>
-					<p v-for="(item,index) in quota" style="line-height: 4;text-align: left;padding-left: 20px;">
-							{{index + 1}}.
-							{{item.quotaName +':'+ item.quotaCaliber}}<br />
-					</p>
+					<div v-for="(item,index) in quota" style="text-align: left;padding-left: 20px;">
+						<p style="line-height: 2;font-weight:bold;">{{index + 1}}. {{item.quotaName +':'}}</p>
+						<p v-html="quotaCaliberFn(item.quotaCaliber)" style="margin-left:40px;line-height: 2;"></p>
+						<!-- <p v-html="item.quotaCaliber"></p> -->
+					</div>
 				</div>
 			</div>
 		</el-dialog>
@@ -648,6 +684,7 @@
 <script>
 	//导入组建
 	import internetChart from '@/components/Charts/internetChart'
+	import internetChart1 from '@/components/Charts/internetChart1'
 	import scoreChart from '@/components/Charts/scoreChart'
 	import matchingChart from '@/components/Charts/matchingChart'
 	import invalidNumberChart from '@/components/Charts/invalidNumberChart'
@@ -657,7 +694,8 @@
 	import matchingChartDay from '@/components/Charts/matchingChartDay'
 	import signalingChartDay from '@/components/Charts/signalingChartDay'
 	import internetTimelyChartDay from '@/components/Charts/internetTimelyChartDay'
-
+	import img1 from '../../assets/three1.png'
+	import img2 from '../../assets/three.png'
 	//导入头部底部
 	import headerView from '@/components/header/header'
 	//导入service
@@ -669,7 +707,7 @@
 
 	export default {
 		mixins: [indexService, mixChartService],
-		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay },
+		components: { internetChart, scoreChart, matchingChart, invalidNumberChart, mapChart, headerView, tabPane, internetChartDay, matchingChartDay, signalingChartDay, internetTimelyChartDay, internetChart1 },
 		data() {
 			return {
 				signalingOptions: [],
@@ -804,7 +842,7 @@
 				quotaTitle: '',
 
 				signalingdialog: false,
-
+				moredialog: false,
 				loadingWeek: false,
 
 				loadingDay: false,
@@ -834,7 +872,12 @@
 				exportProvOption: [],
 				value5: new Date(),
 				value6: new Date(),
-				checkExport:false,
+				checkExport: false,
+				moredata: [],
+				moredataDate: '',
+				size: Cookies.get("bulletin") == 'open' ? '-232' : '0',
+				src: Cookies.get("bulletin") == 'open' ? img1 : img2,
+				bulletin: [],
 			}
 		},
 		beforeMount() {
@@ -895,6 +938,18 @@
 						$(".icon").removeClass("icon-show");
 					}
 				});
+				// $(".btn-nav-title").on({
+				// 	click: function () {
+				// 		$(".nav-list-bulletin").addClass("show");
+				// 		$(".more-nav-bulletin").addClass("show");
+				// 		// $(".btn-nav-bulletin").addClass("btn-show");
+				// 	},
+				// mouseout: function () {
+				// 	$(".nav-li-bulletin").removeClass("show");
+				// 	$(".more-nav-bulletin").removeClass("show");
+				// 	$(".btn-nav-bulletin").removeClass("btn-show");
+				// }
+				// });
 			});
 			//获取周报数据
 			this.getWeekScore()
@@ -947,10 +1002,10 @@
 			isTime: function () {
 				this.getInternetData(3, this.internetTimelyProv, this.internetTimelyAcct, this.isTime ? 1 : 0, '')
 			},
-			exportCycle:function(){
+			exportCycle: function () {
 				this.exportQuota = [];
 				this.exportQuotaOption = [],
-				this.getInitExportData(Cookies.get('orgId'), this.exportCycle)
+					this.getInitExportData(Cookies.get('orgId'), this.exportCycle)
 			}
 		},
 		computed: {
@@ -972,7 +1027,10 @@
 				} else {
 					return true
 				}
-			}
+			},
+			viewHeightBulletin: function () {
+				return (window.innerHeight) / 4.5 + 'px'
+			},
 		},
 		methods: {
 			//处理鼠标滑动到某个页面时候触发的方法
@@ -1134,7 +1192,7 @@
 			},
 			handleMapDetail() {
 				$.scrollify.disable();
-				this.getMapDetailData(Cookies.get('cityName'), Cookies.get('loginname'));
+				this.getMoreDataData(Cookies.get('cityName'), 0);
 			},
 			dialogEnable() {
 				$.scrollify.enable();
@@ -1211,26 +1269,26 @@
 				for (var i = 0; i < this.exportQuota.length; i++) {
 					exportQuotaResult += this.exportQuota[i] + ","
 				}
-				if(this.exportQuota.length <= 0){
+				if (this.exportQuota.length <= 0) {
 					alert('指标名称不能空！')
 					return false;
 				}
-				if(this.exportProv.length <= 0){
+				if (this.exportProv.length <= 0) {
 					alert('城市名称不能空！')
 					return false;
 				}
-				if(!this.value5){
+				if (!this.value5) {
 					alert('请选择开始时间！')
 					return false;
 				}
-				if(!this.value6){
+				if (!this.value6) {
 					alert('请选择结束时间！')
 					return false;
 				}
 				var endtimeexport = this.disabledExport ? '' : this.getDateFormat(this.value6)
 
-				this.getCheckExportData(Cookies.get('orgId'),this.exportProv,exportQuotaResult,this.getDateFormat(this.value5),endtimeexport).then(()=>{
-					if(this.checkExport){
+				this.getCheckExportData(Cookies.get('orgId'), this.exportProv, exportQuotaResult, this.getDateFormat(this.value5), endtimeexport).then(() => {
+					if (this.checkExport) {
 						//正式下载路径
 						this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/quotaExcel?orgid=" + Cookies.get('orgId') + "&provid=" + this.exportProv + "&quotaid=" + exportQuotaResult + "&begintime=" + this.getDateFormat(this.value5) + "&endtime=" + endtimeexport
 						//处理a按钮操作下载，定时器500ms后触发
@@ -1241,6 +1299,30 @@
 				})
 
 			},
+			handlemore() {
+				$.scrollify.disable();
+				this.getMoreData()
+			},
+			handlemoreDateData(provname, type) {
+				this.getMoreDataData(provname, type).then(() => {
+					$.scrollify.disable();
+				})
+			},
+			quotaCaliberFn(str) {
+				return str.replace(/\n|\r\n/g, "<br/>");
+			},
+			testa() {
+				if (this.size == 0) {
+					Cookies.set("bulletin",'open')
+					this.size = -232;
+					this.src = img1
+				} else {
+					Cookies.set("bulletin",'close')
+					this.size = 0
+					this.src = img2
+				}
+
+			}
 		}
 	}
 </script>
@@ -1344,11 +1426,29 @@
 		z-index: 100;
 	}
 
+	.nav-header-bulletin {
+		/* display: none; */
+		position: fixed;
+		bottom: 35%;
+		right: 13px;
+		z-index: 100;
+	}
+
 	.nav-li {
 		float: right;
 		width: 140px;
 		position: relative;
 		height: 45px;
+	}
+
+	.nav-li-bulletin {
+		float: right;
+		width: 220px;
+		position: relative;
+		height: 45px;
+		/* right: -224px; */
+		transition: right .5s;
+		-webkit-transition: right .5s;
 	}
 
 	.btn-nav {
@@ -1366,16 +1466,106 @@
 		z-index: 6;
 	}
 
+	.btn-nav-bulletin {
+		width: 93%;
+		font-size: 15px;
+		font-weight: 500;
+		display: inline-block;
+		text-align: left;
+
+		display: block;
+		border-top: 1px solid #888888;
+		border-left: 1px solid white;
+		/* height: 93px; */
+		text-align: left;
+		line-height: 38px;
+		position: absolute;
+		padding-left: 10px;
+		/* right: -224px; */
+		/* top: 50%; */
+		/* left: 50%; */
+		/* margin: -19px 0 0 -68px; */
+		font-size: 16px;
+		color: #2e2e2e;
+		z-index: 6;
+		background: white;
+	}
+
+	.btn-nav-title {
+    border-radius: 10% 0 0 10%;
+    /* width: 20px; */
+    background: #cacaca;
+		cursor:pointer;
+		padding: 10px 10px 30px 10px;
+		/* margin: 0 auto; */
+		/* line-height: 25px; */
+		/* font-size: 20px; */
+		/* display: block; */
+		/* width: 136px; */
+		/* height: 70px; */
+		/* text-align: center; */
+		/* line-height: 38px; */
+		position: absolute;
+		top: 50%;
+		/* left: 50%; */
+		margin: -22px 0 0 -36px;
+		/* font-size: 16px; */
+		/* color: #2e2e2e; */
+		z-index: 9999;
+		border-top: 1px solid #888888;
+		border-left: 1px solid #888888;
+		border-bottom: 1px solid #888888;
+		/* border-right: 1px solid white; */
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+		/* background-image: url('../../assets/three1.png'); */
+		background-repeat: no-repeat;
+		background-size: 15px;
+		background-position: bottom 10% left 60%;
+	}
+
 	.more-nav {
 		position: absolute;
 		top: 0;
-		right: -162px;
+		/* right: -162px; */
 		width: 156px;
 		height: 9999px;
 		padding-top: 100px;
 		background: rgba(218, 20, 12, .8);
 		transition: right .3s;
 		-webkit-transition: right .3s;
+	}
+
+	.more-nav-bulletin {
+		position: absolute;
+		top: 0;
+		text-align: left;
+		padding: 40px 0 0 10px;
+		/* margin: 40px 10px 0 10px; */
+		/* right: -224px; */
+		width: 220px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* height: 100%; */
+		/* height: 9999px; */
+		border: 1px solid #888888;
+		background: white;
+		transition: right .3s;
+		-webkit-transition: right .3s;
+	}
+
+	.more-nav-bulletin p {
+		padding-bottom: 15px;
+		white-space: pre-wrap;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		word-wrap: break-word;
+		text-align: left;
+		font-size: 15px;
+		line-height: 1.5;
 	}
 
 	.more-nav ul {
@@ -1478,7 +1668,7 @@
 		word-wrap: break-word;
 		text-align: left;
 		font-size: 15px;
-		line-height: 1.5;
+		line-height: 2;
 	}
 
 	.day-row {
@@ -1628,12 +1818,22 @@
 		top: 22%;
 		background: #fff;
 		left: 10%; */
+		/* overflow: auto; */
+		padding: 0 10px;
 	}
-	.quota-title-info{
+
+	.quota-title-info {
 		position: absolute;
 		top: 50px;
 		left: 50px;
 		background: #fff;
 		font-size: 20px;
+	}
+
+	.nav-list-bulletin {
+		position: absolute;
+		/* right: -222px; */
+		transition: right .5s;
+		-webkit-transition: right .5s;
 	}
 </style>

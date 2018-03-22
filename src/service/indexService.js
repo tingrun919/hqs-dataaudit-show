@@ -105,6 +105,16 @@ export default {
 			return api.get(`dataaudit_show/email/selectFirstscreen?type=5`)
 				.then(res => {
 					this.screenContent = res.data.data[0].screenContent
+					this.getBulletin()
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getBulletin() {
+			return api.get(`dataaudit_show/usertab/selectNotice`)
+				.then(res => {
+					this.bulletin = res.data.data[0]
 					this.loadingWeek = false;
 				})
 				.catch(err => {
@@ -371,18 +381,40 @@ export default {
 		getCheckExportData(orgid, provid, quotaid, begintime, endtime) {
 			return api.get(`dataaudit_show/usertab/selquotaExcel?orgid=${orgid}&provid=${provid}&quotaid=${quotaid}&begintime=${begintime}&endtime=${endtime}`)
 				.then(res => {
-					if(res.data.code == 100000){
+					if (res.data.code == 100000) {
 						this.checkExport = true;
-					}else{
+					} else {
 						alert(res.data.message)
 						this.checkExport = false;
 					}
-					
+
 					// this.exportProvOption = res.data.data;
 				})
 				.catch(err => {
 					console.log(err);
 				});
+		},
+		getMoreData() {
+			return api.get(`dataaudit_show/email/selectFirstscreen1`)
+				.then(res => {
+					this.moredialog = true
+					this.moredata = res.data.data.quota
+					this.moredataDate = res.data.data.acctdate
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getMoreDataData(prov_name, type){
+			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_name}&type=${type}`)
+			.then(res => {
+				this.moredialog = false
+				this.dialogMapDetailData = res.data.data
+				this.dialogMapDetail = true;
+			})
+			.catch(err => {
+				console.log(err);
+			});
 		}
 	}
 }

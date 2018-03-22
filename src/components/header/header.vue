@@ -7,14 +7,14 @@
 		</div>
 		<ul class="nav">
 			<li class="nav-item">{{riqi}} {{week}}</li>
-			<li class="nav-item">|</li>
+			<!-- <li class="nav-item">|</li>
 			<li class="nav-item">
 				<span class="nav-link" @click="tests">
 					<el-badge is-dot :hidden="istask">
 						<span>工作流</span>
 					</el-badge>
 				</span>
-			</li>
+			</li> -->
 			<li class="nav-item">|</li>
 			<li class="nav-item">{{name}}
 

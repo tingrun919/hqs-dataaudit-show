@@ -68,13 +68,13 @@
 									$("#dialogs").trigger("click");
 								}
 							},
-							myRecording: {
-								title: '工作流',
-								icon: 'image://../../data_audit/static/img/recording.png',
-								onclick: function (params) {
-									$("#workflow").trigger("click");
-								}
-							},
+							// myRecording: {
+							// 	title: '工作流',
+							// 	icon: 'image://../../data_audit/static/img/recording.png',
+							// 	onclick: function (params) {
+							// 		$("#workflow").trigger("click");
+							// 	}
+							// },
 							// myFootprint: {
 							// 	icon: 'image://../../data_audit/static/img/footprint.png',
 							// 	onclick: function (params) {

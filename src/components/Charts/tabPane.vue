@@ -15,7 +15,7 @@
 				</el-option>
 			</el-select>
 			<mix-chart :height="viewHeightMixChart" width='100%' :tabrange="tabRangeDefault" :xaxislist='xaxis' :legendlist='legend'
-			 :serieslist='serieslist' :yaxislist='yaxis'></mix-chart>
+			 :serieslist='serieslist' :yaxislist='yaxis' :quotalist='quota'></mix-chart>
 		</div>
 	</div>
 </template>
@@ -124,6 +124,7 @@
 				legend: [],
 				serieslist: [],
 				yaxis: [],
+				quota:[],
 				quotaCycle:[],
 
 				tasklength: 0,
