@@ -1138,7 +1138,7 @@
 					var tabid = Cookies.get('interfaceTabid')
 				}
 				//正式下载路径
-				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + tabid + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
+				this.downUrl = "http://10.245.2.8:8080/dataaudit_show/usertab/downExcel?orgid=" + Cookies.get('orgId') + "&tabid=" + tabid + "&acctdate=" + this.sampletime + "&provid=" + this.sampleprov + "&satype=" + satype + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#download").trigger("click")
@@ -1147,7 +1147,7 @@
 			//信令及时性下载
 			handleDataDownloadSignling() {
 				//正式下载路径
-				this.downUrl = "http://10.162.26.141:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
+				this.downUrl = "http://10.245.2.8:8080/dataaudit_show/email/downRibao?acctdate=" + this.signalingTimeliness + "&usercount=" + Cookies.get('loginname')
 				//处理a按钮操作下载，定时器500ms后触发
 				setTimeout(() => {
 					$("#downloadSignling").trigger("click")
@@ -1290,7 +1290,7 @@
 				this.getCheckExportData(Cookies.get('orgId'), this.exportProv, exportQuotaResult, this.getDateFormat(this.value5), endtimeexport).then(() => {
 					if (this.checkExport) {
 						//正式下载路径
-						this.downUrl = "http://10.162.26.141:8080/dataaudit_show/usertab/quotaExcel?orgid=" + Cookies.get('orgId') + "&provid=" + this.exportProv + "&quotaid=" + exportQuotaResult + "&begintime=" + this.getDateFormat(this.value5) + "&endtime=" + endtimeexport
+						this.downUrl = "http://10.245.2.8:8080/dataaudit_show/usertab/quotaExcel?orgid=" + Cookies.get('orgId') + "&provid=" + this.exportProv + "&quotaid=" + exportQuotaResult + "&begintime=" + this.getDateFormat(this.value5) + "&endtime=" + endtimeexport
 						//处理a按钮操作下载，定时器500ms后触发
 						setTimeout(() => {
 							$("#downloadExportData").trigger("click")
