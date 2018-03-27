@@ -616,7 +616,7 @@
 				</el-row>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="扣分详情" @close="dialogEnable" :visible.sync="dialogMapDetail">
+		<el-dialog title="异常详情" @close="dialogEnable" :visible.sync="dialogMapDetail">
 			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData">
 				<el-table-column show-overflow-tooltip align="center" property="taskId" label="编码"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
@@ -627,7 +627,7 @@
 				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="当前值"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="阈值上限"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="阈值下限"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="扣分值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="异常值"></el-table-column>
 			</el-table>
 		</el-dialog>
 		<el-dialog @close="dialogEnable" :visible.sync="dialogQuota">

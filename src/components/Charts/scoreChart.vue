@@ -48,7 +48,7 @@
 						formatter: function (params, ticket, callback) {
 							var res = params[0].name;
 							for (var i = 0, l = params.length; i < l; i++) {
-									res += '<br/> 本期稽核扣分数: ' + (params[i].value ? params[i].value : '-') + '分';
+									res += '<br/> 本期稽核异常数: ' + (params[i].value ? params[i].value : '-') + '分';
 							}
 							return res;
 						}
