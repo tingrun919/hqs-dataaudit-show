@@ -40,7 +40,7 @@
 				chart: null,
 				option: {
 					title: {
-						text: '信令数据量化环比同比',
+						text: '信令详单数据量波动情况',
 						x: 'center',
 						bottom: '0',
 						textStyle: {

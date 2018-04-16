@@ -41,7 +41,7 @@
 				chart: null,
 				option: {
 					title: {
-						text: '互联网及时性',
+						text: '互联网延时性',
 						x: 'center',
 						bottom: '0',
 						textStyle: {

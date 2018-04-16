@@ -2,8 +2,8 @@
 	<div class="headerWrapper">
 		<header-View></header-View>
 		<ul class="nav-menu">
-			<li data-href="#week">周稽核报告</li>
-			<li data-href="#day">日稽核报告</li>
+			<li data-href="#week" v-if="isDistSort">周稽核报告</li>
+			<li data-href="#day" v-if="isDistSort">日稽核报告</li>
 			<li data-href="#signaling">信令详单</li>
 			<li data-href="#internet">互联网详单</li>
 			<li data-href="#interface">接口文件稽核</li>
@@ -58,7 +58,7 @@
 				</li>
 			</ul>
 		</div>
-		<section class="panel" data-section-name="week" element-loading-text="数据加载中" v-loading="loadingWeek">
+		<section class="panel" v-if="isDistSort" data-section-name="week" element-loading-text="数据加载中" v-loading="loadingWeek">
 			<div class="inner">
 				<el-row style="padding:0;">
 					<el-col :span="24">
@@ -75,15 +75,16 @@
 					</el-col>
 					<el-col :span="12">
 						<el-card>
-							<el-button style="position: absolute;right:21%;z-index: 10;" @click="handlemore">查看更多</el-button>
+							<el-button style="position: absolute;right:13%;z-index: 10;" @click="handlemore">查看更多</el-button>
+							<el-button style="position: absolute;right:5%;z-index: 10;margin-left: 0;" @click="handlemoreRepote">稽核报告</el-button>
 							<internetChart1 :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></internetChart1>
 						</el-card>
-						<el-dialog :title="moredataDate + '指标异常排行'" @close="dialogEnable" :visible.sync="moredialog">
+						<el-dialog :title="moredataDate + '异常指标数量'" @close="dialogEnable" :visible.sync="moredialog">
 							<el-table :data="moredata" stripe border max-height="300">
 								<el-table-column align="center" property="prov_name" label="省份"></el-table-column>
-								<el-table-column align="center" property="score" label="本期分值"></el-table-column>
+								<el-table-column align="center" property="score" label="本期异常数量"></el-table-column>
 								<el-table-column align="center" property="rank" label="本期排名"></el-table-column>
-								<el-table-column align="center" property="score1" label="上期分值"></el-table-column>
+								<el-table-column align="center" property="score1" label="上期异常数量"></el-table-column>
 								<el-table-column align="center" property="rank1" label="上期排名"></el-table-column>
 								<el-table-column label="操作" width="300">
 									<template slot-scope="scope">
@@ -129,40 +130,40 @@
 					</el-col>
 				</el-row>
 			</div>
-			<ul class="pagination">
-				<li>
-					<a class="active" href="#header">
-						<span class="hover-text">状态栏</span>
-					</a>
-				</li>
-				<li>
-					<a class="" href="#week">
-						<span class="hover-text">周稽核报告</span>
-					</a>
-				</li>
-				<li>
-					<a class="" href="#day">
-						<span class="hover-text">日稽核报告</span>
-					</a>
-				</li>
-				<li>
-					<a class="" href="#signaling">
-						<span class="hover-text">信令详单</span>
-					</a>
-				</li>
-				<li>
-					<a class="" href="#internet">
-						<span class="hover-text">互联网详单</span>
-					</a>
-				</li>
-				<li>
-					<a class="" href="#interface">
-						<span class="hover-text">接口文件稽核</span>
-					</a>
-				</li>
-			</ul>
 		</section>
-		<section class="panel" data-section-name="day" element-loading-text="数据加载中" v-loading="loadingDay">
+		<ul class="pagination">
+			<li>
+				<a class="active" href="#header">
+					<span class="hover-text">状态栏</span>
+				</a>
+			</li>
+			<li v-if="isDistSort">
+				<a class="" href="#week">
+					<span class="hover-text">周稽核报告</span>
+				</a>
+			</li>
+			<li v-if="isDistSort">
+				<a class="" href="#day">
+					<span class="hover-text">日稽核报告</span>
+				</a>
+			</li>
+			<li>
+				<a class="" href="#signaling">
+					<span class="hover-text">信令详单</span>
+				</a>
+			</li>
+			<li>
+				<a class="" href="#internet">
+					<span class="hover-text">互联网详单</span>
+				</a>
+			</li>
+			<li>
+				<a class="" href="#interface">
+					<span class="hover-text">接口文件稽核</span>
+				</a>
+			</li>
+		</ul>
+		<section class="panel" data-section-name="day" v-if="isDistSort" element-loading-text="数据加载中" v-loading="loadingDay">
 			<div class="inner">
 				<el-row :gutter="10">
 					<el-col :span="12">
@@ -336,7 +337,7 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<span style="color:#0c8fcf;font-size:14px;">信令文件延时性</span>
+									<span style="color:#0c8fcf;font-size:14px;">信令中断情况</span>
 								</el-col>
 							</el-row>
 							<el-dialog title="信令延时性" @close="dialogEnable" :visible.sync="signalingdialog">
@@ -616,7 +617,7 @@
 				</el-row>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="异常详情" @close="dialogEnable" :visible.sync="dialogMapDetail">
+		<el-dialog title="异常指标数量" @close="dialogEnable" :visible.sync="dialogMapDetail">
 			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData">
 				<el-table-column show-overflow-tooltip align="center" property="taskId" label="编码"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
@@ -624,10 +625,10 @@
 				<el-table-column show-overflow-tooltip align="center" property="quotaName" label="指标"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="muMetricname" label="度量"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskSatype" label="数据域"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="当前值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskValue" label="指标值"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskUp" label="阈值上限"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskDown" label="阈值下限"></el-table-column>
-				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="异常值"></el-table-column>
+				<el-table-column show-overflow-tooltip align="center" property="taskScore" label="异常数量"></el-table-column>
 			</el-table>
 		</el-dialog>
 		<el-dialog @close="dialogEnable" :visible.sync="dialogQuota">
@@ -878,6 +879,7 @@
 				size: Cookies.get("bulletin") == 'open' ? '-232' : '0',
 				src: Cookies.get("bulletin") == 'open' ? img1 : img2,
 				bulletin: [],
+				isDistSort:Cookies.get('disSort') == 3 ? false : true
 			}
 		},
 		beforeMount() {
@@ -1036,6 +1038,9 @@
 			//处理鼠标滑动到某个页面时候触发的方法
 			triggerScroll() {
 				var ref = $("#scrollData").attr("data-greeting");
+				if(ref == "header" && !this.isDistSort){
+					ref = "signaling"
+				}
 				//互联网
 				if (ref == "internet") {
 					Cookies.set('isTabType', 'internet')
@@ -1216,7 +1221,7 @@
 									return prev;
 								}
 							}, 0);
-							sums[index] += '分';
+							sums[index] += '个';
 						} else {
 							sums[index] = '-';
 						}
@@ -1303,6 +1308,10 @@
 				$.scrollify.disable();
 				this.getMoreData()
 			},
+			handlemoreRepote() {
+				$.scrollify.disable();
+				$("#dialogs").trigger("click");
+			},
 			handlemoreDateData(provname, type) {
 				this.getMoreDataData(provname, type).then(() => {
 					$.scrollify.disable();
@@ -1335,7 +1344,7 @@
 		top: 50%;
 		transform: translateY(-50%);
 		width: 20px;
-		font-size: 5px;
+		font-size: 12px;
 		z-index: 10;
 		background: rgba(245, 245, 245, 0.9);
 		border-radius: 9px;

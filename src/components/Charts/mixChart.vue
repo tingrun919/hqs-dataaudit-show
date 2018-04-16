@@ -205,6 +205,8 @@
 					},
 					yAxis: this.yAxisMethod(),
 					legend: {
+						type: 'scroll',
+						top:15,
 						data: this.legendlist,
 						selected: this.isDefaultLegend(),
 						formatter: function (name) {

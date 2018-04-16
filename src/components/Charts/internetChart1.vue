@@ -42,40 +42,40 @@
 					},
 					grid: {
 						containLabel: true,
-						left:1,
+						left: 1,
 					},
-					toolbox: {
-						show: true,
-						orient: 'horizontal',
-						left: "right",
-						top: 'top',
-						showTitle: true,
-						itemGap: 18,
-						itemSize: 25,
-						feature: {
-							myReport: {
-								title: '稽核报告',
-								icon: 'image://../../data_audit/static/img/report.png',
-								onclick: function (params) {
-									$("#dialogs").trigger("click");
-								}
-							},
-							// myRecording: {
-							// 	title: '工作流',
-							// 	icon: 'image://../../data_audit/static/img/recording.png',
-							// 	onclick: function (params) {
-							// 		$("#workflow").trigger("click");
-							// 	}
-							// },
-							// myFootprint: {
-							// 	icon: 'image://../../data_audit/static/img/footprint.png',
-							// 	onclick: function (params) {
-							// 		console.log(params);
-							// 		alert('1');
-							// 	}
-							// },
-						}
-					},
+					// toolbox: {
+					// 	show: true,
+					// 	orient: 'horizontal',
+					// 	left: "right",
+					// 	top: 'top',
+					// 	showTitle: true,
+					// 	itemGap: 18,
+					// 	itemSize: 25,
+					// 	feature: {
+					// 		myReport: {
+					// 			title: '稽核报告',
+					// 			icon: 'image://../../data_audit/static/img/report.png',
+					// 			onclick: function (params) {
+					// 				$("#dialogs").trigger("click");
+					// 			}
+					// 		},
+					// 		myRecording: {
+					// 			title: '工作流',
+					// 			icon: 'image://../../data_audit/static/img/recording.png',
+					// 			onclick: function (params) {
+					// 				$("#workflow").trigger("click");
+					// 			}
+					// 		},
+					// 		myFootprint: {
+					// 			icon: 'image://../../data_audit/static/img/footprint.png',
+					// 			onclick: function (params) {
+					// 				console.log(params);
+					// 				alert('1');
+					// 			}
+					// 		},
+					// 	}
+					// },
 				}
 			}
 		},
@@ -99,8 +99,10 @@
 				this.chart = echarts.init(this.$el, 'default')
 				this.chart.setOption(this.option)
 				this.chart.on('click', function (params) {
-					Cookies.set('cityName', params.name)
-					$("#mapDetail").trigger("click");
+					if (params.seriesId.length > 0) {
+						Cookies.set('cityName', params.name)
+						$("#mapDetail").trigger("click");
+					}
 				});
 				this.chart.setOption({
 					title: {
@@ -121,7 +123,7 @@
 						formatter: function (params, ticket, callback) {
 							var res = params[0].name;
 							for (var i = 0, l = params.length; i < l; i++) {
-								res += '<br/> 本期稽核分数: ' + (params[i].value ? params[i].value : '-') + '分';
+								res += '<br/> 本期稽核异常数量: ' + (params[i].value ? params[i].value : '-') + '个';
 							}
 							return res;
 						}

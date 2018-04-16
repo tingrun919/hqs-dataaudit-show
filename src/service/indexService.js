@@ -116,6 +116,11 @@ export default {
 				.then(res => {
 					this.bulletin = res.data.data[0]
 					this.loadingWeek = false;
+					// console.log(Cookies.get('disSort'))
+					var dis = Cookies.get('disSort')
+					if(dis == 3){
+						$("#1").trigger("click");
+					}
 				})
 				.catch(err => {
 					console.log(err);
@@ -406,7 +411,8 @@ export default {
 				});
 		},
 		getMoreDataData(prov_name, type){
-			return api.get(`dataaudit_show/task/mapTask?prov_name=${prov_name}&type=${type}`)
+			var provname = encodeURI(prov_name)
+			return api.get(`dataaudit_show/task/mapTask?prov_name=${provname}&type=${type}`)
 			.then(res => {
 				this.moredialog = false
 				this.dialogMapDetailData = res.data.data
