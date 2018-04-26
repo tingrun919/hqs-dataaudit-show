@@ -75,11 +75,13 @@
 					</el-col>
 					<el-col :span="12">
 						<el-card>
-							<el-button style="position: absolute;right:13%;z-index: 10;" @click="handlemore">查看更多</el-button>
-							<el-button style="position: absolute;right:5%;z-index: 10;margin-left: 0;" @click="handlemoreRepote">稽核报告</el-button>
+							<el-button-group style="position: absolute;right:5%;z-index: 10;">
+								<el-button type="primary" size="mini" @click="handlemore">查看更多</el-button>
+								<el-button type="primary" size="mini" @click="handlemoreRepote">稽核报告</el-button>
+							</el-button-group>
 							<internetChart1 :quotalist='scoreQuotaList' :height="viewHeight" :screenlist='scoreScreenList'></internetChart1>
 						</el-card>
-						<el-dialog :title="moredataDate + '异常指标数量'" @close="dialogEnable" :visible.sync="moredialog">
+						<el-dialog :title="moredataDate + '异常指标数量'" width="50%" @close="dialogEnable" :visible.sync="moredialog">
 							<el-table :data="moredata" stripe border max-height="300">
 								<el-table-column align="center" property="prov_name" label="省份"></el-table-column>
 								<el-table-column align="center" property="score" label="本期异常数量"></el-table-column>
@@ -617,8 +619,8 @@
 				</el-row>
 			</el-dialog>
 		</el-dialog>
-		<el-dialog title="异常指标数量" @close="dialogEnable" :visible.sync="dialogMapDetail">
-			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData">
+		<el-dialog title="异常指标数量" @close="dialogEnable" width="50%" :visible.sync="dialogMapDetail">
+			<el-table stripe border show-summary :summary-method="getSummaries" :data="dialogMapDetailData" max-height="300">
 				<el-table-column show-overflow-tooltip align="center" property="taskId" label="编码"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="provname" label="省份"></el-table-column>
 				<el-table-column show-overflow-tooltip align="center" property="taskAcctdata" label="账期"></el-table-column>
@@ -879,7 +881,7 @@
 				size: Cookies.get("bulletin") == 'open' ? '-232' : '0',
 				src: Cookies.get("bulletin") == 'open' ? img1 : img2,
 				bulletin: [],
-				isDistSort:Cookies.get('disSort') == 3 ? false : true
+				isDistSort: Cookies.get('disSort') == 3 ? false : true
 			}
 		},
 		beforeMount() {
@@ -1038,7 +1040,7 @@
 			//处理鼠标滑动到某个页面时候触发的方法
 			triggerScroll() {
 				var ref = $("#scrollData").attr("data-greeting");
-				if(ref == "header" && !this.isDistSort){
+				if (ref == "header" && !this.isDistSort) {
 					ref = "signaling"
 				}
 				//互联网
@@ -1322,11 +1324,11 @@
 			},
 			testa() {
 				if (this.size == 0) {
-					Cookies.set("bulletin",'open')
+					Cookies.set("bulletin", 'open')
 					this.size = -232;
 					this.src = img1
 				} else {
-					Cookies.set("bulletin",'close')
+					Cookies.set("bulletin", 'close')
 					this.size = 0
 					this.src = img2
 				}
@@ -1501,10 +1503,10 @@
 	}
 
 	.btn-nav-title {
-    border-radius: 10% 0 0 10%;
-    /* width: 20px; */
-    background: #cacaca;
-		cursor:pointer;
+		border-radius: 10% 0 0 10%;
+		/* width: 20px; */
+		background: #cacaca;
+		cursor: pointer;
 		padding: 10px 10px 30px 10px;
 		/* margin: 0 auto; */
 		/* line-height: 25px; */

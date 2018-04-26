@@ -414,7 +414,7 @@ export default {
 			var provname = encodeURI(prov_name)
 			return api.get(`dataaudit_show/task/mapTask?prov_name=${provname}&type=${type}`)
 			.then(res => {
-				this.moredialog = false
+				// this.moredialog = false
 				this.dialogMapDetailData = res.data.data
 				this.dialogMapDetail = true;
 			})
